@@ -109,12 +109,12 @@
   }
 
   .brand-tag {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--stone);
-    letter-spacing: 0.22em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-top: 4px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .utils {
@@ -126,19 +126,21 @@
   .util-btn {
     background: transparent;
     border: 1px solid var(--line);
+    border-radius: 6px;
     color: var(--ink-soft);
-    padding: 8px 16px;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    padding: 7px 14px;
+    font-size: 13px;
+    letter-spacing: 0;
     cursor: pointer;
     font-family: inherit;
-    transition: all 0.2s ease;
+    font-weight: 500;
+    transition: all 0.15s ease;
   }
 
   .util-btn:hover {
-    border-color: var(--ink);
-    background: var(--cream);
+    border-color: var(--stone);
+    color: var(--ink);
+    background: var(--paper-deep);
   }
 
   .util-btn.danger:hover {
@@ -215,11 +217,11 @@
   }
 
   .view-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.28em;
+    font-size: 12px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--ember);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     font-weight: 500;
   }
 
@@ -259,8 +261,9 @@
   .card {
     background: var(--cream);
     border: 1px solid var(--line);
-    padding: 28px;
-    margin-bottom: 20px;
+    border-radius: 6px;
+    padding: 22px;
+    margin-bottom: 16px;
   }
 
   .card-title {
@@ -275,17 +278,17 @@
   .card-sub {
     font-size: 13px;
     color: var(--stone);
-    margin-bottom: 22px;
+    margin-bottom: 18px;
   }
 
   /* ======= FORMS ======= */
   label {
     display: block;
-    font-size: 11px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--stone);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 500;
   }
 
@@ -294,13 +297,21 @@
   select,
   textarea {
     width: 100%;
-    background: var(--paper);
+    background: var(--cream);
     border: 1px solid var(--line);
-    padding: 12px 14px;
-    font-size: 15px;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
     font-family: inherit;
     color: var(--ink);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input[type="text"]:hover,
+  input[type="number"]:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--stone-light);
   }
 
   input[type="text"]:focus,
@@ -308,7 +319,8 @@
   select:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--ember);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(15, 14, 11, 0.06);
   }
 
   textarea {
@@ -332,35 +344,38 @@
     background: var(--ink);
     color: var(--cream);
     border: none;
-    padding: 12px 24px;
+    border-radius: 6px;
+    padding: 10px 18px;
     font-family: inherit;
     font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: opacity 0.15s ease;
     font-weight: 500;
   }
 
   button.primary:hover {
-    background: var(--ember);
+    opacity: 0.88;
   }
 
   button.ghost {
     background: transparent;
     color: var(--ink-soft);
     border: 1px solid var(--line);
-    padding: 10px 18px;
+    border-radius: 6px;
+    padding: 9px 14px;
     font-family: inherit;
-    font-size: 12px;
-    letter-spacing: 0.08em;
+    font-size: 13px;
+    letter-spacing: 0;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
   }
 
   button.ghost:hover {
-    border-color: var(--ink);
+    border-color: var(--stone);
     color: var(--ink);
+    background: var(--paper-deep);
   }
 
   button.tiny {
@@ -401,8 +416,8 @@
 
   .hero-kanji-sub {
     display: block;
-    font-size: 14px;
-    letter-spacing: 0.3em;
+    font-size: 13px;
+    letter-spacing: 0.08em;
     color: var(--stone);
     margin-top: 16px;
     font-family: 'DM Sans', sans-serif;
@@ -432,11 +447,11 @@
   .stat-value.small { font-size: 24px; }
 
   .stat-label {
-    font-size: 11px;
-    letter-spacing: 0.18em;
+    font-size: 12px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--stone);
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   /* ======= ITINERARY ======= */
@@ -563,10 +578,11 @@
 
   .budget-total-label {
     font-size: 12px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--stone-light);
+    color: var(--stone);
     margin-bottom: 6px;
+    font-weight: 500;
   }
 
   .budget-total-value {
@@ -632,11 +648,12 @@
   }
 
   .verdict-label {
-    font-size: 11px;
-    letter-spacing: 0.3em;
+    font-size: 12px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin-bottom: 14px;
-    opacity: 0.7;
+    margin-bottom: 12px;
+    font-weight: 500;
+    opacity: 0.75;
   }
 
   .verdict-headline {
@@ -905,8 +922,8 @@
 
   .pack-pro {
     display: inline-block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
+    font-size: 11px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--ember);
     margin-left: 6px;
@@ -989,10 +1006,11 @@
 
   .moment-image figcaption {
     margin-top: 10px;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--stone);
-    letter-spacing: 0.2em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    font-weight: 500;
   }
 
   .moment-text {
@@ -1330,7 +1348,7 @@
           <div class="budget-total-usd" id="budgetTotalUsd">~ $0 USD</div>
         </div>
         <div class="budget-per-day">
-          <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;">Per day</div>
+          <div style="font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500;">Per day</div>
           <strong id="budgetPerDay">¥0</strong>
           <div id="budgetPerDayUsd">~$0</div>
         </div>
