@@ -21,18 +21,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #F5F0E4;
-    --paper-deep: #EDE5D3;
-    --cream: #FAF6EC;
-    --ink: #1A1815;
-    --ink-soft: #3D3934;
-    --stone: #8A837A;
-    --stone-light: #B8B0A3;
+    --paper: #FAFAF7;
+    --paper-deep: #F3F2ED;
+    --cream: #FFFFFF;
+    --ink: #0F0E0B;
+    --ink-soft: #3A3834;
+    --stone: #6B6660;
+    --stone-light: #A8A39A;
     --ember: #9E3424;
     --ember-soft: #C4553E;
     --indigo: #2B4A5E;
     --gold: #B08A3E;
-    --line: #D9D0BE;
+    --line: #E5E3DC;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,9 +48,7 @@
   }
 
   body {
-    background-image:
-      radial-gradient(ellipse 1200px 800px at 20% 0%, rgba(158, 52, 36, 0.04) 0%, transparent 60%),
-      radial-gradient(ellipse 1000px 600px at 80% 100%, rgba(43, 74, 94, 0.05) 0%, transparent 55%);
+    background-image: none;
   }
 
   .display {
@@ -103,9 +101,9 @@
   }
 
   .brand-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Fraunces', Georgia, serif;
     font-size: 22px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
   }
@@ -192,7 +190,7 @@
   }
 
   .nav-num {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 11px;
     color: var(--stone-light);
     margin-right: 6px;
@@ -234,27 +232,26 @@
   }
 
   .view-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    font-weight: 300;
-    font-variation-settings: 'opsz' 144;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 500;
     color: var(--ink);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     max-width: 800px;
   }
 
   .view-title em {
-    font-style: italic;
+    font-style: normal;
     color: var(--ember);
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .view-lede {
-    font-size: 17px;
+    font-size: 16px;
     color: var(--ink-soft);
-    max-width: 620px;
+    max-width: 640px;
     line-height: 1.55;
   }
 
@@ -267,12 +264,12 @@
   }
 
   .card-title {
-    font-family: 'Fraunces', serif;
-    font-size: 22px;
-    font-weight: 400;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     color: var(--ink);
     margin-bottom: 6px;
-    font-variation-settings: 'opsz' 72;
   }
 
   .card-sub {
@@ -424,15 +421,15 @@
   }
 
   .stat-value {
-    font-family: 'Fraunces', serif;
-    font-size: 38px;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 32px;
     color: var(--ink);
     line-height: 1;
-    font-weight: 300;
-    font-variation-settings: 'opsz' 144;
+    font-weight: 500;
+    letter-spacing: -0.02em;
   }
 
-  .stat-value.small { font-size: 28px; }
+  .stat-value.small { font-size: 24px; }
 
   .stat-label {
     font-size: 11px;
@@ -477,10 +474,10 @@
   }
 
   .city-name {
-    font-family: 'Fraunces', serif;
-    font-size: 24px;
-    font-weight: 400;
-    font-variation-settings: 'opsz' 72;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
   }
 
   .city-days {
@@ -543,7 +540,7 @@
   }
 
   .budget-label strong {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 17px;
     font-weight: 400;
   }
@@ -573,7 +570,7 @@
   }
 
   .budget-total-value {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 44px;
     line-height: 1;
     font-weight: 300;
@@ -594,7 +591,7 @@
 
   .budget-per-day strong {
     display: block;
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 24px;
     color: var(--cream);
     font-weight: 400;
@@ -643,7 +640,7 @@
   }
 
   .verdict-headline {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: clamp(26px, 4vw, 36px);
     font-weight: 300;
     line-height: 1.15;
@@ -687,7 +684,7 @@
   }
 
   .phrase-cat-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 22px;
     font-weight: 400;
     font-variation-settings: 'opsz' 72;
@@ -723,7 +720,7 @@
   }
 
   .phrase-romaji {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-style: italic;
     font-size: 16px;
     color: var(--ember);
@@ -762,7 +759,7 @@
   }
 
   .culture-cat h3 {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 22px;
     font-weight: 400;
     margin-bottom: 4px;
@@ -794,7 +791,7 @@
   .rule:last-child { border-bottom: none; }
 
   .rule-mark {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-weight: 500;
     flex-shrink: 0;
     width: 22px;
@@ -863,7 +860,7 @@
   }
 
   .pack-cat h4 {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 17px;
     font-weight: 500;
     margin-bottom: 14px;
@@ -949,7 +946,7 @@
   }
 
   .photo-card figcaption {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-style: italic;
     font-size: 13px;
     color: var(--ink-soft);
@@ -999,7 +996,7 @@
   }
 
   .moment-text {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: clamp(20px, 2.4vw, 26px);
     line-height: 1.4;
     color: var(--ink);
@@ -1049,7 +1046,7 @@
   }
 
   .quote {
-    font-family: 'Fraunces', serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-style: italic;
     font-size: 22px;
     line-height: 1.45;
@@ -1742,7 +1739,7 @@ function renderCities() {
     <article class="city">
       <div class="city-head">
         <div class="city-name-row">
-          <span style="font-family: 'Fraunces', serif; color: var(--stone); font-size: 14px;">0${i + 1}</span>
+          <span style="font-family: 'DM Sans', -apple-system, sans-serif; color: var(--stone); font-size: 14px;">0${i + 1}</span>
           <span class="city-name">${escapeHtml(c.name)}</span>
           <span class="city-days">${c.days} night${c.days !== 1 ? 's' : ''}</span>
         </div>
@@ -1965,9 +1962,9 @@ function updateStats() {
 }
 
 function updateAll() {
+  save();
   calculateBudget();
   updateStats();
-  save();
 }
 
 /* =========================================
