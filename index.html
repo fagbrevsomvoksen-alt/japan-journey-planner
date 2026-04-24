@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Your Japan Journey — An Interactive Trip Planner</title>
+<meta name="description" content="An interactive planner for your trip to Japan. Itinerary, budget, JR Pass calculator, phrases, culture, seasonal packing.">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#9E3424">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Japan Journey">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F0E4;
+    --paper-deep: #EDE5D3;
+    --cream: #FAF6EC;
+    --ink: #1A1815;
+    --ink-soft: #3D3934;
+    --stone: #8A837A;
+    --stone-light: #B8B0A3;
+    --ember: #9E3424;
+    --ember-soft: #C4553E;
+    --indigo: #2B4A5E;
+    --gold: #B08A3E;
+    --line: #D9D0BE;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 1200px 800px at 20% 0%, rgba(158, 52, 36, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 1000px 600px at 80% 100%, rgba(43, 74, 94, 0.05) 0%, transparent 55%);
+  }
+
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  .jp {
+    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+    font-weight: 500;
+  }
+
+  /* ======= LAYOUT ======= */
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 40px 80px;
+  }
+
+  @media (max-width: 720px) {
+    .app { padding: 24px 20px 60px; }
+  }
+
+  /* ======= HEADER ======= */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 34px;
+    color: var(--ember);
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .brand-tag {
+    font-size: 11px;
+    color: var(--stone);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .utils {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .util-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 8px 16px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .util-btn:hover {
+    border-color: var(--ink);
+    background: var(--cream);
+  }
+
+  .util-btn.danger:hover {
+    border-color: var(--ember);
+    color: var(--ember);
+  }
+
+  /* ======= NAV ======= */
+  .nav {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-item {
+    background: transparent;
+    border: none;
+    padding: 14px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--stone);
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.2s ease;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-item:hover {
+    color: var(--ink);
+  }
+
+  .nav-item.active {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: var(--ember);
+  }
+
+  .nav-num {
+    font-family: 'Fraunces', serif;
+    font-size: 11px;
+    color: var(--stone-light);
+    margin-right: 6px;
+    font-variation-settings: 'opsz' 9;
+  }
+
+  .nav-item.active .nav-num {
+    color: var(--ember);
+  }
+
+  /* ======= SECTIONS ======= */
+  section.view { display: none; }
+  section.view.active { display: block; animation: fadeUp 0.4s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .view-header {
+    margin-bottom: 40px;
+  }
+
+  .view-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .view-eyebrow .jp {
+    color: var(--ink);
+    margin-right: 10px;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .view-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144;
+    color: var(--ink);
+    margin-bottom: 18px;
+    max-width: 800px;
+  }
+
+  .view-title em {
+    font-style: italic;
+    color: var(--ember);
+    font-weight: 400;
+  }
+
+  .view-lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 620px;
+    line-height: 1.55;
+  }
+
+  /* ======= CARDS ======= */
+  .card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .card-sub {
+    font-size: 13px;
+    color: var(--stone);
+    margin-bottom: 22px;
+  }
+
+  /* ======= FORMS ======= */
+  label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    transition: border-color 0.2s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--ember);
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  .field-row {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  @media (min-width: 640px) {
+    .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  button.primary {
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-weight: 500;
+  }
+
+  button.primary:hover {
+    background: var(--ember);
+  }
+
+  button.ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button.ghost:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  button.tiny {
+    background: transparent;
+    border: none;
+    color: var(--stone);
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.15s ease;
+  }
+
+  button.tiny:hover { color: var(--ember); }
+
+  /* ======= DASHBOARD ======= */
+  .hero {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr;
+    margin-bottom: 48px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 900px) {
+    .hero { grid-template-columns: 1.4fr 1fr; }
+  }
+
+  .hero-kanji {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(80px, 14vw, 160px);
+    color: var(--paper-deep);
+    line-height: 0.9;
+    letter-spacing: 0;
+    user-select: none;
+  }
+
+  .hero-kanji-sub {
+    display: block;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--stone);
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin: 32px 0;
+  }
+
+  .stat {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    color: var(--ink);
+    line-height: 1;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  .stat-value.small { font-size: 28px; }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-top: 8px;
+  }
+
+  /* ======= ITINERARY ======= */
+  .city-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .city {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 24px;
+    position: relative;
+  }
+
+  .city::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--ember);
+  }
+
+  .city-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .city-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .city-name {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .city-days {
+    font-size: 13px;
+    color: var(--stone);
+  }
+
+  .city-notes {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    border: 1px dashed var(--line);
+    background: var(--cream);
+  }
+
+  .empty-state .jp {
+    font-size: 42px;
+    color: var(--stone-light);
+    display: block;
+    margin-bottom: 14px;
+  }
+
+  .empty-state p {
+    color: var(--stone);
+    font-size: 14px;
+  }
+
+  /* ======= BUDGET ======= */
+  .budget-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .budget-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .budget-row {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .budget-row:last-child { border-bottom: none; }
+
+  .budget-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .budget-label strong {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .budget-label small {
+    font-size: 12px;
+    color: var(--stone);
+  }
+
+  .budget-total {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 32px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .budget-total-label {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    margin-bottom: 6px;
+  }
+
+  .budget-total-value {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    line-height: 1;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  .budget-total-usd {
+    font-size: 14px;
+    color: var(--stone-light);
+    margin-top: 6px;
+  }
+
+  .budget-per-day {
+    text-align: right;
+    font-size: 13px;
+    color: var(--stone-light);
+  }
+
+  .budget-per-day strong {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* ======= JR PASS ======= */
+  .route-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .route-grid:last-child { border-bottom: none; }
+
+  @media (max-width: 600px) {
+    .route-grid { grid-template-columns: 1fr auto; }
+    .route-grid input[type="number"] { grid-column: 1; }
+  }
+
+  .verdict {
+    padding: 32px;
+    border: 1px solid var(--line);
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  .verdict.worth-it {
+    background: #1D3324;
+    color: #E8EDE5;
+    border-color: #1D3324;
+  }
+
+  .verdict.not-worth {
+    background: var(--paper-deep);
+  }
+
+  .verdict-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.7;
+  }
+
+  .verdict-headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 300;
+    line-height: 1.15;
+    font-variation-settings: 'opsz' 144;
+  }
+
+  .verdict-headline em {
+    font-style: italic;
+    color: var(--ember-soft);
+  }
+
+  .verdict.worth-it .verdict-headline em {
+    color: #C5D4B8;
+  }
+
+  .verdict-detail {
+    margin-top: 14px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  /* ======= PHRASES ======= */
+  .phrase-cat {
+    margin-bottom: 40px;
+  }
+
+  .phrase-cat-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .phrase-cat-kanji {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 28px;
+    color: var(--ember);
+    font-weight: 500;
+  }
+
+  .phrase-cat-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .phrase-list {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .phrase-list { grid-template-columns: 1fr 1fr; }
+  }
+
+  .phrase {
+    padding: 18px;
+    background: var(--cream);
+    border-left: 2px solid var(--line);
+    transition: border-color 0.2s ease;
+  }
+
+  .phrase:hover {
+    border-left-color: var(--ember);
+  }
+
+  .phrase-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .phrase-romaji {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--ember);
+    margin-bottom: 6px;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .phrase-en {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .phrase-note {
+    font-size: 12px;
+    color: var(--stone);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ======= CULTURE ======= */
+  .culture-grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 800px) {
+    .culture-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .culture-cat {
+    background: var(--cream);
+    padding: 28px;
+    border: 1px solid var(--line);
+  }
+
+  .culture-cat h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    font-variation-settings: 'opsz' 72;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .culture-cat h3 .jp {
+    color: var(--ember);
+    font-size: 18px;
+  }
+
+  .culture-cat p.sub {
+    font-size: 13px;
+    color: var(--stone);
+    margin-bottom: 18px;
+  }
+
+  .rule {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .rule:last-child { border-bottom: none; }
+
+  .rule-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    flex-shrink: 0;
+    width: 22px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.4;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .rule-mark.do { color: #5A7A3E; }
+  .rule-mark.dont { color: var(--ember); }
+
+  .rule-text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .rule-text strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ======= PACKING ======= */
+  .season-picker {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .season-btn {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.2s ease;
+  }
+
+  .season-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--cream);
+  }
+
+  .season-btn .jp {
+    color: var(--ember);
+    margin-right: 8px;
+  }
+
+  .season-btn.active .jp {
+    color: var(--ember-soft);
+  }
+
+  .pack-grid {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .pack-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .pack-cat h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .pack-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .pack-item input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: var(--ember);
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .pack-item-text {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .pack-item input:checked + .pack-item-text {
+    text-decoration: line-through;
+    color: var(--stone-light);
+  }
+
+  .pack-item-text strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .pack-pro {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-left: 6px;
+    padding: 2px 6px;
+    border: 1px solid var(--ember);
+  }
+
+  /* ======= PHOTOS ======= */
+  .photo-stack {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-left: auto;
+    margin-top: 24px;
+  }
+
+  @media (min-width: 900px) {
+    .photo-stack { margin-top: 0; }
+  }
+
+  .photo-card {
+    background: var(--cream);
+    padding: 10px 10px 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 0 rgba(26, 24, 21, 0.04);
+  }
+
+  .photo-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--paper-deep);
+    filter: saturate(0.92) contrast(0.98);
+  }
+
+  .photo-card figcaption {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding-top: 10px;
+    text-align: center;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .photo-card.tilt-l { transform: rotate(-0.8deg); }
+  .photo-card.tilt-r { transform: rotate(0.8deg); }
+
+  .moment {
+    margin: 48px 0 40px;
+    padding: 36px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    gap: 28px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .moment { grid-template-columns: 1.1fr 1fr; align-items: center; gap: 48px; }
+    .moment.reverse > :first-child { order: 2; }
+  }
+
+  .moment-image {
+    margin: 0;
+  }
+
+  .moment-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--paper-deep);
+    filter: saturate(0.92);
+  }
+
+  .moment-image figcaption {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--stone);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .moment-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.4;
+    color: var(--ink);
+    font-weight: 300;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .moment-text em {
+    color: var(--ember);
+    font-style: italic;
+  }
+
+  .moment-text small {
+    display: block;
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0;
+    line-height: 1.55;
+  }
+
+  /* ======= FOOTER ======= */
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--stone);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer .jp { color: var(--ember); }
+
+  /* ======= UTILITY ======= */
+  .divider {
+    text-align: center;
+    margin: 40px 0;
+    color: var(--stone-light);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 20px;
+    letter-spacing: 1em;
+  }
+
+  .quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding: 28px 0;
+    max-width: 620px;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .quote::before {
+    content: '「';
+    color: var(--ember);
+    font-family: 'Shippori Mincho', serif;
+    font-style: normal;
+    margin-right: 4px;
+  }
+
+  .quote::after {
+    content: '」';
+    color: var(--ember);
+    font-family: 'Shippori Mincho', serif;
+    font-style: normal;
+    margin-left: 4px;
+  }
+
+  .quote-attr {
+    font-size: 13px;
+    color: var(--stone);
+    font-style: normal;
+    margin-top: 10px;
+  }
+
+  .inline-kanji {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--ember);
+    font-weight: 500;
+  }
+
+  /* ======= TOAST ======= */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--cream);
+    padding: 12px 20px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="brand">
+      <div class="brand-mark jp">旅</div>
+      <div>
+        <div class="brand-name">Your Japan Journey</div>
+        <div class="brand-tag">An Interactive Planner</div>
+      </div>
+    </div>
+    <div class="utils">
+      <button class="util-btn" onclick="exportPlan()">Export</button>
+      <button class="util-btn danger" onclick="resetAll()">Reset</button>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <button class="nav-item active" data-view="dashboard"><span class="nav-num">01</span>Dashboard</button>
+    <button class="nav-item" data-view="itinerary"><span class="nav-num">02</span>Itinerary</button>
+    <button class="nav-item" data-view="budget"><span class="nav-num">03</span>Budget</button>
+    <button class="nav-item" data-view="jrpass"><span class="nav-num">04</span>JR Pass</button>
+    <button class="nav-item" data-view="phrases"><span class="nav-num">05</span>Phrases</button>
+    <button class="nav-item" data-view="culture"><span class="nav-num">06</span>Culture</button>
+    <button class="nav-item" data-view="packing"><span class="nav-num">07</span>Packing</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <section class="view active" id="dashboard">
+    <div class="hero">
+      <div>
+        <div class="view-eyebrow"><span class="jp">始まり</span>Hajimari — The Beginning</div>
+        <h1 class="view-title">Your trip to Japan, <em>planned with intention.</em></h1>
+        <p class="view-lede">Most trips to Japan collapse under their own ambition. Ten cities, forty shrines, three bullet trains a day. This planner helps you do less, better — budget honestly, pace yourself, and leave room for the moments you can't plan.</p>
+
+        <div class="quote">
+          The journey itself is home.
+          <div class="quote-attr">— Matsuo Bashō, 17th century</div>
+        </div>
+
+        <div class="field-row cols-2" style="margin-top: 32px;">
+          <div>
+            <label>Your name (optional)</label>
+            <input type="text" id="travelerName" placeholder="e.g. Alex" oninput="save()">
+          </div>
+          <div>
+            <label>Trip length (days)</label>
+            <input type="number" id="tripLength" min="1" max="90" value="14" oninput="updateAll()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div>
+            <label>Travel dates (rough)</label>
+            <input type="text" id="tripDates" placeholder="e.g. Late March 2026" oninput="save()">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="hero-kanji jp" style="font-size: clamp(64px, 9vw, 110px); text-align: right;">日本<span class="hero-kanji-sub">NIHON — JAPAN</span></div>
+        <div class="photo-stack">
+          <figure class="photo-card tilt-l">
+            <img src="images/hero-01.jpg" alt="A quiet moment in Japan" loading="lazy">
+            <figcaption>Kyoto, early morning</figcaption>
+          </figure>
+          <figure class="photo-card tilt-r">
+            <img src="images/hero-02.jpg" alt="A street scene in Japan" loading="lazy">
+            <figcaption>A narrow alley worth the detour</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="statDays">14</div>
+        <div class="stat-label">Days planned</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="statCities">0</div>
+        <div class="stat-label">Cities on itinerary</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value small" id="statBudget">¥0</div>
+        <div class="stat-label">Total budget</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value small" id="statPacked">0 / 0</div>
+        <div class="stat-label">Packed items</div>
+      </div>
+    </div>
+
+    <div class="divider jp">・・・</div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-title">How to use this planner</div>
+      <div class="card-sub">Work through the sections in order, or jump around.</div>
+      <ol style="padding-left: 20px; color: var(--ink-soft); line-height: 1.8; font-size: 15px;">
+        <li><strong>Itinerary</strong> — Add the cities you're considering. Assign days. Keep notes.</li>
+        <li><strong>Budget</strong> — Estimate honestly. Japan is cheaper than you think for some things, far more expensive for others.</li>
+        <li><strong>JR Pass</strong> — Add your planned train routes. The calculator tells you if the pass pays off.</li>
+        <li><strong>Phrases</strong> — The 40 phrases that will carry you through 90% of situations.</li>
+        <li><strong>Culture</strong> — The unwritten rules. Small things that make a huge difference.</li>
+        <li><strong>Packing</strong> — Seasonal checklists. Japan-specific items most guides forget.</li>
+      </ol>
+      <p style="margin-top: 18px; font-size: 13px; color: var(--stone);">Everything saves automatically in your browser. Use <strong>Export</strong> to download a copy or carry it to another device.</p>
+    </div>
+  </section>
+
+  <!-- ITINERARY -->
+  <section class="view" id="itinerary">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">行程</span>Kōtei — Your Route</div>
+      <h1 class="view-title">Where will you <em>actually</em> go?</h1>
+      <p class="view-lede">The rule of thumb: three nights minimum per city, or don't bother. Japan rewards slowness. One unhurried afternoon in a Kyoto backstreet is worth three rushed temple visits.</p>
+    </div>
+
+    <div class="moment">
+      <figure class="moment-image">
+        <img src="images/moment-itinerary.jpg" alt="A slow moment on a Japan trip" loading="lazy">
+        <figcaption>A backstreet, not on any list</figcaption>
+      </figure>
+      <div class="moment-text">
+        The best places on the trip will be ones you didn't plan. <em>Leave gaps.</em>
+        <small>Pick three cities you can't skip, then a fourth you've never heard someone rave about. That last one is often where the trip lives.</small>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Add a city or region</div>
+      <div class="card-sub">Start with where you'll fly in. Tokyo (Narita or Haneda) and Osaka (Kansai) are the main entries.</div>
+      <div class="field-row cols-3">
+        <div>
+          <label>City / Region</label>
+          <input type="text" id="cityName" placeholder="e.g. Kyoto">
+        </div>
+        <div>
+          <label>Nights</label>
+          <input type="number" id="cityDays" value="3" min="1">
+        </div>
+        <div style="display: flex; align-items: flex-end;">
+          <button class="primary" onclick="addCity()" style="width: 100%;">Add to route</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Notes — neighborhoods, food spots, musts</label>
+          <textarea id="cityNotes" placeholder="e.g. Stay in Gion. Fushimi Inari at dawn. Nishiki Market for lunch. Skip the Golden Pavilion crowds."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="cityList" class="city-list"></div>
+  </section>
+
+  <!-- BUDGET -->
+  <section class="view" id="budget">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">予算</span>Yosan — The Real Numbers</div>
+      <h1 class="view-title">Budget with <em>honesty</em>, not hope.</h1>
+      <p class="view-lede">Enter a per-day amount for each category. These are realistic 2025 ranges based on mid-range travel — tweak them to match your style. Cheaper if you're hostel-hopping, much higher if you're chasing ryokan with private onsen.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Daily estimates (per person)</div>
+      <div class="card-sub">All amounts in Japanese Yen (¥). USD conversion at the bottom uses ~150 ¥ per $.</div>
+
+      <div class="budget-grid">
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Accommodation</strong>
+            <small>Hostel ¥4k · Business hotel ¥10k · Ryokan ¥25k+</small>
+          </div>
+          <input type="number" class="budget-input" data-key="accommodation" value="10000" min="0" oninput="updateAll()">
+        </div>
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Food</strong>
+            <small>Konbini ¥500 · Ramen ¥1.2k · Kaiseki ¥15k</small>
+          </div>
+          <input type="number" class="budget-input" data-key="food" value="5000" min="0" oninput="updateAll()">
+        </div>
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Local transport</strong>
+            <small>Metro day pass, city buses, taxis</small>
+          </div>
+          <input type="number" class="budget-input" data-key="transport" value="1500" min="0" oninput="updateAll()">
+        </div>
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Activities & entries</strong>
+            <small>Temples ¥500 · TeamLab ¥3.8k · Tours vary</small>
+          </div>
+          <input type="number" class="budget-input" data-key="activities" value="2000" min="0" oninput="updateAll()">
+        </div>
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Shopping & gifts</strong>
+            <small>Daiso to department stores — set a ceiling</small>
+          </div>
+          <input type="number" class="budget-input" data-key="shopping" value="3000" min="0" oninput="updateAll()">
+        </div>
+        <div class="budget-row">
+          <div class="budget-label">
+            <strong>Miscellaneous</strong>
+            <small>Laundry, SIM card, surprises</small>
+          </div>
+          <input type="number" class="budget-input" data-key="misc" value="1000" min="0" oninput="updateAll()">
+        </div>
+      </div>
+
+      <div class="budget-total">
+        <div>
+          <div class="budget-total-label">Total for trip</div>
+          <div class="budget-total-value" id="budgetTotal">¥0</div>
+          <div class="budget-total-usd" id="budgetTotalUsd">~ $0 USD</div>
+        </div>
+        <div class="budget-per-day">
+          <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;">Per day</div>
+          <strong id="budgetPerDay">¥0</strong>
+          <div id="budgetPerDayUsd">~$0</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 20px; font-size: 13px; color: var(--stone); line-height: 1.6;">
+        <strong style="color: var(--ink-soft);">Not included above:</strong> International flights, travel insurance, intercity trains (see JR Pass section), JR reservations, airport transfers. Add a <em>buffer of 15–20%</em> for the inevitable surprises — that perfect sake shop, the ryokan upgrade, the late-night taxi.
+      </p>
+    </div>
+  </section>
+
+  <!-- JR PASS -->
+  <section class="view" id="jrpass">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">新幹線</span>Shinkansen — The Long Rides</div>
+      <h1 class="view-title">Does the JR Pass <em>actually</em> pay off?</h1>
+      <p class="view-lede">Since the 2023 price hike, the answer is "usually no" unless you're moving a lot. Add your planned intercity routes below. The calculator compares your total fare against the pass price — no wishful thinking.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Add planned intercity trains</div>
+      <div class="card-sub">Rough one-way Shinkansen fares (reserved seat, ordinary car). Adjust if you already know exact prices.</div>
+
+      <div id="routeList" style="margin-bottom: 20px;"></div>
+
+      <div class="route-grid">
+        <input type="text" id="routeName" placeholder="e.g. Tokyo → Kyoto">
+        <input type="number" id="routeCost" placeholder="14000" min="0">
+        <button class="primary" onclick="addRoute()">Add</button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--stone); margin-top: 14px; line-height: 1.6;">
+        <strong style="color: var(--ink-soft);">Common fares (one-way, approx.):</strong><br>
+        Tokyo↔Kyoto ~¥14,000 · Tokyo↔Osaka ~¥14,500 · Tokyo↔Hiroshima ~¥19,000 · Kyoto↔Hiroshima ~¥11,500 · Tokyo↔Hakata (Fukuoka) ~¥23,000 · Kyoto↔Kanazawa ~¥7,000
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pick a JR Pass length</div>
+      <div class="field-row cols-3">
+        <div>
+          <label>Pass duration</label>
+          <select id="passType" onchange="updateJR()">
+            <option value="50000">7 days — ¥50,000</option>
+            <option value="80000">14 days — ¥80,000</option>
+            <option value="100000">21 days — ¥100,000</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict" id="jrVerdict">
+      <div class="verdict-label">Verdict</div>
+      <div class="verdict-headline">Add routes above to see if the pass <em>is worth it.</em></div>
+    </div>
+
+    <p style="margin-top: 24px; font-size: 13px; color: var(--stone); line-height: 1.65;">
+      <strong style="color: var(--ink-soft);">Remember:</strong> The nationwide JR Pass doesn't cover the Nozomi or Mizuho (the fastest trains) — you'll ride Hikari or Sakura instead, which are only slightly slower. Regional passes (JR East, JR West Kansai) are often the sweet spot if you're staying in one area.
+    </p>
+  </section>
+
+  <!-- PHRASES -->
+  <section class="view" id="phrases">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">言葉</span>Kotoba — The Words You Need</div>
+      <h1 class="view-title">Forty phrases that <em>carry you through.</em></h1>
+      <p class="view-lede">English gets you surprisingly far in Tokyo and Kyoto. Everywhere else, these phrases are the difference between a good day and a frustrating one. Don't worry about pronunciation perfection — effort alone wins enormous goodwill.</p>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-kanji">挨拶</span>
+        <span class="phrase-cat-title">Greetings & Politeness</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">おはようございます</div><div class="phrase-romaji">Ohayō gozaimasu</div><div class="phrase-en">Good morning (before 10am)</div></div>
+        <div class="phrase"><div class="phrase-jp">こんにちは</div><div class="phrase-romaji">Konnichiwa</div><div class="phrase-en">Hello / good afternoon</div></div>
+        <div class="phrase"><div class="phrase-jp">こんばんは</div><div class="phrase-romaji">Konbanwa</div><div class="phrase-en">Good evening</div></div>
+        <div class="phrase"><div class="phrase-jp">ありがとうございます</div><div class="phrase-romaji">Arigatō gozaimasu</div><div class="phrase-en">Thank you (formal — use this one)</div></div>
+        <div class="phrase"><div class="phrase-jp">すみません</div><div class="phrase-romaji">Sumimasen</div><div class="phrase-en">Excuse me / sorry / thank you (all-purpose)</div><div class="phrase-note">The most useful word in Japanese. Learn this one first.</div></div>
+        <div class="phrase"><div class="phrase-jp">お願いします</div><div class="phrase-romaji">Onegai shimasu</div><div class="phrase-en">Please / I'd like to ask a favor</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-kanji">基本</span>
+        <span class="phrase-cat-title">Essentials & Responses</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">はい</div><div class="phrase-romaji">Hai</div><div class="phrase-en">Yes</div></div>
+        <div class="phrase"><div class="phrase-jp">いいえ</div><div class="phrase-romaji">Iie</div><div class="phrase-en">No (but often softened — prefer "chotto...")</div></div>
+        <div class="phrase"><div class="phrase-jp">大丈夫です</div><div class="phrase-romaji">Daijōbu desu</div><div class="phrase-en">It's okay / I'm fine / no problem</div></div>
+        <div class="phrase"><div class="phrase-jp">わかりません</div><div class="phrase-romaji">Wakarimasen</div><div class="phrase-en">I don't understand</div></div>
+        <div class="phrase"><div class="phrase-jp">英語を話せますか</div><div class="phrase-romaji">Eigo o hanasemasu ka?</div><div class="phrase-en">Do you speak English?</div></div>
+        <div class="phrase"><div class="phrase-jp">ゆっくりお願いします</div><div class="phrase-romaji">Yukkuri onegai shimasu</div><div class="phrase-en">Slowly, please</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-kanji">食事</span>
+        <span class="phrase-cat-title">Food & Shopping</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">いただきます</div><div class="phrase-romaji">Itadakimasu</div><div class="phrase-en">Said before eating — "I humbly receive"</div></div>
+        <div class="phrase"><div class="phrase-jp">ごちそうさまでした</div><div class="phrase-romaji">Gochisōsama deshita</div><div class="phrase-en">Said after eating — "thank you for the meal"</div></div>
+        <div class="phrase"><div class="phrase-jp">美味しい</div><div class="phrase-romaji">Oishii</div><div class="phrase-en">Delicious</div></div>
+        <div class="phrase"><div class="phrase-jp">いくらですか</div><div class="phrase-romaji">Ikura desu ka?</div><div class="phrase-en">How much is it?</div></div>
+        <div class="phrase"><div class="phrase-jp">これください</div><div class="phrase-romaji">Kore kudasai</div><div class="phrase-en">This one, please (while pointing)</div></div>
+        <div class="phrase"><div class="phrase-jp">お水ください</div><div class="phrase-romaji">O-mizu kudasai</div><div class="phrase-en">Water, please</div></div>
+        <div class="phrase"><div class="phrase-jp">お会計お願いします</div><div class="phrase-romaji">O-kaikei onegai shimasu</div><div class="phrase-en">The bill, please</div></div>
+        <div class="phrase"><div class="phrase-jp">アレルギーがあります</div><div class="phrase-romaji">Arerugī ga arimasu</div><div class="phrase-en">I have an allergy (add the allergen)</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-kanji">道案内</span>
+        <span class="phrase-cat-title">Getting Around</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">駅はどこですか</div><div class="phrase-romaji">Eki wa doko desu ka?</div><div class="phrase-en">Where is the station?</div></div>
+        <div class="phrase"><div class="phrase-jp">トイレはどこですか</div><div class="phrase-romaji">Toire wa doko desu ka?</div><div class="phrase-en">Where is the toilet?</div></div>
+        <div class="phrase"><div class="phrase-jp">切符</div><div class="phrase-romaji">Kippu</div><div class="phrase-en">Ticket</div></div>
+        <div class="phrase"><div class="phrase-jp">右 / 左 / まっすぐ</div><div class="phrase-romaji">Migi / Hidari / Massugu</div><div class="phrase-en">Right / Left / Straight ahead</div></div>
+        <div class="phrase"><div class="phrase-jp">ここで降ります</div><div class="phrase-romaji">Koko de orimasu</div><div class="phrase-en">I'll get off here (in a taxi or bus)</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-kanji">緊急</span>
+        <span class="phrase-cat-title">Emergency</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">助けて</div><div class="phrase-romaji">Tasukete!</div><div class="phrase-en">Help!</div></div>
+        <div class="phrase"><div class="phrase-jp">病院</div><div class="phrase-romaji">Byōin</div><div class="phrase-en">Hospital</div></div>
+        <div class="phrase"><div class="phrase-jp">警察</div><div class="phrase-romaji">Keisatsu</div><div class="phrase-en">Police (dial 110)</div></div>
+        <div class="phrase"><div class="phrase-jp">救急車</div><div class="phrase-romaji">Kyūkyūsha</div><div class="phrase-en">Ambulance (dial 119)</div></div>
+        <div class="phrase"><div class="phrase-jp">大使館</div><div class="phrase-romaji">Taishikan</div><div class="phrase-en">Embassy</div></div>
+        <div class="phrase"><div class="phrase-jp">道に迷いました</div><div class="phrase-romaji">Michi ni mayoimashita</div><div class="phrase-en">I'm lost</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CULTURE -->
+  <section class="view" id="culture">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">礼儀</span>Reigi — The Unwritten Rules</div>
+      <h1 class="view-title">Small things, <em>huge difference.</em></h1>
+      <p class="view-lede">Japanese hospitality is extraordinary — and mostly one-directional. No one will correct you. They'll smile, accommodate, and quietly note the breach. Get these right and you'll be treated like someone who cared enough to try.</p>
+    </div>
+
+    <div class="moment reverse">
+      <figure class="moment-image">
+        <img src="images/moment-culture.jpg" alt="A shrine or temple moment" loading="lazy">
+        <figcaption>Torii — the gate</figcaption>
+      </figure>
+      <div class="moment-text">
+        You won't get it all right. <em>That's fine.</em>
+        <small>Effort alone earns enormous goodwill. What follows are the dozen rules worth knowing — the rest you'll pick up as you go.</small>
+      </div>
+    </div>
+
+    <div class="culture-grid">
+      <div class="culture-cat">
+        <h3><span class="jp">一般</span>General conduct</h3>
+        <p class="sub">The baseline expectations, everywhere.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Bow slightly</strong> instead of handshaking. Depth and duration convey respect — a small head nod is fine for casual situations.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Carry your trash</strong>. Public bins are rare. Pack a small bag for wrappers and coffee cups until you find one (often at konbini or stations).</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Cash still rules outside cities.</strong> Many temples, small shops, ryokan, and taxis refuse cards. ATMs at 7-Eleven accept foreign cards.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Don't tip.</strong> It's not just unnecessary — it can be confusing or even insulting. Exceptional service is considered standard.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Don't eat while walking.</strong> Street food stalls are an exception — eat near them, then walk on.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3><span class="jp">食事</span>Dining</h3>
+        <p class="sub">The meal has its own choreography.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Say itadakimasu before eating</strong>, gochisōsama after. Even solo, it's done.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Slurping noodles is expected</strong> — it cools them and signals enjoyment. Quietly eating ramen reads as odd.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Wait to be seated.</strong> Even in casual places. A host will gesture where to go.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Never stick chopsticks upright in rice</strong>, or pass food chopstick-to-chopstick. Both mirror funeral rituals.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Don't pour your own drink</strong> in a group. Pour for others; they'll pour for you. It's a gentle rhythm of attention.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3><span class="jp">温泉</span>Onsen & bathing</h3>
+        <p class="sub">Public bathing is sacred and strict.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Wash thoroughly first</strong> — sitting at the shower stalls, soap and rinse completely, then enter the bath.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Small towel stays out of the water.</strong> Fold it on your head, or place it on the ledge.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Tie up long hair</strong> so it doesn't touch the water.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Tattoos are often banned.</strong> Many onsen still refuse entry. Tattoo-friendly onsen exist and are easy to Google ahead of time.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>No swimsuits</strong> in traditional onsen. Full nudity is the norm. Private-bath ryokan rooms are an alternative if uncomfortable.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3><span class="jp">電車</span>Trains & public spaces</h3>
+        <p class="sub">Silence is the default.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Set phones to silent</strong> — "manner mode." No calls on trains. Texting is fine.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Queue precisely</strong> at the marked spots on the platform. Let passengers exit first.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Priority seats exist for a reason.</strong> Give them up for elderly, pregnant, injured — or don't sit there.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Don't eat on local trains</strong> (Shinkansen is the exception — onboard bentō are a ritual).</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3><span class="jp">宿</span>Accommodation</h3>
+        <p class="sub">Especially in ryokan, small things matter.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Remove shoes at the entrance.</strong> If you see a step-up (genkan), shoes off. Slippers provided.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Separate toilet slippers</strong> exist in many accommodations. Swap into them in the bathroom, back out after.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>Ryokan curfews are real.</strong> Many lock doors around 10–11pm. Check in advance if you're a night owl.</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>Don't walk on tatami with slippers.</strong> Socks or barefoot only.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3><span class="jp">神社</span>Shrines & temples</h3>
+        <p class="sub">Active places of worship, not museums.</p>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>At a shrine:</strong> bow once at the torii, purify hands and mouth at the chōzuya, then at the offering box: bow twice, clap twice, pray, bow once more.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>At a temple</strong>: hands together, silent. No clapping.</div></div>
+        <div class="rule"><span class="rule-mark do">・</span><div class="rule-text"><strong>A small coin offering</strong> is traditional — ¥5 (go-en) is considered lucky, as the word also means "connection."</div></div>
+        <div class="rule"><span class="rule-mark dont">×</span><div class="rule-text"><strong>No flash photography inside</strong>, and often no photos at all in main halls. Watch for signs.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKING -->
+  <section class="view" id="packing">
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="jp">荷造り</span>Nidzukuri — What to Pack</div>
+      <h1 class="view-title">Pack for the Japan <em>you'll actually meet.</em></h1>
+      <p class="view-lede">Two truths: you'll walk more than you think (15–25km days are normal), and Japan has everything you forgot. Still, a few things are genuinely worth bringing from home.</p>
+    </div>
+
+    <div class="moment">
+      <figure class="moment-image">
+        <img src="images/moment-packing.jpg" alt="A season in Japan" loading="lazy">
+        <figcaption>Cherry blossoms or snowfall — plan for both</figcaption>
+      </figure>
+      <div class="moment-text">
+        You will walk a lot. <em>Pack light, pack comfortable.</em>
+        <small>Pick the season below. The list adjusts. Nothing on it is a guess — it's what gets used.</small>
+      </div>
+    </div>
+
+    <div class="season-picker" id="seasonPicker">
+      <button class="season-btn active" data-season="spring"><span class="jp">春</span>Spring</button>
+      <button class="season-btn" data-season="summer"><span class="jp">夏</span>Summer</button>
+      <button class="season-btn" data-season="autumn"><span class="jp">秋</span>Autumn</button>
+      <button class="season-btn" data-season="winter"><span class="jp">冬</span>Winter</button>
+    </div>
+
+    <div id="packingContent" class="pack-grid"></div>
+
+    <div class="card" style="margin-top: 32px;">
+      <div class="card-title">What you can leave at home</div>
+      <ul style="padding-left: 20px; color: var(--ink-soft); line-height: 1.9; font-size: 14px;">
+        <li><strong>Toiletries</strong> — every konbini has what you need, often better.</li>
+        <li><strong>Heavy books or guidebooks</strong> — Google Maps, the Japan Travel app, and offline Wikipedia cover 95%.</li>
+        <li><strong>Umbrellas</strong> — ¥500 at any konbini when it rains. Everyone has one.</li>
+        <li><strong>Formal wear</strong> — unless you have dinner plans that require it, keep it casual.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div><span class="jp">道</span> Safe travels — ii tabi o (いい旅を)</div>
+    <div id="saveStatus">All changes saved locally</div>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================
+   STATE & PERSISTENCE
+   ========================================= */
+const STORAGE_KEY = 'japan-journey-v1';
+
+const DEFAULT_STATE = {
+  travelerName: '',
+  tripLength: 14,
+  tripDates: '',
+  cities: [],
+  budget: {
+    accommodation: 10000,
+    food: 5000,
+    transport: 1500,
+    activities: 2000,
+    shopping: 3000,
+    misc: 1000
+  },
+  jrPass: {
+    type: 50000,
+    routes: []
+  },
+  packing: {
+    season: 'spring',
+    checked: {}
+  }
+};
+
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+function save() {
+  try {
+    // Pull all form values into state
+    state.travelerName = document.getElementById('travelerName').value;
+    state.tripLength = parseInt(document.getElementById('tripLength').value) || 14;
+    state.tripDates = document.getElementById('tripDates').value;
+    state.jrPass.type = parseInt(document.getElementById('passType').value);
+
+    document.querySelectorAll('.budget-input').forEach(inp => {
+      state.budget[inp.dataset.key] = parseInt(inp.value) || 0;
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    flashSaved();
+  } catch (e) {
+    // localStorage unavailable — state stays in memory
+  }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    state = { ...DEFAULT_STATE, ...parsed };
+    state.budget = { ...DEFAULT_STATE.budget, ...(parsed.budget || {}) };
+    state.jrPass = { ...DEFAULT_STATE.jrPass, ...(parsed.jrPass || {}) };
+    state.packing = { ...DEFAULT_STATE.packing, ...(parsed.packing || {}) };
+  } catch (e) {}
+}
+
+function flashSaved() {
+  const el = document.getElementById('saveStatus');
+  if (!el) return;
+  el.textContent = 'Saved · ' + new Date().toLocaleTimeString();
+  setTimeout(() => { el.textContent = 'All changes saved locally'; }, 2000);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+document.getElementById('nav').addEventListener('click', e => {
+  const btn = e.target.closest('.nav-item');
+  if (!btn) return;
+  const view = btn.dataset.view;
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === view));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* =========================================
+   ITINERARY
+   ========================================= */
+function addCity() {
+  const name = document.getElementById('cityName').value.trim();
+  const days = parseInt(document.getElementById('cityDays').value) || 1;
+  const notes = document.getElementById('cityNotes').value.trim();
+  if (!name) { toast('Add a city name first'); return; }
+
+  state.cities.push({
+    id: Date.now(),
+    name,
+    days,
+    notes
+  });
+
+  document.getElementById('cityName').value = '';
+  document.getElementById('cityDays').value = '3';
+  document.getElementById('cityNotes').value = '';
+  renderCities();
+  save();
+  updateAll();
+}
+
+function removeCity(id) {
+  state.cities = state.cities.filter(c => c.id !== id);
+  renderCities();
+  save();
+  updateAll();
+}
+
+function renderCities() {
+  const container = document.getElementById('cityList');
+  if (state.cities.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="jp">空</span>
+        <p>No cities yet. Start with your entry point — usually Tokyo or Osaka.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = state.cities.map((c, i) => `
+    <article class="city">
+      <div class="city-head">
+        <div class="city-name-row">
+          <span style="font-family: 'Fraunces', serif; color: var(--stone); font-size: 14px;">0${i + 1}</span>
+          <span class="city-name">${escapeHtml(c.name)}</span>
+          <span class="city-days">${c.days} night${c.days !== 1 ? 's' : ''}</span>
+        </div>
+        <button class="tiny" onclick="removeCity(${c.id})">Remove</button>
+      </div>
+      ${c.notes ? `<div class="city-notes">${escapeHtml(c.notes)}</div>` : ''}
+    </article>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+/* =========================================
+   BUDGET
+   ========================================= */
+function calculateBudget() {
+  const dailyTotal = Object.values(state.budget).reduce((a, b) => a + (parseInt(b) || 0), 0);
+  const tripTotal = dailyTotal * state.tripLength;
+  const usd = Math.round(tripTotal / 150);
+  const dailyUsd = Math.round(dailyTotal / 150);
+
+  document.getElementById('budgetTotal').textContent = '¥' + tripTotal.toLocaleString();
+  document.getElementById('budgetTotalUsd').textContent = '~ $' + usd.toLocaleString() + ' USD';
+  document.getElementById('budgetPerDay').textContent = '¥' + dailyTotal.toLocaleString();
+  document.getElementById('budgetPerDayUsd').textContent = '~$' + dailyUsd;
+
+  return { daily: dailyTotal, total: tripTotal };
+}
+
+/* =========================================
+   JR PASS
+   ========================================= */
+function addRoute() {
+  const name = document.getElementById('routeName').value.trim();
+  const cost = parseInt(document.getElementById('routeCost').value) || 0;
+  if (!name || cost <= 0) { toast('Add a route name and cost'); return; }
+
+  state.jrPass.routes.push({ id: Date.now(), name, cost });
+  document.getElementById('routeName').value = '';
+  document.getElementById('routeCost').value = '';
+  renderRoutes();
+  updateJR();
+  save();
+}
+
+function removeRoute(id) {
+  state.jrPass.routes = state.jrPass.routes.filter(r => r.id !== id);
+  renderRoutes();
+  updateJR();
+  save();
+}
+
+function renderRoutes() {
+  const container = document.getElementById('routeList');
+  if (state.jrPass.routes.length === 0) {
+    container.innerHTML = '<p style="font-size: 13px; color: var(--stone); padding: 12px 0;">No routes yet.</p>';
+    return;
+  }
+  container.innerHTML = state.jrPass.routes.map(r => `
+    <div class="route-grid">
+      <div style="padding: 8px 0;">${escapeHtml(r.name)}</div>
+      <div style="padding: 8px 0; color: var(--ink-soft);">¥${r.cost.toLocaleString()}</div>
+      <button class="tiny" onclick="removeRoute(${r.id})">×</button>
+    </div>
+  `).join('');
+}
+
+function updateJR() {
+  const passPrice = parseInt(document.getElementById('passType').value);
+  state.jrPass.type = passPrice;
+  const routeTotal = state.jrPass.routes.reduce((sum, r) => sum + r.cost, 0);
+  const diff = routeTotal - passPrice;
+  const verdict = document.getElementById('jrVerdict');
+
+  if (state.jrPass.routes.length === 0) {
+    verdict.className = 'verdict';
+    verdict.innerHTML = `
+      <div class="verdict-label">Verdict</div>
+      <div class="verdict-headline">Add routes above to see if the pass <em>is worth it.</em></div>`;
+    return;
+  }
+
+  if (diff > 0) {
+    verdict.className = 'verdict worth-it';
+    verdict.innerHTML = `
+      <div class="verdict-label">Verdict</div>
+      <div class="verdict-headline">The pass <em>pays off.</em></div>
+      <div class="verdict-detail">Your routes would cost <strong>¥${routeTotal.toLocaleString()}</strong> à la carte. The ¥${passPrice.toLocaleString()} pass saves you <strong>¥${diff.toLocaleString()}</strong> (~$${Math.round(diff/150)}).</div>`;
+  } else {
+    verdict.className = 'verdict not-worth';
+    verdict.innerHTML = `
+      <div class="verdict-label">Verdict</div>
+      <div class="verdict-headline">Skip the pass — <em>buy tickets individually.</em></div>
+      <div class="verdict-detail">Your routes total <strong>¥${routeTotal.toLocaleString()}</strong>. The ¥${passPrice.toLocaleString()} pass would cost <strong>¥${Math.abs(diff).toLocaleString()}</strong> more. Consider a regional pass if you're staying in one area.</div>`;
+  }
+}
+
+/* =========================================
+   PACKING
+   ========================================= */
+const PACKING_LISTS = {
+  common: {
+    'Documents & money': [
+      { id: 'passport', text: 'Passport (+ copy stored separately)', strong: true },
+      { id: 'cash', text: 'Cash — Japan still runs on it. Bring ¥20,000–50,000 for arrival.', strong: true },
+      { id: 'cards', text: 'Credit card + backup card (inform bank of travel)' },
+      { id: 'insurance', text: 'Travel insurance documents' },
+      { id: 'reservations', text: 'Printed reservation confirmations (backup for phone issues)' }
+    ],
+    'Electronics': [
+      { id: 'adapter', text: 'Type A plug adapter — Japan uses flat two-prong, 100V', strong: true },
+      { id: 'powerbank', text: 'Power bank (10,000 mAh minimum — long walking days)' },
+      { id: 'sim', text: 'eSIM or plan for airport SIM pickup', pro: true },
+      { id: 'charger', text: 'Phone charger + spare cable' }
+    ],
+    'Japan-specific items most guides forget': [
+      { id: 'tissues', text: 'Pocket tissues — public toilets often lack paper', pro: true },
+      { id: 'trashbag', text: 'Small trash bag for your backpack — public bins are rare', pro: true },
+      { id: 'slipon', text: 'Easy slip-on shoes — you\'ll remove them often', pro: true },
+      { id: 'handtowel', text: 'Small hand towel — public bathrooms rarely have dryers or paper towels', pro: true },
+      { id: 'wallet', text: 'Coin purse or wallet with coin section — ¥1 to ¥500 all circulate' }
+    ],
+    'Health': [
+      { id: 'meds', text: 'Any prescription meds (in original packaging) + copy of prescription', strong: true },
+      { id: 'firstaid', text: 'Basic first aid: plasters, painkillers, electrolytes' },
+      { id: 'blistercare', text: 'Blister plasters — you WILL walk 20km days' }
+    ]
+  },
+  spring: [
+    { cat: 'Clothing — Spring (Mar–May)', items: [
+      { id: 'layers', text: 'Layers — mornings cold, afternoons warm (10–20°C typical)' },
+      { id: 'lightjacket', text: 'Light waterproof jacket — spring rain is real' },
+      { id: 'walkshoes', text: 'Broken-in walking shoes', strong: true },
+      { id: 'allergy', text: 'Allergy meds — cedar pollen is intense in March' }
+    ]}
+  ],
+  summer: [
+    { cat: 'Clothing — Summer (Jun–Aug)', items: [
+      { id: 'light', text: 'Lightweight, breathable clothing — humidity is brutal (30–35°C, 80% humidity)', strong: true },
+      { id: 'cooltowel', text: 'Cooling towel or small portable fan' },
+      { id: 'sunscreen', text: 'Sunscreen (cheaper at konbini)' },
+      { id: 'rainjacket', text: 'Packable rain jacket — typhoon season from Jun' },
+      { id: 'walkshoes2', text: 'Breathable walking shoes', strong: true }
+    ]}
+  ],
+  autumn: [
+    { cat: 'Clothing — Autumn (Sep–Nov)', items: [
+      { id: 'layers2', text: 'Layers — ranges 10–22°C across the season' },
+      { id: 'medjacket', text: 'Medium jacket for November evenings' },
+      { id: 'walkshoes3', text: 'Walking shoes', strong: true },
+      { id: 'rain2', text: 'Light rain jacket — early typhoons possible through Oct' }
+    ]}
+  ],
+  winter: [
+    { cat: 'Clothing — Winter (Dec–Feb)', items: [
+      { id: 'warmjacket', text: 'Warm jacket — Tokyo 0–10°C, Hokkaido much colder', strong: true },
+      { id: 'thermals', text: 'Thermals (UNIQLO Heattech is cheaper in Japan, though)' },
+      { id: 'gloves', text: 'Gloves, scarf, beanie' },
+      { id: 'boots', text: 'Waterproof boots if visiting snow regions' },
+      { id: 'moisturizer', text: 'Heavy moisturizer + lip balm — winter is very dry' }
+    ]}
+  ]
+};
+
+function renderPacking() {
+  const container = document.getElementById('packingContent');
+  const season = state.packing.season;
+  const lists = [];
+
+  Object.entries(PACKING_LISTS.common).forEach(([cat, items]) => {
+    lists.push({ cat, items });
+  });
+  PACKING_LISTS[season].forEach(x => lists.push(x));
+
+  container.innerHTML = lists.map(group => `
+    <div class="pack-cat">
+      <h4>${escapeHtml(group.cat)}</h4>
+      ${group.items.map(item => `
+        <label class="pack-item">
+          <input type="checkbox" data-item="${item.id}" ${state.packing.checked[item.id] ? 'checked' : ''} onchange="togglePack('${item.id}', this.checked)">
+          <span class="pack-item-text">${item.strong ? '<strong>' + escapeHtml(item.text) + '</strong>' : escapeHtml(item.text)}${item.pro ? ' <span class="pack-pro">local tip</span>' : ''}</span>
+        </label>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function togglePack(id, checked) {
+  state.packing.checked[id] = checked;
+  save();
+  updateAll();
+}
+
+document.getElementById('seasonPicker').addEventListener('click', e => {
+  const btn = e.target.closest('.season-btn');
+  if (!btn) return;
+  state.packing.season = btn.dataset.season;
+  document.querySelectorAll('.season-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderPacking();
+  save();
+});
+
+/* =========================================
+   DASHBOARD STATS
+   ========================================= */
+function updateStats() {
+  document.getElementById('statDays').textContent = state.tripLength;
+  document.getElementById('statCities').textContent = state.cities.length;
+  const { total } = calculateBudget();
+  document.getElementById('statBudget').textContent = '¥' + (total / 1000).toFixed(0) + 'k';
+
+  const totalItems = Object.keys(PACKING_LISTS.common).reduce((sum, cat) =>
+    sum + PACKING_LISTS.common[cat].length, 0) + PACKING_LISTS[state.packing.season].reduce((sum, g) => sum + g.items.length, 0);
+  const checkedItems = Object.values(state.packing.checked).filter(v => v).length;
+  document.getElementById('statPacked').textContent = checkedItems + ' / ' + totalItems;
+}
+
+function updateAll() {
+  calculateBudget();
+  updateStats();
+  save();
+}
+
+/* =========================================
+   EXPORT / RESET
+   ========================================= */
+function exportPlan() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    ...state
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `japan-journey-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Plan exported');
+}
+
+function resetAll() {
+  if (!confirm('Reset everything? This will erase all your planning data.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  hydrate();
+  toast('Reset complete');
+}
+
+/* =========================================
+   HYDRATE FROM STATE
+   ========================================= */
+function hydrate() {
+  document.getElementById('travelerName').value = state.travelerName || '';
+  document.getElementById('tripLength').value = state.tripLength || 14;
+  document.getElementById('tripDates').value = state.tripDates || '';
+  document.getElementById('passType').value = state.jrPass.type || 50000;
+
+  document.querySelectorAll('.budget-input').forEach(inp => {
+    inp.value = state.budget[inp.dataset.key] || 0;
+  });
+
+  document.querySelectorAll('.season-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.season === state.packing.season);
+  });
+
+  renderCities();
+  renderRoutes();
+  renderPacking();
+  updateJR();
+  updateAll();
+}
+
+/* =========================================
+   INIT
+   ========================================= */
+load();
+hydrate();
+
+/* =========================================
+   PWA — register service worker
+   ========================================= */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch((err) => {
+      console.warn('SW registration failed:', err);
+    });
+  });
+}
+</script>
+
+</body>
+</html>
