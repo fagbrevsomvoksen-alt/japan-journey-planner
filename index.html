@@ -30,6 +30,9 @@
     --stone-light: #A8A39A;
     --ember: #9E3424;
     --ember-soft: #C4553E;
+    --sakura: #E89FAD;
+    --sakura-deep: #C76A7B;
+    --sakura-soft: #F7DDE3;
     --indigo: #2B4A5E;
     --gold: #B08A3E;
     --line: #E5E3DC;
@@ -188,7 +191,7 @@
     left: 18px;
     right: 18px;
     height: 2px;
-    background: var(--ember);
+    background: var(--sakura);
   }
 
   .nav-num {
@@ -196,11 +199,10 @@
     font-size: 11px;
     color: var(--stone-light);
     margin-right: 6px;
-    font-variation-settings: 'opsz' 9;
   }
 
   .nav-item.active .nav-num {
-    color: var(--ember);
+    color: var(--sakura-deep);
   }
 
   /* ======= SECTIONS ======= */
@@ -220,17 +222,21 @@
     font-size: 12px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--ember);
-    margin-bottom: 12px;
+    color: var(--stone);
+    margin-bottom: 14px;
     font-weight: 500;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .view-eyebrow .jp {
-    color: var(--ink);
-    margin-right: 10px;
-    font-size: 14px;
+    color: var(--sakura-deep);
+    font-size: 18px;
     letter-spacing: 0;
     text-transform: none;
+    font-weight: 500;
   }
 
   .view-title {
@@ -860,11 +866,19 @@
   .season-btn .jp {
     color: var(--ember);
     margin-right: 8px;
+    font-size: 16px;
   }
 
-  .season-btn.active .jp {
-    color: var(--ember-soft);
-  }
+  .season-btn[data-season="spring"] .jp { color: var(--sakura-deep); }
+  .season-btn[data-season="summer"] .jp { color: var(--indigo); }
+  .season-btn[data-season="autumn"] .jp { color: var(--ember); }
+  .season-btn[data-season="winter"] .jp { color: var(--stone); }
+
+  .season-btn.active .jp { color: var(--cream); }
+  .season-btn[data-season="spring"].active .jp { color: var(--sakura-soft); }
+  .season-btn[data-season="summer"].active .jp { color: #B8D4E0; }
+  .season-btn[data-season="autumn"].active .jp { color: var(--sakura-soft); }
+  .season-btn[data-season="winter"].active .jp { color: var(--stone-light); }
 
   .pack-grid {
     display: grid;
@@ -1051,7 +1065,33 @@
     gap: 12px;
   }
 
-  .footer .jp { color: var(--ember); }
+  .footer .jp { color: var(--sakura-deep); }
+
+  #saveStatus {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #saveStatus::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--sakura);
+    flex-shrink: 0;
+  }
+
+  #saveStatus.flash::before {
+    animation: sakura-pulse 1.2s ease-out;
+  }
+
+  @keyframes sakura-pulse {
+    0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(232, 159, 173, 0.55); }
+    50%  { transform: scale(1.4); box-shadow: 0 0 0 6px rgba(232, 159, 173, 0);  }
+    100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(232, 159, 173, 0);    }
+  }
 
   /* ======= UTILITY ======= */
   .divider {
@@ -1689,7 +1729,14 @@ function flashSaved() {
   const el = document.getElementById('saveStatus');
   if (!el) return;
   el.textContent = 'Saved · ' + new Date().toLocaleTimeString();
-  setTimeout(() => { el.textContent = 'All changes saved locally'; }, 2000);
+  el.classList.remove('flash');
+  // trigger reflow so the animation can restart
+  void el.offsetWidth;
+  el.classList.add('flash');
+  setTimeout(() => {
+    el.textContent = 'All changes saved locally';
+    el.classList.remove('flash');
+  }, 2000);
 }
 
 function toast(msg) {
