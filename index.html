@@ -162,7 +162,6 @@
   }
 
   .nav-item[data-view="itinerary"].active::after { background: var(--s-it); }
-  .nav-item[data-view="budget"].active::after    { background: var(--s-bu); }
   .nav-item[data-view="jrpass"].active::after    { background: var(--s-jr); }
   .nav-item[data-view="phrases"].active::after   { background: var(--s-ph); }
   .nav-item[data-view="culture"].active::after   { background: var(--s-cu); }
@@ -915,23 +914,6 @@
     line-height: 1.55;
   }
 
-  /* ======= QUOTE ======= */
-  .quote {
-    font-style: italic;
-    font-size: 20px;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    padding: 24px 0;
-    max-width: 580px;
-    border-left: 3px solid var(--border-strong);
-    padding-left: 20px;
-    margin: 24px 0;
-  }
-
-  .quote::before { content: '\201C'; color: var(--accent); }
-  .quote::after  { content: '\201D'; color: var(--accent); }
-  .quote-attr { font-size: 12px; color: var(--muted); font-style: normal; margin-top: 8px; display: block; }
-
   /* ======= FOOTER ======= */
   .footer {
     margin-top: 64px;
@@ -1012,7 +994,6 @@
   <nav class="nav" id="nav">
     <button class="nav-item active" data-view="dashboard"><span class="nav-num">01</span>Dashboard</button>
     <button class="nav-item" data-view="itinerary"><span class="nav-num">02</span>Itinerary</button>
-    <button class="nav-item" data-view="budget"><span class="nav-num">03</span>Budget</button>
     <button class="nav-item" data-view="jrpass"><span class="nav-num">04</span>JR Pass</button>
     <button class="nav-item" data-view="phrases"><span class="nav-num">05</span>Phrases</button>
     <button class="nav-item" data-view="culture"><span class="nav-num">06</span>Culture</button>
@@ -1073,11 +1054,6 @@
         <span class="tile-name">Itinerary</span>
         <span class="tile-desc">Cities, days &amp; notes</span>
       </button>
-      <button class="section-tile tile-bu" onclick="goTo('budget')">
-        <span class="tile-num">03</span>
-        <span class="tile-name">Budget</span>
-        <span class="tile-desc">Daily cost estimates</span>
-      </button>
       <button class="section-tile tile-jr" onclick="goTo('jrpass')">
         <span class="tile-num">04</span>
         <span class="tile-name">JR Pass</span>
@@ -1105,18 +1081,12 @@
       <div class="card-sub">Work through the sections in order, or jump to what you need.</div>
       <ol style="padding-left: 20px; color: var(--ink-soft); line-height: 1.9; font-size: 15px;">
         <li><strong>Itinerary</strong> &mdash; Add the cities you're visiting. Assign nights. Keep notes.</li>
-        <li><strong>Budget</strong> &mdash; Estimate honestly. Japan is cheaper than you think for some things, far more expensive for others.</li>
         <li><strong>JR Pass</strong> &mdash; Add your planned train routes. The calculator tells you if the pass pays off.</li>
         <li><strong>Phrases</strong> &mdash; The 40 phrases that carry you through 90% of situations.</li>
         <li><strong>Culture</strong> &mdash; The unwritten rules. Small things that make a huge difference.</li>
         <li><strong>Packing</strong> &mdash; Seasonal checklists. Japan-specific items most guides forget.</li>
       </ol>
       <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Everything saves automatically in your browser. Use <strong>Export</strong> to download a copy.</p>
-    </div>
-
-    <div class="quote">
-      The journey itself is home.
-      <span class="quote-attr">&mdash; Matsuo Bash&#333;, 17th century</span>
     </div>
 
   </section>
@@ -1165,82 +1135,6 @@
     </div>
 
     <div id="cityList" class="city-list"></div>
-  </section>
-
-  <!-- BUDGET -->
-  <section class="view" id="budget">
-    <div class="view-header">
-      <div class="section-badge badge-bu">03 &mdash; Budget</div>
-      <h1 class="view-title">Budget with <em>honesty</em>, not hope.</h1>
-      <p class="view-lede">Enter a per-day amount for each category. These are realistic mid-range 2025 ranges &mdash; tweak them to match your style. Cheaper if you're hostel-hopping, much higher if you're chasing ryokan with private onsen.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Daily estimates (per person)</div>
-      <div class="card-sub">All amounts in Japanese Yen (&#165;). USD conversion at the bottom uses ~150 &#165; per $.</div>
-
-      <div class="budget-grid">
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Accommodation</strong>
-            <small>Hostel &#165;4k &middot; Business hotel &#165;10k &middot; Ryokan &#165;25k+</small>
-          </div>
-          <input type="number" class="budget-input" data-key="accommodation" value="10000" min="0" oninput="updateAll()">
-        </div>
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Food</strong>
-            <small>Konbini &#165;500 &middot; Ramen &#165;1.2k &middot; Kaiseki &#165;15k</small>
-          </div>
-          <input type="number" class="budget-input" data-key="food" value="5000" min="0" oninput="updateAll()">
-        </div>
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Local transport</strong>
-            <small>Metro day pass, city buses, taxis</small>
-          </div>
-          <input type="number" class="budget-input" data-key="transport" value="1500" min="0" oninput="updateAll()">
-        </div>
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Activities &amp; entries</strong>
-            <small>Temples &#165;500 &middot; TeamLab &#165;3.8k &middot; Tours vary</small>
-          </div>
-          <input type="number" class="budget-input" data-key="activities" value="2000" min="0" oninput="updateAll()">
-        </div>
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Shopping &amp; gifts</strong>
-            <small>Daiso to department stores &mdash; set a ceiling</small>
-          </div>
-          <input type="number" class="budget-input" data-key="shopping" value="3000" min="0" oninput="updateAll()">
-        </div>
-        <div class="budget-row">
-          <div class="budget-label">
-            <strong>Miscellaneous</strong>
-            <small>Laundry, SIM card, surprises</small>
-          </div>
-          <input type="number" class="budget-input" data-key="misc" value="1000" min="0" oninput="updateAll()">
-        </div>
-      </div>
-
-      <div class="budget-total">
-        <div>
-          <div class="budget-total-label">Total for trip</div>
-          <div class="budget-total-value" id="budgetTotal">&#165;0</div>
-          <div class="budget-total-usd" id="budgetTotalUsd">~ $0 USD</div>
-        </div>
-        <div class="budget-per-day">
-          <div style="font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500;">Per day</div>
-          <strong id="budgetPerDay">&#165;0</strong>
-          <div id="budgetPerDayUsd" style="color: var(--muted-light);">~$0</div>
-        </div>
-      </div>
-
-      <p style="margin-top: 18px; font-size: 13px; color: var(--muted); line-height: 1.6;">
-        <strong style="color: var(--ink-soft);">Not included above:</strong> International flights, travel insurance, intercity trains (see JR Pass section), JR reservations, airport transfers. Add a <em>buffer of 15&ndash;20%</em> for the inevitable surprises &mdash; that perfect sake shop, the ryokan upgrade, the late-night taxi.
-      </p>
-    </div>
   </section>
 
   <!-- JR PASS -->
