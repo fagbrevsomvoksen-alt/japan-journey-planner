@@ -919,7 +919,7 @@
 
   /* ======= HOW MUCH ======= */
   .hm-wrap { max-width: 560px; }
-  .hm-currency-row { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 28px; border: 1px solid var(--border); border-top: none; background: var(--bg); margin-bottom: 10px; }
+  .hm-currency-row { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 28px; border: 1px solid var(--border); border-top: none; background: var(--bg); margin-bottom: 0; }
   .hm-cur-btn { background: transparent; border: 1px solid var(--border-strong); padding: 7px 14px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.15s; }
   .hm-cur-btn:hover { border-color: var(--ink); color: var(--ink); }
   .hm-cur-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
@@ -932,17 +932,6 @@
   .hm-field input:focus { outline: none; border-color: var(--ink); }
   .hm-sep { text-align: center; color: var(--muted-light); font-size: 16px; padding-bottom: 12px; }
   .hm-output { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 11px 14px; font-size: 17px; font-weight: 600; color: var(--accent); min-height: 46px; display: flex; align-items: center; }
-  .hm-rate-line { font-size: 12px; color: var(--muted); margin-top: 10px; margin-bottom: 28px; }
-  .hm-rate-line span { color: var(--ink-soft); font-weight: 500; }
-  .hm-table { width: 100%; border-collapse: collapse; }
-  .hm-table thead th { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 8px 0; border-bottom: 1.5px solid var(--border); text-align: left; }
-  .hm-table thead th:last-child { text-align: right; }
-  .hm-table tbody tr { border-bottom: 1px solid var(--border); }
-  .hm-table tbody tr:last-child { border-bottom: none; }
-  .hm-table td { padding: 10px 0; font-size: 14px; }
-  .hm-table td:nth-child(2) { color: var(--muted); font-size: 13px; text-align: right; padding-right: 16px; }
-  .hm-table td:last-child { text-align: right; font-weight: 600; color: var(--accent); }
-  .hm-cat-row td { padding: 14px 0 5px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
 
 /* ======= FOOTER ======= */
   .footer {
@@ -1171,12 +1160,6 @@
 
   <!-- HOW MUCH -->
   <section class="view" id="howmuch">
-    <div class="view-header">
-      <div class="section-badge badge-it">03 &mdash; How much?</div>
-      <h1 class="view-title">What does Japan <em>actually cost?</em></h1>
-      <p class="view-lede">Real Japanese prices converted to your currency &mdash; live exchange rate.</p>
-    </div>
-
     <div class="hm-wrap">
       <div class="hm-converter-box">
         <div class="hm-box-title">Quick converter</div>
@@ -1205,17 +1188,6 @@
         <button class="hm-cur-btn" data-cur="CAD">CAD</button>
         <button class="hm-cur-btn" data-cur="CHF">CHF</button>
       </div>
-
-      <div class="hm-rate-line" id="hmRateLine">Loading live rate&hellip; &nbsp;<a href="#" onclick="fetchRate();return false;" style="color:var(--accent);text-decoration:none;">Refresh</a></div>
-
-      <table class="hm-table">
-        <thead>
-          <tr><th>Item</th><th>&#165; Yen</th><th id="hmTableHeader">USD</th></tr>
-        </thead>
-        <tbody id="hmTableBody">
-          <tr><td colspan="3" style="padding:20px 0;color:var(--muted);">Loading&hellip;</td></tr>
-        </tbody>
-      </table>
     </div>
   </section>
 
