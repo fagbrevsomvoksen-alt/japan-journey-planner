@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Your Japan Journey — An Interactive Trip Planner</title>
-<meta name="description" content="An interactive planner for your trip to Japan. Itinerary, budget, JR Pass calculator, phrases, culture, seasonal packing.">
+<title>Minamisenju Notebook — A Pocket Guide to a Quiet Corner of Tokyo</title>
+<meta name="description" content="A traveler's notebook from Minamisenju, a small shitamachi neighborhood in northeast Tokyo. Days plan, costs, phrases, customs, and what to bring.">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#D85A30">
+<meta name="theme-color" content="#B33A1F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Japan Journey">
@@ -16,425 +16,397 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* ============================================================
+     Minamisenju Notebook — 2003 redesign
+     Three colors only: paper, ink, lantern.
+     ============================================================ */
+
   :root {
-    --bg:            #F7F5F0;
-    --surface:       #FFFFFF;
-    --ink:           #0F0E0B;
-    --ink-soft:      #3A3834;
-    --muted:         #6B6660;
-    --muted-light:   #B0ABA3;
-    --border:        #E5E3DC;
-    --border-strong: #C8C5BC;
-
-    /* Accent */
-    --accent:        #D85A30;
-    --accent-soft:   #F0997B;
-    --accent-bg:     #FAECE7;
-
-    /* Section palette */
-    --s-it:   #185FA5; --s-it-bg: #E6F1FB; --s-it-br: #B5D4F4;
-    --s-bu:   #3B6D11; --s-bu-bg: #EAF3DE; --s-bu-br: #C0DD97;
-    --s-jr:   #854F0B; --s-jr-bg: #FAEEDA; --s-jr-br: #FAC775;
-    --s-ph:   #534AB7; --s-ph-bg: #EEEDFE; --s-ph-br: #CECBF6;
-    --s-cu:   #993556; --s-cu-bg: #FBEAF0; --s-cu-br: #F4C0D1;
-    --s-pa:   #0F6E56; --s-pa-bg: #E1F5EE; --s-pa-br: #9FE1CB;
+    --paper:   #EFE6D2;   /* warm washi cream */
+    --ink:     #2B1E12;   /* deep coffee brown — never pure black */
+    --lantern: #B33A1F;   /* rust-red, like a paper lantern at dusk */
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    background: var(--bg);
+    background: var(--paper);
     color: var(--ink);
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: 22px 12px 30px;
   }
 
   .app {
-    max-width: 1200px;
+    max-width: 760px;
     margin: 0 auto;
-    padding: 28px 40px 80px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 0;
+    box-shadow: 4px 4px 0 var(--ink);
   }
 
-  @media (max-width: 720px) {
-    .app { padding: 20px 18px 60px; }
-  }
-
-  /* ======= HEADER ======= */
+  /* ======= MASTHEAD ======= */
   .masthead {
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    padding: 22px 26px 16px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding-bottom: 24px;
-    border-bottom: 1.5px solid var(--border);
-    margin-bottom: 0;
-    gap: 20px;
+    align-items: flex-end;
+    gap: 18px;
     flex-wrap: wrap;
+    position: relative;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .brand-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
+  .brand { display: flex; align-items: flex-end; gap: 14px; }
+  .brand-dot { display: none; }
 
   .brand-name {
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: 0.005em;
-    font-variation-settings: 'opsz' 72;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: normal;
     color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.005em;
   }
 
   .brand-tag {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    color: var(--lantern);
+    margin-top: 6px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    font-weight: 500;
+    border-top: 1px solid var(--ink);
+    padding-top: 5px;
   }
 
-  .utils { display: flex; gap: 8px; align-items: center; }
+  .masthead-kanji {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--lantern);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    opacity: 0.85;
+  }
+
+  .utils { display: flex; gap: 6px; }
 
   .util-btn {
-    background: transparent;
-    border: 1px solid var(--border-strong);
-    border-radius: 6px;
-    color: var(--ink-soft);
-    padding: 7px 14px;
-    font-size: 13px;
-    cursor: pointer;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 4px 10px;
+    font-size: 11px;
     font-family: inherit;
-    font-weight: 500;
-    transition: all 0.15s;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.1s;
   }
-  .util-btn:hover { border-color: var(--muted); color: var(--ink); background: var(--bg); }
-  .util-btn.danger:hover { border-color: var(--accent); color: var(--accent); }
+  .util-btn:hover { background: var(--ink); color: var(--paper); }
+  .util-btn.danger:hover { background: var(--lantern); border-color: var(--lantern); color: var(--paper); }
 
   /* ======= NAV ======= */
   .nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 0;
-    margin-bottom: 32px;
-    overflow-x: auto;
-    padding-bottom: 0;
-    border-bottom: 1.5px solid var(--border);
+    padding: 0;
+    background: var(--ink);
+    border: none;
+    margin: 0;
+    overflow-x: visible;
   }
 
   .nav-item {
     background: transparent;
     border: none;
-    padding: 16px 18px 14px;
+    border-right: 1px solid rgba(239,230,210,0.18);
+    padding: 9px 12px;
     font-family: inherit;
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 11px;
+    color: var(--paper);
     cursor: pointer;
     white-space: nowrap;
-    position: relative;
-    transition: color 0.15s;
-    letter-spacing: 0.02em;
-    font-weight: 400;
+    letter-spacing: 0.06em;
+    border-radius: 0;
+    text-transform: uppercase;
+    flex: 1 1 auto;
+    text-align: center;
+    transition: background 0.1s;
   }
-  .nav-item:hover { color: var(--ink); }
-  .nav-item.active { color: var(--ink); font-weight: 500; }
-  .nav-item.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1.5px; left: 10px; right: 10px;
-    height: 2.5px;
-    border-radius: 2px;
-    background: var(--accent);
+  .nav-item:hover { background: rgba(239,230,210,0.1); }
+  .nav-item.active {
+    background: var(--lantern);
+    color: var(--paper);
+    font-weight: bold;
   }
-
-  .nav-item[data-view="itinerary"].active::after { background: var(--s-it); }
-  .nav-item[data-view="jrpass"].active::after    { background: var(--s-jr); }
-  .nav-item[data-view="phrases"].active::after   { background: var(--s-ph); }
-  .nav-item[data-view="culture"].active::after   { background: var(--s-cu); }
-  .nav-item[data-view="packing"].active::after   { background: var(--s-pa); }
 
   .nav-num {
-    font-size: 10px;
-    color: var(--muted-light);
-    margin-right: 5px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    font-size: 9px;
+    margin-right: 4px;
+    opacity: 0.65;
+    font-weight: normal;
   }
-  .nav-item.active .nav-num { color: inherit; opacity: 0.6; }
+  .nav-item.active .nav-num { opacity: 0.8; }
 
   /* ======= SECTIONS ======= */
-  section.view { display: none; }
-  section.view.active { display: block; animation: fadeUp 0.35s ease; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  section.view { display: none; padding: 26px; }
+  section.view.active { display: block; }
 
   /* ======= SECTION BADGE ======= */
   .section-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.07em;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 4px;
-    margin-bottom: 16px;
+    padding: 2px 8px;
+    margin-bottom: 14px;
+    border-radius: 0;
+    background: var(--lantern);
+    color: var(--paper);
+    border: 1px solid var(--lantern);
   }
-  .badge-it { background: var(--s-it-bg); color: var(--s-it); border: 1px solid var(--s-it-br); }
-  .badge-bu { background: var(--s-bu-bg); color: var(--s-bu); border: 1px solid var(--s-bu-br); }
-  .badge-jr { background: var(--s-jr-bg); color: var(--s-jr); border: 1px solid var(--s-jr-br); }
-  .badge-ph { background: var(--s-ph-bg); color: var(--s-ph); border: 1px solid var(--s-ph-br); }
-  .badge-cu { background: var(--s-cu-bg); color: var(--s-cu); border: 1px solid var(--s-cu-br); }
-  .badge-pa { background: var(--s-pa-bg); color: var(--s-pa); border: 1px solid var(--s-pa-br); }
+  .badge-it, .badge-bu, .badge-jr, .badge-ph, .badge-cu, .badge-pa {
+    background: var(--lantern);
+    color: var(--paper);
+    border-color: var(--lantern);
+  }
 
   /* ======= VIEW HEADER ======= */
-  .view-header { margin-bottom: 36px; }
+  .view-header {
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--ink);
+  }
 
   .view-title {
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    font-weight: 500;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px;
+    line-height: 1.18;
+    letter-spacing: 0;
+    font-weight: normal;
     color: var(--ink);
-    margin-bottom: 14px;
-    max-width: 760px;
+    margin-bottom: 8px;
   }
-
-  .view-title em { font-style: normal; color: var(--accent); }
+  .view-title em { font-style: italic; color: var(--lantern); }
 
   .view-lede {
-    font-size: 16px;
-    color: var(--ink-soft);
-    max-width: 640px;
-    line-height: 1.6;
+    font-size: 13px;
+    color: var(--ink);
+    max-width: 60ch;
+    line-height: 1.55;
   }
 
-  /* ======= DASHBOARD ======= */
+  /* ======= TRIP SETUP ======= */
   .trip-setup-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 16px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 14px;
+    margin-bottom: 14px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 12px;
   }
-
-  @media (max-width: 640px) {
-    .trip-setup-card { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 600px) { .trip-setup-card { grid-template-columns: 1fr; } }
 
   .trip-setup-card .field-group label {
     display: block;
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 5px;
-    font-weight: 500;
+    color: var(--lantern);
+    margin-bottom: 4px;
+    font-weight: normal;
   }
 
   /* ======= METRIC CARDS ======= */
   .metric-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-bottom: 18px;
+    border: 1px solid var(--ink);
   }
-
-  @media (max-width: 700px) {
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-  }
+  @media (max-width: 600px) { .metric-row { grid-template-columns: 1fr; } }
 
   .metric-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 16px 14px;
+    border-right: 1px solid var(--ink);
+    padding: 12px 14px;
+    background: var(--paper);
     position: relative;
     overflow: hidden;
   }
-
-  .metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
+  .metric-card:last-child { border-right: none; }
+  @media (max-width: 600px) {
+    .metric-card { border-right: none; border-bottom: 1px solid var(--ink); }
+    .metric-card:last-child { border-bottom: none; }
   }
-
-  .mc-days::before   { background: var(--accent); }
-  .mc-budget::before { background: var(--s-bu); }
-  .mc-cities::before { background: var(--s-it); }
-  .mc-packed::before { background: var(--s-cu); }
+  .metric-card::before { display: none; }
+  .mc-days::before, .mc-budget::before, .mc-cities::before, .mc-packed::before { display: none; }
 
   .metric-label {
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 6px;
+    color: var(--lantern);
+    margin-bottom: 4px;
+    font-weight: normal;
   }
 
   .metric-value {
-    font-size: 30px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 28px;
+    font-weight: normal;
     line-height: 1;
     color: var(--ink);
     margin-bottom: 3px;
+    letter-spacing: -0.01em;
   }
+  .metric-value.med { font-size: 20px; }
 
-  .metric-value.med { font-size: 22px; }
-
-  .metric-sub {
-    font-size: 11px;
-    color: var(--muted-light);
-    margin-bottom: 10px;
-  }
+  .metric-sub { font-size: 10px; color: var(--ink); opacity: 0.65; margin-bottom: 8px; }
 
   .metric-bar-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
+    height: 5px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 0;
     overflow: hidden;
   }
-
   .metric-bar-fill {
     height: 100%;
-    border-radius: 2px;
+    background: var(--lantern);
     transition: width 0.4s ease;
+    border-radius: 0;
   }
+  .mc-days .metric-bar-fill, .mc-budget .metric-bar-fill,
+  .mc-cities .metric-bar-fill, .mc-packed .metric-bar-fill { background: var(--lantern); }
 
-  .mc-days   .metric-bar-fill { background: var(--accent); }
-  .mc-budget .metric-bar-fill { background: var(--s-bu); }
-  .mc-cities .metric-bar-fill { background: var(--s-it); }
-  .mc-packed .metric-bar-fill { background: var(--s-cu); }
-
-  /* ======= SECTION TILES ======= */
+  /* ======= TILE GRID ======= */
   .tile-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+    margin-bottom: 22px;
+    background: var(--paper);
   }
-
-  @media (max-width: 600px) {
-    .tile-grid { grid-template-columns: repeat(2, 1fr); }
-  }
+  @media (max-width: 480px) { .tile-grid { grid-template-columns: 1fr; } }
 
   .section-tile {
     display: block;
     text-align: left;
-    border-radius: 10px;
-    padding: 14px 16px 12px;
+    padding: 13px 16px;
     cursor: pointer;
-    border: 1px solid transparent;
-    transition: opacity 0.15s, transform 0.1s;
+    background: var(--paper);
+    border: none;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
     font-family: inherit;
-    background: transparent;
+    border-radius: 0;
+    transition: background 0.1s, color 0.1s;
   }
-  .section-tile:hover  { opacity: 0.85; transform: translateY(-1px); }
-  .section-tile:active { transform: translateY(0); }
+  .section-tile:nth-child(2n) { border-right: none; }
+  /* last tile: never has border-bottom */
+  .section-tile:last-child { border-bottom: none; }
+  /* second-to-last tile only loses border-bottom when there's an even number of tiles
+     (i.e. when the last item sits on the right column). 2n-1 matches odd positions. */
+  .section-tile:nth-last-child(2):nth-child(2n-1) { border-bottom: none; }
+  /* if the last tile is odd-positioned (alone on its row), let it span both columns */
+  .section-tile:last-child:nth-child(2n-1) {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+  @media (max-width: 480px) {
+    .section-tile { border-right: none; border-bottom: 1px solid var(--ink); grid-column: auto; }
+    .section-tile:last-child { border-bottom: none; }
+    .section-tile:last-child:nth-child(2n-1) { grid-column: auto; }
+  }
 
-  .tile-it { background: var(--s-it-bg); border-color: var(--s-it-br); }
-  .tile-bu { background: var(--s-bu-bg); border-color: var(--s-bu-br); }
-  .tile-jr { background: var(--s-jr-bg); border-color: var(--s-jr-br); }
-  .tile-ph { background: var(--s-ph-bg); border-color: var(--s-ph-br); }
-  .tile-cu { background: var(--s-cu-bg); border-color: var(--s-cu-br); }
-  .tile-pa { background: var(--s-pa-bg); border-color: var(--s-pa-br); }
+  .section-tile:hover { background: var(--ink); }
+  .section-tile:hover .tile-num { color: var(--paper); opacity: 0.7; }
+  .section-tile:hover .tile-name { color: var(--paper); text-decoration: underline; }
+  .section-tile:hover .tile-desc { color: var(--paper); opacity: 0.85; }
 
   .tile-num {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    margin-bottom: 3px;
-    display: block;
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--lantern);
+    letter-spacing: 0.1em;
+    display: inline-block;
+    margin-right: 8px;
   }
-  .tile-it .tile-num { color: var(--s-it); }
-  .tile-bu .tile-num { color: var(--s-bu); }
-  .tile-jr .tile-num { color: var(--s-jr); }
-  .tile-ph .tile-num { color: var(--s-ph); }
-  .tile-cu .tile-num { color: var(--s-cu); }
-  .tile-pa .tile-num { color: var(--s-pa); }
 
   .tile-name {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 2px;
-    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: var(--ink);
+    display: inline;
+    text-decoration: underline;
   }
-  .tile-it .tile-name { color: #0C447C; }
-  .tile-bu .tile-name { color: #27500A; }
-  .tile-jr .tile-name { color: #633806; }
-  .tile-ph .tile-name { color: #3C3489; }
-  .tile-cu .tile-name { color: #72243E; }
-  .tile-pa .tile-name { color: #085041; }
 
   .tile-desc {
     font-size: 11px;
-    line-height: 1.4;
+    color: var(--ink);
+    opacity: 0.7;
     display: block;
+    margin-top: 4px;
+    line-height: 1.4;
   }
-  .tile-it .tile-desc { color: var(--s-it); }
-  .tile-bu .tile-desc { color: var(--s-bu); }
-  .tile-jr .tile-desc { color: var(--s-jr); }
-  .tile-ph .tile-desc { color: var(--s-ph); }
-  .tile-cu .tile-desc { color: var(--s-cu); }
-  .tile-pa .tile-desc { color: var(--s-pa); }
+  .tile-it, .tile-bu, .tile-jr, .tile-ph, .tile-cu, .tile-pa { background: var(--paper); }
+  .tile-it .tile-num, .tile-bu .tile-num, .tile-jr .tile-num,
+  .tile-ph .tile-num, .tile-cu .tile-num, .tile-pa .tile-num { color: var(--lantern); }
+  .tile-it .tile-name, .tile-bu .tile-name, .tile-jr .tile-name,
+  .tile-ph .tile-name, .tile-cu .tile-name, .tile-pa .tile-name { color: var(--ink); }
+  .tile-it .tile-desc, .tile-bu .tile-desc, .tile-jr .tile-desc,
+  .tile-ph .tile-desc, .tile-cu .tile-desc, .tile-pa .tile-desc { color: var(--ink); }
 
   /* ======= CARDS ======= */
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 16px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 18px 20px;
+    margin-bottom: 14px;
   }
 
   .card-title {
-    font-size: 17px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: normal;
     color: var(--ink);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
   .card-sub {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 18px;
+    font-size: 12px;
+    color: var(--ink);
+    opacity: 0.7;
+    margin-bottom: 14px;
   }
 
   /* ======= FORMS ======= */
   label {
     display: block;
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-    font-weight: 500;
+    color: var(--lantern);
+    margin-bottom: 4px;
+    font-weight: normal;
   }
 
   input[type="text"],
@@ -442,32 +414,26 @@
   select,
   textarea {
     width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 7px;
-    padding: 10px 12px;
-    font-size: 14px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 6px 9px;
+    font-size: 13px;
     font-family: inherit;
     color: var(--ink);
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: background 0.1s;
   }
-  input[type="text"]:hover,
-  input[type="number"]:hover,
-  select:hover,
-  textarea:hover { border-color: var(--muted); }
   input[type="text"]:focus,
   input[type="number"]:focus,
   select:focus,
   textarea:focus {
     outline: none;
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(15,14,11,0.06);
+    background: rgba(179,58,31,0.06);
+    border-color: var(--lantern);
   }
+  textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
 
-  textarea { min-height: 120px; resize: vertical; line-height: 1.55; }
-
-  .field-row { display: grid; gap: 16px; margin-bottom: 16px; }
-
+  .field-row { display: grid; gap: 12px; margin-bottom: 14px; }
   @media (min-width: 640px) {
     .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
     .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
@@ -475,407 +441,359 @@
 
   button.primary {
     background: var(--ink);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    padding: 10px 18px;
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 6px 14px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
-    transition: opacity 0.15s;
-    font-weight: 500;
+    transition: background 0.1s;
+    font-weight: normal;
   }
-  button.primary:hover { opacity: 0.85; }
+  button.primary:hover { background: var(--lantern); border-color: var(--lantern); }
 
   button.ghost {
-    background: transparent;
-    color: var(--ink-soft);
-    border: 1px solid var(--border-strong);
-    border-radius: 7px;
-    padding: 9px 14px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    padding: 5px 12px;
     font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
     cursor: pointer;
-    transition: all 0.15s;
+    transition: background 0.1s;
   }
-  button.ghost:hover { border-color: var(--muted); color: var(--ink); }
+  button.ghost:hover { background: var(--ink); color: var(--paper); }
 
   button.tiny {
     background: transparent;
     border: none;
-    color: var(--muted-light);
+    color: var(--lantern);
     font-family: inherit;
-    font-size: 12px;
+    font-size: 11px;
     cursor: pointer;
-    padding: 4px 8px;
-    transition: color 0.15s;
+    padding: 2px 4px;
+    text-decoration: underline;
   }
-  button.tiny:hover { color: var(--accent); }
+  button.tiny:hover { color: var(--ink); }
 
   /* ======= ITINERARY ======= */
-  .city-list { display: flex; flex-direction: column; gap: 12px; }
+  .city-list { display: flex; flex-direction: column; gap: 10px; }
 
   .city {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-left: 4px solid var(--lantern);
+    padding: 14px 16px;
     position: relative;
-    border-left: 3px solid var(--s-it);
   }
 
   .city-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
   }
 
   .city-name-row {
     display: flex;
     align-items: baseline;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
   }
 
   .city-name {
-    font-size: 19px;
-    font-weight: 500;
-    letter-spacing: -0.015em;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    font-weight: normal;
   }
 
-  .city-days { font-size: 13px; color: var(--muted); }
-  .city-notes { font-size: 14px; color: var(--ink-soft); line-height: 1.55; white-space: pre-wrap; }
+  .city-days { font-size: 12px; color: var(--ink); opacity: 0.7; }
+  .city-notes { font-size: 13px; color: var(--ink); line-height: 1.5; white-space: pre-wrap; }
 
   .empty-state {
     text-align: center;
-    padding: 60px 20px;
-    border: 1px dashed var(--border-strong);
-    background: var(--surface);
-    border-radius: 10px;
+    padding: 40px 20px;
+    border: 1px dashed var(--ink);
+    background: var(--paper);
   }
-
-  .empty-icon { font-size: 32px; display: block; margin-bottom: 14px; opacity: 0.3; }
-  .empty-state p { color: var(--muted); font-size: 14px; }
-
-  /* ======= BUDGET ======= */
-  .budget-grid {
-    display: grid;
-    gap: 0;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 720px) {
-    .budget-grid { grid-template-columns: repeat(2, 1fr); gap: 0 32px; }
-  }
-
-  .budget-row {
-    display: grid;
-    grid-template-columns: 1fr 160px;
-    gap: 16px;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .budget-row:last-child { border-bottom: none; }
-
-  .budget-label { display: flex; flex-direction: column; gap: 3px; }
-  .budget-label strong { font-size: 16px; font-weight: 500; }
-  .budget-label small { font-size: 12px; color: var(--muted); }
-
-  .budget-total {
-    background: var(--ink);
-    color: #fff;
-    padding: 28px 32px;
-    margin-top: 20px;
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .budget-total-label {
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted-light);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  .budget-total-value { font-size: 44px; line-height: 1; font-weight: 300; }
-  .budget-total-usd { font-size: 13px; color: var(--muted-light); margin-top: 5px; }
-  .budget-per-day { text-align: right; font-size: 13px; color: var(--muted-light); }
-  .budget-per-day strong { display: block; font-size: 22px; color: #fff; font-weight: 400; }
+  .empty-icon { font-size: 22px; display: block; margin-bottom: 10px; opacity: 0.4; }
+  .empty-state p { color: var(--ink); opacity: 0.65; font-size: 13px; }
 
   /* ======= JR PASS ======= */
   .route-grid {
     display: grid;
     grid-template-columns: 2fr 1fr auto;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 9px 0;
+    border-bottom: 1px dashed var(--ink);
   }
   .route-grid:last-child { border-bottom: none; }
-
   @media (max-width: 600px) {
     .route-grid { grid-template-columns: 1fr auto; }
     .route-grid input[type="number"] { grid-column: 1; }
   }
 
   .verdict {
-    padding: 28px 32px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid var(--ink);
+    margin-top: 16px;
     text-align: center;
-    background: var(--surface);
+    background: var(--paper);
   }
-
-  .verdict.worth-it {
-    background: #1D3324;
-    color: #E8EDE5;
-    border-color: #1D3324;
-  }
-
-  .verdict.not-worth { background: var(--bg); }
+  .verdict.worth-it { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .verdict.not-worth { background: var(--paper); }
 
   .verdict-label {
-    font-size: 11px;
-    letter-spacing: 0.06em;
+    font-size: 10px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 10px;
-    font-weight: 500;
-    opacity: 0.65;
+    margin-bottom: 8px;
+    color: var(--lantern);
+    font-weight: normal;
   }
+  .verdict.worth-it .verdict-label { color: var(--paper); opacity: 0.7; }
 
   .verdict-headline {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 400;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: normal;
     line-height: 1.2;
   }
-  .verdict-headline em { font-style: italic; color: var(--s-jr); }
-  .verdict.worth-it .verdict-headline em { color: #C5D4B8; }
-  .verdict-detail { margin-top: 12px; font-size: 14px; opacity: 0.75; }
+  .verdict-headline em { font-style: italic; color: var(--lantern); }
+  .verdict.worth-it .verdict-headline em { color: var(--paper); text-decoration: underline; }
+  .verdict-detail { margin-top: 10px; font-size: 12px; opacity: 0.8; }
 
   /* ======= PHRASES ======= */
-  .phrase-cat { margin-bottom: 36px; }
+  .phrase-cat { margin-bottom: 26px; }
 
   .phrase-cat-head {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--ink);
   }
 
   .phrase-cat-label {
     display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 4px;
-    background: var(--s-ph-bg);
-    color: var(--s-ph);
-    border: 1px solid var(--s-ph-br);
+    padding: 2px 7px;
+    background: var(--lantern);
+    color: var(--paper);
+    border: 1px solid var(--lantern);
   }
 
   .phrase-cat-title {
-    font-size: 20px;
-    font-weight: 400;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: normal;
     color: var(--ink);
   }
 
   .phrase-list {
     display: grid;
-    gap: 12px;
+    gap: 0;
     grid-template-columns: 1fr;
+    border: 1px solid var(--ink);
   }
-
   @media (min-width: 720px) {
     .phrase-list { grid-template-columns: 1fr 1fr; }
   }
 
   .phrase {
-    padding: 16px 18px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    border-left: 2px solid var(--s-ph-br);
-    transition: border-left-color 0.2s;
+    padding: 12px 14px;
+    background: var(--paper);
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    border-left: 0;
+    transition: background 0.1s;
   }
-  .phrase:hover { border-left-color: var(--s-ph); }
+  .phrase:hover { background: rgba(179,58,31,0.05); }
+  /* close right edge on mobile */
+  @media (max-width: 720px) {
+    .phrase { border-right: none; }
+  }
+  /* on desktop, even-indexed phrases sit on right edge */
+  @media (min-width: 720px) {
+    .phrase:nth-child(2n) { border-right: none; }
+  }
 
   .phrase-jp {
-    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
-    font-size: 21px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
     color: var(--ink);
-    margin-bottom: 3px;
-    font-weight: 500;
+    margin-bottom: 2px;
+    font-weight: normal;
   }
 
   .phrase-romaji {
     font-style: italic;
-    font-size: 15px;
-    color: var(--s-ph);
-    margin-bottom: 5px;
+    font-size: 13px;
+    color: var(--lantern);
+    margin-bottom: 4px;
   }
 
-  .phrase-en { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
-  .phrase-note { font-size: 12px; color: var(--muted); margin-top: 5px; font-style: italic; }
+  .phrase-en { font-size: 12px; color: var(--ink); line-height: 1.45; }
+  .phrase-note { font-size: 11px; color: var(--ink); opacity: 0.6; margin-top: 4px; font-style: italic; }
 
   /* ======= CULTURE ======= */
   .culture-grid {
     display: grid;
-    gap: 16px;
+    gap: 0;
     grid-template-columns: 1fr;
+    border: 1px solid var(--ink);
+    background: var(--paper);
   }
-
-  @media (min-width: 800px) {
-    .culture-grid { grid-template-columns: 1fr 1fr; }
-  }
+  @media (min-width: 800px) { .culture-grid { grid-template-columns: 1fr 1fr; } }
 
   .culture-cat {
-    background: var(--surface);
-    padding: 24px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    border-top: 3px solid var(--s-cu-br);
+    background: var(--paper);
+    padding: 18px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    border-top: none;
+  }
+  @media (min-width: 800px) {
+    .culture-cat:nth-child(2n) { border-right: none; }
+  }
+  @media (max-width: 800px) {
+    .culture-cat { border-right: none; }
   }
 
   .culture-cat h3 {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 3px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 2px;
     color: var(--ink);
   }
 
   .culture-cat p.sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 16px;
-    letter-spacing: 0.01em;
+    font-size: 11px;
+    color: var(--ink);
+    opacity: 0.7;
+    margin-bottom: 12px;
   }
 
   .rule {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--ink);
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: flex-start;
   }
   .rule:last-child { border-bottom: none; }
 
   .rule-mark {
-    font-weight: 600;
+    font-weight: bold;
     flex-shrink: 0;
-    width: 20px;
+    width: 18px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
   }
-  .rule-mark.do { color: #3B6D11; }
-  .rule-mark.dont { color: var(--accent); }
+  .rule-mark.do { color: var(--ink); }
+  .rule-mark.dont { color: var(--lantern); }
 
-  .rule-text { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
-  .rule-text strong { color: var(--ink); font-weight: 500; }
+  .rule-text { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .rule-text strong { color: var(--ink); font-weight: bold; }
 
   /* ======= PACKING ======= */
   .season-picker {
     display: flex;
-    gap: 6px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 18px;
+    border: 1px solid var(--ink);
+    overflow: hidden;
   }
 
   .season-btn {
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    padding: 9px 18px;
+    flex: 1;
+    background: var(--paper);
+    border: none;
+    border-right: 1px solid var(--ink);
+    padding: 8px 10px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
-    color: var(--ink-soft);
-    border-radius: 7px;
-    transition: all 0.2s;
-    font-weight: 400;
+    color: var(--ink);
+    border-radius: 0;
+    transition: background 0.1s;
   }
-  .season-btn:hover { border-color: var(--s-pa); color: var(--s-pa); }
-  .season-btn.active { background: var(--s-pa-bg); border-color: var(--s-pa-br); color: var(--s-pa); font-weight: 500; }
+  .season-btn:last-child { border-right: none; }
+  .season-btn:hover { background: var(--ink); color: var(--paper); }
+  .season-btn.active { background: var(--lantern); color: var(--paper); font-weight: bold; }
 
   .pack-grid {
     display: grid;
-    gap: 24px;
+    gap: 18px;
     grid-template-columns: 1fr;
   }
-
-  @media (min-width: 720px) {
-    .pack-grid { grid-template-columns: 1fr 1fr; }
-  }
+  @media (min-width: 720px) { .pack-grid { grid-template-columns: 1fr 1fr; } }
 
   .pack-cat h4 {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ink);
     color: var(--ink);
   }
 
   .pack-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 7px 0;
+    gap: 8px;
+    padding: 5px 0;
     cursor: pointer;
   }
 
   .pack-item input[type="checkbox"] {
     margin-top: 2px;
-    accent-color: var(--s-pa);
+    accent-color: var(--lantern);
     cursor: pointer;
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
     flex-shrink: 0;
   }
 
-  .pack-item-text { font-size: 14px; color: var(--ink-soft); line-height: 1.45; }
-  .pack-item input:checked + .pack-item-text { text-decoration: line-through; color: var(--muted-light); }
-  .pack-item-text strong { color: var(--ink); font-weight: 500; }
+  .pack-item-text { font-size: 13px; color: var(--ink); line-height: 1.4; }
+  .pack-item input:checked + .pack-item-text { text-decoration: line-through; opacity: 0.5; }
+  .pack-item-text strong { color: var(--ink); font-weight: bold; }
 
   .pack-pro {
     display: inline-block;
-    font-size: 10px;
-    letter-spacing: 0.05em;
+    font-size: 9px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--s-pa);
-    margin-left: 5px;
-    padding: 1px 5px;
-    border: 1px solid var(--s-pa-br);
-    border-radius: 3px;
+    color: var(--lantern);
+    margin-left: 4px;
+    padding: 1px 4px;
+    border: 1px solid var(--lantern);
   }
 
-  /* ======= MOMENT (photo + text) ======= */
+  /* ======= MOMENT ======= */
   .moment {
-    margin: 36px 0 32px;
-    padding: 32px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    margin: 24px 0;
+    padding: 20px 0;
+    border-top: 1px dashed var(--ink);
+    border-bottom: 1px dashed var(--ink);
     display: grid;
-    gap: 28px;
+    gap: 18px;
     grid-template-columns: 1fr;
   }
-
-  @media (min-width: 900px) {
-    .moment { grid-template-columns: 1.1fr 1fr; align-items: center; gap: 48px; }
+  @media (min-width: 760px) {
+    .moment { grid-template-columns: 1fr 1fr; align-items: center; gap: 28px; }
     .moment.reverse > :first-child { order: 2; }
   }
 
@@ -885,72 +803,169 @@
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    background: var(--border);
-    border-radius: 8px;
-    filter: saturate(0.9) contrast(0.98);
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    filter: saturate(0.92) contrast(1);
   }
 
   .moment-image figcaption {
-    margin-top: 8px;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--ink);
+    opacity: 0.7;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: normal;
   }
 
   .moment-text {
-    font-size: clamp(19px, 2.3vw, 24px);
-    line-height: 1.45;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.5;
     color: var(--ink);
-    font-weight: 400;
+    font-style: italic;
+    font-weight: normal;
   }
-  .moment-text em { color: var(--accent); font-style: italic; }
+  .moment-text em { color: var(--lantern); font-style: italic; }
   .moment-text small {
     display: block;
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.55;
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: Verdana, sans-serif;
+    font-style: normal;
+    opacity: 0.7;
+    line-height: 1.5;
   }
 
-  
-
-
   /* ======= HOW MUCH ======= */
-  .hm-wrap { max-width: 560px; }
-  .hm-currency-row { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 28px; border: 1px solid var(--border); border-top: none; background: var(--bg); margin-bottom: 0; }
-  .hm-cur-btn { background: transparent; border: 1px solid var(--border-strong); padding: 7px 14px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.15s; }
-  .hm-cur-btn:hover { border-color: var(--ink); color: var(--ink); }
-  .hm-cur-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .hm-converter-box { background: var(--surface); border: 1px solid var(--border); padding: 28px; margin-bottom: 0; }
-  .hm-box-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
-  .hm-box-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
-  .hm-fields { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: end; }
-  .hm-field label { display: block; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
-  .hm-field input { width: 100%; background: var(--bg); border: 1px solid var(--border-strong); padding: 11px 14px; font-size: 17px; font-family: inherit; color: var(--ink); }
-  .hm-field input:focus { outline: none; border-color: var(--ink); }
-  .hm-sep { text-align: center; color: var(--muted-light); font-size: 16px; padding-bottom: 12px; }
-  .hm-output { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 11px 14px; font-size: 17px; font-weight: 600; color: var(--accent); min-height: 46px; display: flex; align-items: center; }
+  .hm-wrap { max-width: 540px; }
 
-/* ======= FOOTER ======= */
+  .hm-converter-box {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 18px;
+    margin-bottom: 0;
+  }
+
+  .hm-box-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hm-box-sub { font-size: 12px; color: var(--ink); opacity: 0.7; margin-bottom: 14px; }
+
+  .hm-fields { display: grid; grid-template-columns: 1fr 24px 1fr; align-items: end; }
+
+  .hm-field label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lantern);
+    margin-bottom: 4px;
+  }
+  .hm-field input {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 7px 10px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    border-radius: 0;
+  }
+  .hm-field input:focus {
+    outline: none;
+    background: rgba(179,58,31,0.06);
+    border-color: var(--lantern);
+  }
+
+  .hm-sep { text-align: center; color: var(--ink); font-size: 14px; padding-bottom: 8px; opacity: 0.6; }
+
+  .hm-output {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 7px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--lantern);
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+  }
+
+  .hm-currency-row {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 10px;
+    border: 1px solid var(--ink);
+    border-top: none;
+    background: var(--paper);
+    margin-bottom: 0;
+  }
+
+  .hm-cur-btn {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 4px 10px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: normal;
+    cursor: pointer;
+    color: var(--ink);
+    margin: 2px;
+    border-radius: 0;
+    transition: background 0.1s;
+  }
+  .hm-cur-btn:hover { background: var(--ink); color: var(--paper); }
+  .hm-cur-btn.active { background: var(--lantern); border-color: var(--lantern); color: var(--paper); }
+
+  /* ======= FOOTER ======= */
   .footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+    margin: 0;
+    padding: 14px 26px 18px;
+    border-top: 1px solid var(--ink);
+    background: var(--paper);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
-    color: var(--muted);
+    font-size: 11px;
+    color: var(--ink);
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
+
+  .footer .left { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .footer .right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; opacity: 0.85; }
+  .footer a, .footer .fake-link {
+    color: var(--lantern);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .footer a:hover { color: var(--ink); }
+
+  .footer-strip {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 26px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    border-top: 1px solid var(--ink);
+  }
+  .footer-strip span { color: var(--lantern); }
 
   #saveStatus {
     display: inline-flex;
     align-items: center;
     gap: 7px;
+    font-size: 11px;
   }
 
   #saveStatus::before {
@@ -958,36 +973,43 @@
     display: inline-block;
     width: 6px;
     height: 6px;
-    border-radius: 50%;
-    background: var(--s-pa);
+    border-radius: 0;
+    background: var(--lantern);
     flex-shrink: 0;
   }
+  #saveStatus.flash::before { animation: blink 0.9s ease-out; }
 
-  #saveStatus.flash::before { animation: pulse 1.2s ease-out; }
-
-  @keyframes pulse {
-    0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(15,110,86,0.5); }
-    50%  { transform: scale(1.5); box-shadow: 0 0 0 6px rgba(15,110,86,0); }
-    100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(15,110,86,0); }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    40% { opacity: 0.15; }
   }
 
   /* ======= TOAST ======= */
   .toast {
     position: fixed;
-    bottom: 28px;
+    bottom: 24px;
     left: 50%;
-    transform: translateX(-50%) translateY(16px);
+    transform: translateX(-50%) translateY(10px);
     background: var(--ink);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 13px;
+    color: var(--paper);
+    padding: 8px 14px;
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    font-size: 12px;
     opacity: 0;
-    transition: all 0.3s;
+    transition: all 0.25s;
     pointer-events: none;
     z-index: 100;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ======= 2003 link styling ======= */
+  a { color: var(--lantern); text-decoration: underline; }
+  a:hover { color: var(--ink); }
+
+  /* drop legacy section-color overrides everywhere by force */
+  .nav-item.active::after { display: none; }
+
 </style>
 </head>
 <body>
@@ -997,12 +1019,12 @@
   <!-- MASTHEAD -->
   <header class="masthead">
     <div class="brand">
-      <div class="brand-dot"></div>
       <div>
-        <div class="brand-name">Your Japan Journey</div>
-        <div class="brand-tag">Interactive Trip Planner</div>
+        <div class="brand-name">Minamisenju Notebook</div>
+        <div class="brand-tag">A Pocket Guide · みなみせんじゅ · Arakawa, Tokyo</div>
       </div>
     </div>
+    <div class="masthead-kanji">みなみせんじゅ</div>
     <div class="utils">
       <button class="util-btn" onclick="exportPlan()">Export</button>
       <button class="util-btn danger" onclick="resetAll()">Reset</button>
@@ -1012,12 +1034,13 @@
   <!-- NAV -->
   <nav class="nav" id="nav">
     <button class="nav-item active" data-view="dashboard"><span class="nav-num">01</span>Dashboard</button>
-    <button class="nav-item" data-view="itinerary"><span class="nav-num">02</span>Itinerary</button>
-    <button class="nav-item" data-view="howmuch"><span class="nav-num">03</span>How much?</button>
-    <button class="nav-item" data-view="jrpass"><span class="nav-num">04</span>JR Pass</button>
-    <button class="nav-item" data-view="phrases"><span class="nav-num">05</span>Phrases</button>
-    <button class="nav-item" data-view="culture"><span class="nav-num">06</span>Culture</button>
-    <button class="nav-item" data-view="packing"><span class="nav-num">07</span>Packing</button>
+    <button class="nav-item" data-view="howmuch"><span class="nav-num">02</span>How much?</button>
+    <button class="nav-item" data-view="itinerary"><span class="nav-num">03</span>Itinerary</button>
+    <button class="nav-item" data-view="hotel"><span class="nav-num">04</span>Hotel</button>
+    <button class="nav-item" data-view="map"><span class="nav-num">05</span>Map</button>
+    <button class="nav-item" data-view="phrases"><span class="nav-num">06</span>Phrases</button>
+    <button class="nav-item" data-view="culture"><span class="nav-num">07</span>Culture</button>
+    <button class="nav-item" data-view="packing"><span class="nav-num">08</span>Packing</button>
   </nav>
 
   <!-- DASHBOARD -->
@@ -1063,49 +1086,56 @@
 
     <!-- Section tiles -->
     <div class="tile-grid">
-      <button class="section-tile tile-it" onclick="goTo('itinerary')">
-        <span class="tile-num">02</span>
-        <span class="tile-name">Itinerary</span>
-        <span class="tile-desc">Cities, days &amp; notes</span>
-      </button>
       <button class="section-tile tile-hm" onclick="goTo('howmuch')">
-        <span class="tile-num">03</span>
+        <span class="tile-num">02</span>
         <span class="tile-name">How much?</span>
-        <span class="tile-desc">Live currency converter</span>
+        <span class="tile-desc">Yen, in your own money</span>
       </button>
-            <button class="section-tile tile-jr" onclick="goTo('jrpass')">
+      <button class="section-tile tile-it" onclick="goTo('itinerary')">
+        <span class="tile-num">03</span>
+        <span class="tile-name">Itinerary</span>
+        <span class="tile-desc">Spots, days &amp; notes</span>
+      </button>
+      <button class="section-tile tile-ho" onclick="goTo('hotel')">
         <span class="tile-num">04</span>
-        <span class="tile-name">JR Pass</span>
-        <span class="tile-desc">Is it worth it?</span>
+        <span class="tile-name">Hotel</span>
+        <span class="tile-desc">Where to sleep cheap</span>
+      </button>
+      <button class="section-tile tile-mp" onclick="goTo('map')">
+        <span class="tile-num">05</span>
+        <span class="tile-name">Map</span>
+        <span class="tile-desc">Around the neighborhood</span>
       </button>
       <button class="section-tile tile-ph" onclick="goTo('phrases')">
-        <span class="tile-num">05</span>
+        <span class="tile-num">06</span>
         <span class="tile-name">Phrases</span>
-        <span class="tile-desc">Key Japanese phrases</span>
+        <span class="tile-desc">Words for the shopkeeper</span>
       </button>
       <button class="section-tile tile-cu" onclick="goTo('culture')">
-        <span class="tile-num">06</span>
+        <span class="tile-num">07</span>
         <span class="tile-name">Culture</span>
-        <span class="tile-desc">Etiquette &amp; customs</span>
+        <span class="tile-desc">Shitamachi etiquette</span>
       </button>
       <button class="section-tile tile-pa" onclick="goTo('packing')">
-        <span class="tile-num">07</span>
+        <span class="tile-num">08</span>
         <span class="tile-name">Packing</span>
         <span class="tile-desc">Seasonal checklist</span>
       </button>
     </div>
 
     <div class="card">
-      <div class="card-title">How to use this planner</div>
-      <div class="card-sub">Work through the sections in order, or jump to what you need.</div>
-      <ol style="padding-left: 20px; color: var(--ink-soft); line-height: 1.9; font-size: 15px;">
-        <li><strong>Itinerary</strong> &mdash; Add the cities you're visiting. Assign nights. Keep notes.</li>
-        <li><strong>JR Pass</strong> &mdash; Add your planned train routes. The calculator tells you if the pass pays off.</li>
-        <li><strong>Phrases</strong> &mdash; The 40 phrases that carry you through 90% of situations.</li>
-        <li><strong>Culture</strong> &mdash; The unwritten rules. Small things that make a huge difference.</li>
-        <li><strong>Packing</strong> &mdash; Seasonal checklists. Japan-specific items most guides forget.</li>
+      <div class="card-title">How to use this notebook</div>
+      <div class="card-sub">A small shitamachi neighborhood in northeast Tokyo, a few stops from Asakusa. Old Tokyo. Cheap rooms, quiet streets, the river. Work through the sections in order, or jump to what you need.</div>
+      <ol style="padding-left: 20px; color: var(--ink); line-height: 1.85; font-size: 13px;">
+        <li><strong>How much?</strong> &mdash; Live yen converter. See what a bowl of ramen, a capsule bed, or a bus ride actually costs in your own money.</li>
+        <li><strong>Itinerary</strong> &mdash; Pick the spots in and around Minamisenju. Assign days. Keep notes.</li>
+        <li><strong>Hotel</strong> &mdash; Where to sleep. Capsules, business hotels, and the cheap rooms this neighborhood is famous for.</li>
+        <li><strong>Map</strong> &mdash; A simple sketch of the area. Station, river, the streets that matter.</li>
+        <li><strong>Phrases</strong> &mdash; A handful of phrases for shopkeepers, station staff, and the small bars on Joyfull Minowa.</li>
+        <li><strong>Culture</strong> &mdash; Shitamachi etiquette. Small things that make a real difference around here.</li>
+        <li><strong>Packing</strong> &mdash; Seasonal checklist. Tokyo-specific items most guides forget.</li>
       </ol>
-      <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">Everything saves automatically in your browser. Use <strong>Export</strong> to download a copy.</p>
+      <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7;">Everything saves automatically in your browser. Use <strong>Export</strong> to download a copy.</p>
     </div>
 
   </section>
@@ -1113,7 +1143,7 @@
   <!-- ITINERARY -->
   <section class="view" id="itinerary">
     <div class="view-header">
-      <div class="section-badge badge-it">02 &mdash; Itinerary</div>
+      <div class="section-badge badge-it">03 &mdash; Itinerary</div>
       <h1 class="view-title">Where will you <em>actually</em> go?</h1>
       <p class="view-lede">The rule of thumb: three nights minimum per city, or don't bother. Japan rewards slowness. One unhurried afternoon in a Kyoto backstreet is worth three rushed temple visits.</p>
     </div>
@@ -1190,62 +1220,184 @@
     </div>
   </section>
 
-
-
-  <!-- JR PASS -->
-  <section class="view" id="jrpass">
+  <!-- HOTEL -->
+  <section class="view" id="hotel">
     <div class="view-header">
-      <div class="section-badge badge-jr">04 &mdash; JR Pass</div>
-      <h1 class="view-title">Does the JR Pass <em>actually</em> pay off?</h1>
-      <p class="view-lede">Since the 2023 price hike, the answer is "usually no" unless you're moving a lot. Add your planned intercity routes below. The calculator compares your total fare against the pass price &mdash; no wishful thinking.</p>
+      <div class="section-badge">04 &mdash; Hotel</div>
+      <h1 class="view-title">A neighborhood built for the <em>thrifty traveler.</em></h1>
+      <p class="view-lede">Minamisenju is famous in Tokyo for one thing: cheap, decent rooms. The streets between the station and the river hold capsule hotels and budget business hotels at prices the rest of the city forgot. A bed for the night, an early train in the morning. That's the deal.</p>
     </div>
 
     <div class="card">
-      <div class="card-title">Add planned intercity trains</div>
-      <div class="card-sub">Rough one-way Shinkansen fares (reserved seat, ordinary car). Adjust if you already know exact prices.</div>
+      <div class="card-title">What you'll find here</div>
+      <div class="card-sub">A rough guide to the kinds of rooms in Minamisenju — what to expect, and what they cost per night.</div>
 
-      <div id="routeList" style="margin-bottom: 18px;"></div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px;">
+        <thead>
+          <tr style="background: var(--ink); color: var(--paper);">
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal;">Room type</th>
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal;">What it's like</th>
+            <th style="padding: 8px 10px; text-align: right; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal; white-space: nowrap;">¥ / night</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--ink);">
+            <td style="padding: 10px 10px; vertical-align: top;"><strong>Capsule hotel</strong><br><span style="font-size: 11px; opacity: 0.7;">Solo, men-only common</span></td>
+            <td style="padding: 10px 10px; vertical-align: top;">A bed-sized pod with a curtain. Shared bath, shared lockers. Quiet rules.</td>
+            <td style="padding: 10px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold;">¥2,800–4,500</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--ink);">
+            <td style="padding: 10px 10px; vertical-align: top;"><strong>Budget business hotel</strong><br><span style="font-size: 11px; opacity: 0.7;">Solo or couples</span></td>
+            <td style="padding: 10px 10px; vertical-align: top;">A small private room. Tiny bathroom. TV from the late nineties. Always clean.</td>
+            <td style="padding: 10px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold;">¥4,500–7,500</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--ink);">
+            <td style="padding: 10px 10px; vertical-align: top;"><strong>Backpacker hostel</strong><br><span style="font-size: 11px; opacity: 0.7;">Dorm or private</span></td>
+            <td style="padding: 10px 10px; vertical-align: top;">Mixed-language crowd, common kitchen, sometimes a small bar downstairs.</td>
+            <td style="padding: 10px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold;">¥2,500–6,000</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 10px; vertical-align: top;"><strong>Mid-range hotel</strong><br><span style="font-size: 11px; opacity: 0.7;">Couples / families</span></td>
+            <td style="padding: 10px 10px; vertical-align: top;">A real double bed. A real desk. Same chain hotels as anywhere else, just cheaper here.</td>
+            <td style="padding: 10px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold;">¥7,500–12,000</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div class="route-grid">
-        <input type="text" id="routeName" placeholder="e.g. Tokyo &rarr; Kyoto">
-        <input type="number" id="routeCost" placeholder="14000" min="0">
-        <button class="primary" onclick="addRoute()">Add</button>
-      </div>
-
-      <p style="font-size: 12px; color: var(--muted); margin-top: 14px; line-height: 1.6;">
-        <strong style="color: var(--ink-soft);">Common fares (one-way, approx.):</strong><br>
-        Tokyo&harr;Kyoto ~&#165;14,000 &middot; Tokyo&harr;Osaka ~&#165;14,500 &middot; Tokyo&harr;Hiroshima ~&#165;19,000 &middot; Kyoto&harr;Hiroshima ~&#165;11,500 &middot; Tokyo&harr;Hakata (Fukuoka) ~&#165;23,000 &middot; Kyoto&harr;Kanazawa ~&#165;7,000
+      <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7; line-height: 1.6;">
+        <strong style="color: var(--lantern); opacity: 1;">Worth knowing:</strong> Walk-ins still work at most capsule hotels. Business hotels are easier to book online (Rakuten Travel, Booking.com). Cash is normal. Many budget places ask you to vacate the room mid-day for cleaning and let you back in around 4 PM.
       </p>
     </div>
 
     <div class="card">
-      <div class="card-title">Pick a JR Pass length</div>
-      <div class="field-row cols-3">
+      <div class="card-title">Your booking</div>
+      <div class="card-sub">Notes for the room you've picked. Useful at the front desk.</div>
+      <div class="field-row cols-2">
         <div>
-          <label>Pass duration</label>
-          <select id="passType" onchange="updateJR()">
-            <option value="50000">7 days &mdash; &#165;50,000</option>
-            <option value="80000">14 days &mdash; &#165;80,000</option>
-            <option value="100000">21 days &mdash; &#165;100,000</option>
-          </select>
+          <label>Hotel name</label>
+          <input type="text" id="hotelName" placeholder="e.g. Capsule &amp; Sauna Century" oninput="save()">
+        </div>
+        <div>
+          <label>Check-in date</label>
+          <input type="text" id="hotelCheckIn" placeholder="e.g. April 14" oninput="save()">
         </div>
       </div>
+      <div class="field-row cols-2">
+        <div>
+          <label>Nights</label>
+          <input type="number" id="hotelNights" min="1" max="60" placeholder="3" oninput="save()">
+        </div>
+        <div>
+          <label>Price per night (¥)</label>
+          <input type="number" id="hotelPrice" min="0" placeholder="3500" oninput="save()">
+        </div>
+      </div>
+      <div>
+        <label>Notes</label>
+        <textarea id="hotelNotes" placeholder="Walk from the station, check-in time, anything you want to remember." oninput="save()"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="view" id="map">
+    <div class="view-header">
+      <div class="section-badge">05 &mdash; Map</div>
+      <h1 class="view-title">Around the <em>neighborhood.</em></h1>
+      <p class="view-lede">Not a real map — a sketch. The station, the river, the streets that matter. Minamisenju is small enough to walk in an afternoon.</p>
     </div>
 
-    <div class="verdict" id="jrVerdict">
-      <div class="verdict-label">Verdict</div>
-      <div class="verdict-headline">Add routes above to see if the pass <em>is worth it.</em></div>
-    </div>
+    <div class="card" style="padding: 14px;">
+      <svg viewBox="0 0 700 460" style="width: 100%; height: auto; display: block; background: var(--paper); border: 1px solid var(--ink);" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand-drawn schematic of Minamisenju showing the station, Sumida river, and key spots.">
+        <defs>
+          <pattern id="dashH" width="6" height="2" patternUnits="userSpaceOnUse">
+            <path d="M0 1 L6 1" stroke="#2B1E12" stroke-width="0.6"/>
+          </pattern>
+        </defs>
 
-    <p style="margin-top: 22px; font-size: 13px; color: var(--muted); line-height: 1.65;">
-      <strong style="color: var(--ink-soft);">Remember:</strong> The nationwide JR Pass doesn't cover the Nozomi or Mizuho (the fastest trains) &mdash; you'll ride Hikari or Sakura instead, which are only slightly slower. Regional passes (JR East, JR West Kansai) are often the sweet spot if you're staying in one area.
-    </p>
+        <!-- Sumida river: wavy band along the bottom -->
+        <path d="M 0 380 Q 80 372, 160 380 T 320 380 T 480 380 T 640 380 T 700 380 L 700 460 L 0 460 Z"
+              fill="url(#dashH)" stroke="#2B1E12" stroke-width="1.2"/>
+        <text x="500" y="430" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#2B1E12">Sumida river</text>
+
+        <!-- Streets: simple grid -->
+        <line x1="0"   y1="180" x2="700" y2="180" stroke="#2B1E12" stroke-width="1"/>
+        <line x1="0"   y1="280" x2="700" y2="280" stroke="#2B1E12" stroke-width="1"/>
+        <line x1="180" y1="20"  x2="180" y2="380" stroke="#2B1E12" stroke-width="1"/>
+        <line x1="380" y1="20"  x2="380" y2="380" stroke="#2B1E12" stroke-width="1"/>
+        <line x1="540" y1="20"  x2="540" y2="380" stroke="#2B1E12" stroke-width="1"/>
+
+        <!-- Joban / Hibiya railway line -->
+        <line x1="0" y1="100" x2="700" y2="100" stroke="#2B1E12" stroke-width="1.6" stroke-dasharray="14 6"/>
+        <text x="14" y="92" font-family="Verdana, sans-serif" font-size="10" letter-spacing="2" fill="#2B1E12">JOBAN / HIBIYA LINE</text>
+
+        <!-- Station block -->
+        <rect x="285" y="80" width="100" height="42" fill="#EFE6D2" stroke="#2B1E12" stroke-width="1.4"/>
+        <text x="335" y="105" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2B1E12">Minamisenju</text>
+        <text x="335" y="118" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" letter-spacing="1.5" fill="#2B1E12">STATION</text>
+
+        <!-- Pin: capsule hotel -->
+        <circle cx="120" cy="220" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="120" y="208" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">A</text>
+        <text x="50"  y="248" font-family="Georgia, serif" font-size="13" fill="#2B1E12">capsule row</text>
+
+        <!-- Pin: yokocho / small bars -->
+        <circle cx="240" cy="240" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="240" y="228" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">B</text>
+        <text x="200" y="268" font-family="Georgia, serif" font-size="13" fill="#2B1E12">yokocho lane</text>
+
+        <!-- Pin: Joyfull Minowa shopping street -->
+        <circle cx="450" cy="220" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="450" y="208" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">C</text>
+        <text x="400" y="248" font-family="Georgia, serif" font-size="13" fill="#2B1E12">Joyfull Minowa</text>
+
+        <!-- Pin: cherry trees -->
+        <circle cx="600" cy="335" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="600" y="323" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">D</text>
+        <text x="540" y="362" font-family="Georgia, serif" font-size="13" fill="#2B1E12">cherry trees</text>
+
+        <!-- Pin: Asakusa direction -->
+        <text x="660" y="158" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="12" fill="#B33A1F">→ Asakusa</text>
+
+        <!-- Compass -->
+        <g transform="translate(40,40)">
+          <circle cx="0" cy="0" r="22" fill="none" stroke="#2B1E12" stroke-width="1"/>
+          <line x1="0" y1="-22" x2="0" y2="22" stroke="#2B1E12" stroke-width="1"/>
+          <line x1="-22" y1="0" x2="22" y2="0" stroke="#2B1E12" stroke-width="0.6"/>
+          <text x="0" y="-26" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#B33A1F">N</text>
+        </g>
+
+        <!-- Title hand-written -->
+        <text x="350" y="34" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="16" fill="#2B1E12">a sketch of the neighborhood</text>
+      </svg>
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px;">
+        <tbody>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; width: 32px; color: var(--lantern); font-weight: bold;">A</td>
+            <td style="padding: 8px 10px;"><strong>Capsule row.</strong> The cluster of capsule hotels and budget rooms, two minutes' walk west of the station.</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">B</td>
+            <td style="padding: 8px 10px;"><strong>Yokocho lane.</strong> A short alley of red-lantern bars and shōchū joints. Cheap dinners, locals, a few too many beers.</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">C</td>
+            <td style="padding: 8px 10px;"><strong>Joyfull Minowa.</strong> The covered shopping street. Cheap noodles, household goods, an old camera shop, a still-running barber.</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">D</td>
+            <td style="padding: 8px 10px;"><strong>Cherry trees on the river.</strong> The bend in the Sumida where the trees lean over the water. Late March, early April. Bring a camera.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- PHRASES -->
   <section class="view" id="phrases">
     <div class="view-header">
-      <div class="section-badge badge-ph">05 &mdash; Phrases</div>
+      <div class="section-badge badge-ph">06 &mdash; Phrases</div>
       <h1 class="view-title">Forty phrases that <em>carry you through.</em></h1>
       <p class="view-lede">English gets you surprisingly far in Tokyo and Kyoto. Everywhere else, these phrases are the difference between a good day and a frustrating one. Don't worry about pronunciation perfection &mdash; effort alone wins enormous goodwill.</p>
     </div>
@@ -1261,7 +1413,7 @@
         <div class="phrase"><div class="phrase-jp">こんばんは</div><div class="phrase-romaji">Konbanwa</div><div class="phrase-en">Good evening</div></div>
         <div class="phrase"><div class="phrase-jp">ありがとうございます</div><div class="phrase-romaji">Arigatō gozaimasu</div><div class="phrase-en">Thank you (formal &mdash; use this one)</div></div>
         <div class="phrase"><div class="phrase-jp">すみません</div><div class="phrase-romaji">Sumimasen</div><div class="phrase-en">Excuse me / sorry / thank you (all-purpose)</div><div class="phrase-note">The most useful word in Japanese. Learn this one first.</div></div>
-        <div class="phrase"><div class="phrase-jp">お願いします</div><div class="phrase-romaji">Onegai shimasu</div><div class="phrase-en">Please / I'd like to ask a favor</div></div>
+        <div class="phrase"><div class="phrase-jp">おねがいします</div><div class="phrase-romaji">Onegai shimasu</div><div class="phrase-en">Please / I'd like to ask a favor</div></div>
       </div>
     </div>
 
@@ -1273,10 +1425,10 @@
       <div class="phrase-list">
         <div class="phrase"><div class="phrase-jp">はい</div><div class="phrase-romaji">Hai</div><div class="phrase-en">Yes</div></div>
         <div class="phrase"><div class="phrase-jp">いいえ</div><div class="phrase-romaji">Iie</div><div class="phrase-en">No (but often softened &mdash; prefer "chotto...")</div></div>
-        <div class="phrase"><div class="phrase-jp">大丈夫です</div><div class="phrase-romaji">Daij&#333;bu desu</div><div class="phrase-en">It's okay / I'm fine / no problem</div></div>
+        <div class="phrase"><div class="phrase-jp">だいじょうぶです</div><div class="phrase-romaji">Daij&#333;bu desu</div><div class="phrase-en">It's okay / I'm fine / no problem</div></div>
         <div class="phrase"><div class="phrase-jp">わかりません</div><div class="phrase-romaji">Wakarimasen</div><div class="phrase-en">I don't understand</div></div>
-        <div class="phrase"><div class="phrase-jp">英語を話せますか</div><div class="phrase-romaji">Eigo o hanasemasu ka?</div><div class="phrase-en">Do you speak English?</div></div>
-        <div class="phrase"><div class="phrase-jp">ゆっくりお願いします</div><div class="phrase-romaji">Yukkuri onegai shimasu</div><div class="phrase-en">Slowly, please</div></div>
+        <div class="phrase"><div class="phrase-jp">えいごをはなせますか</div><div class="phrase-romaji">Eigo o hanasemasu ka?</div><div class="phrase-en">Do you speak English?</div></div>
+        <div class="phrase"><div class="phrase-jp">ゆっくりおねがいします</div><div class="phrase-romaji">Yukkuri onegai shimasu</div><div class="phrase-en">Slowly, please</div></div>
       </div>
     </div>
 
@@ -1288,11 +1440,11 @@
       <div class="phrase-list">
         <div class="phrase"><div class="phrase-jp">いただきます</div><div class="phrase-romaji">Itadakimasu</div><div class="phrase-en">Said before eating &mdash; "I humbly receive"</div></div>
         <div class="phrase"><div class="phrase-jp">ごちそうさまでした</div><div class="phrase-romaji">Gochis&#333;sama deshita</div><div class="phrase-en">Said after eating &mdash; "thank you for the meal"</div></div>
-        <div class="phrase"><div class="phrase-jp">美味しい</div><div class="phrase-romaji">Oishii</div><div class="phrase-en">Delicious</div></div>
+        <div class="phrase"><div class="phrase-jp">おいしい</div><div class="phrase-romaji">Oishii</div><div class="phrase-en">Delicious</div></div>
         <div class="phrase"><div class="phrase-jp">いくらですか</div><div class="phrase-romaji">Ikura desu ka?</div><div class="phrase-en">How much is it?</div></div>
         <div class="phrase"><div class="phrase-jp">これください</div><div class="phrase-romaji">Kore kudasai</div><div class="phrase-en">This one, please (while pointing)</div></div>
-        <div class="phrase"><div class="phrase-jp">お水ください</div><div class="phrase-romaji">O-mizu kudasai</div><div class="phrase-en">Water, please</div></div>
-        <div class="phrase"><div class="phrase-jp">お会計お願いします</div><div class="phrase-romaji">O-kaikei onegai shimasu</div><div class="phrase-en">The bill, please</div></div>
+        <div class="phrase"><div class="phrase-jp">おみずください</div><div class="phrase-romaji">O-mizu kudasai</div><div class="phrase-en">Water, please</div></div>
+        <div class="phrase"><div class="phrase-jp">おかいけいおねがいします</div><div class="phrase-romaji">O-kaikei onegai shimasu</div><div class="phrase-en">The bill, please</div></div>
         <div class="phrase"><div class="phrase-jp">アレルギーがあります</div><div class="phrase-romaji">Arerugī ga arimasu</div><div class="phrase-en">I have an allergy (add the allergen)</div></div>
       </div>
     </div>
@@ -1303,7 +1455,7 @@
         <span class="phrase-cat-title">Getting Around</span>
       </div>
       <div class="phrase-list">
-        <div class="phrase"><div class="phrase-jp">駅はどこですか</div><div class="phrase-romaji">Eki wa doko desu ka?</div><div class="phrase-en">Where is the station?</div></div>
+        <div class="phrase"><div class="phrase-jp">えきはどこですか</div><div class="phrase-romaji">Eki wa doko desu ka?</div><div class="phrase-en">Where is the station?</div></div>
         <div class="phrase"><div class="phrase-jp">トイレはどこですか</div><div class="phrase-romaji">Toire wa doko desu ka?</div><div class="phrase-en">Where is the toilet?</div></div>
         <div class="phrase"><div class="phrase-jp">きっぷ</div><div class="phrase-romaji">Kippu</div><div class="phrase-en">Ticket</div></div>
         <div class="phrase"><div class="phrase-jp">みぎ / ひだり / まっすぐ</div><div class="phrase-romaji">Migi / Hidari / Massugu</div><div class="phrase-en">Right / Left / Straight ahead</div></div>
@@ -1330,7 +1482,7 @@
   <!-- CULTURE -->
   <section class="view" id="culture">
     <div class="view-header">
-      <div class="section-badge badge-cu">06 &mdash; Culture</div>
+      <div class="section-badge badge-cu">07 &mdash; Culture</div>
       <h1 class="view-title">Small things, <em>huge difference.</em></h1>
       <p class="view-lede">Japanese hospitality is extraordinary &mdash; and mostly one-directional. No one will correct you. They'll smile, accommodate, and quietly note the breach. Get these right and you'll be treated like someone who cared enough to try.</p>
     </div>
@@ -1409,7 +1561,7 @@
   <!-- PACKING -->
   <section class="view" id="packing">
     <div class="view-header">
-      <div class="section-badge badge-pa">07 &mdash; Packing</div>
+      <div class="section-badge badge-pa">08 &mdash; Packing</div>
       <h1 class="view-title">Pack for the Japan <em>you'll actually meet.</em></h1>
       <p class="view-lede">Two truths: you'll walk more than you think (15&ndash;25km days are normal), and Japan has everything you forgot. Still, a few things are genuinely worth bringing from home.</p>
     </div>
@@ -1447,9 +1599,18 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div>Safe travels &mdash; ii tabi o (いい旅を)</div>
-    <div id="saveStatus">All changes saved locally</div>
+    <div class="left">
+      <div>Last modified: April 25, 2026</div>
+      <div id="saveStatus">All changes saved locally</div>
+    </div>
+    <div class="right">
+      <span class="fake-link" onclick="alert('The guestbook is currently being moved to a new server. Please check back next week.\\n\\n— The Webmaster')">[ Sign Guestbook ]</span>
+      <span class="fake-link" onclick="alert('Page views since March 2003: 0014862')">[ Hit Counter ]</span>
+    </div>
   </footer>
+  <div class="footer-strip">
+    Best viewed on any browser &nbsp;·&nbsp; <span>みなみせんじゅ</span> &nbsp;·&nbsp; Made with care &amp; HTML
+  </div>
 
 </div>
 
@@ -1577,9 +1738,12 @@ const DEFAULT_STATE = {
     shopping: 3000,
     misc: 1000
   },
-  jrPass: {
-    type: 50000,
-    routes: []
+  hotel: {
+    name: '',
+    checkIn: '',
+    nights: '',
+    price: '',
+    notes: ''
   },
   packing: {
     season: 'spring',
@@ -1594,11 +1758,18 @@ function save() {
     state.travelerName = document.getElementById('travelerName').value;
     state.tripLength = parseInt(document.getElementById('tripLength').value) || 14;
     state.tripDates = document.getElementById('tripDates').value;
-    state.jrPass.type = parseInt(document.getElementById('passType').value);
-
     document.querySelectorAll('.budget-input').forEach(inp => {
       state.budget[inp.dataset.key] = parseInt(inp.value) || 0;
     });
+
+    const hn = document.getElementById('hotelName');
+    if (hn) {
+      state.hotel.name = hn.value;
+      state.hotel.checkIn = document.getElementById('hotelCheckIn').value;
+      state.hotel.nights = document.getElementById('hotelNights').value;
+      state.hotel.price = document.getElementById('hotelPrice').value;
+      state.hotel.notes = document.getElementById('hotelNotes').value;
+    }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     flashSaved();
@@ -1612,7 +1783,7 @@ function load() {
     const parsed = JSON.parse(raw);
     state = { ...DEFAULT_STATE, ...parsed };
     state.budget = { ...DEFAULT_STATE.budget, ...(parsed.budget || {}) };
-    state.jrPass = { ...DEFAULT_STATE.jrPass, ...(parsed.jrPass || {}) };
+    state.hotel = { ...DEFAULT_STATE.hotel, ...(parsed.hotel || {}) };
     state.packing = { ...DEFAULT_STATE.packing, ...(parsed.packing || {}) };
   } catch (e) {}
 }
@@ -1727,74 +1898,6 @@ function calculateBudget() {
   document.getElementById('budgetPerDayUsd').textContent = '~$' + dailyUsd;
 
   return { daily: dailyTotal, total: tripTotal };
-}
-
-/* =========================================
-   JR PASS
-   ========================================= */
-function addRoute() {
-  const name = document.getElementById('routeName').value.trim();
-  const cost = parseInt(document.getElementById('routeCost').value) || 0;
-  if (!name || cost <= 0) { toast('Add a route name and cost'); return; }
-
-  state.jrPass.routes.push({ id: Date.now(), name, cost });
-  document.getElementById('routeName').value = '';
-  document.getElementById('routeCost').value = '';
-  renderRoutes();
-  updateJR();
-  save();
-}
-
-function removeRoute(id) {
-  state.jrPass.routes = state.jrPass.routes.filter(r => r.id !== id);
-  renderRoutes();
-  updateJR();
-  save();
-}
-
-function renderRoutes() {
-  const container = document.getElementById('routeList');
-  if (state.jrPass.routes.length === 0) {
-    container.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:10px 0;">No routes yet.</p>';
-    return;
-  }
-  container.innerHTML = state.jrPass.routes.map(r => `
-    <div class="route-grid">
-      <div style="padding:8px 0;">${escapeHtml(r.name)}</div>
-      <div style="padding:8px 0;color:var(--ink-soft);">\u00a5${r.cost.toLocaleString()}</div>
-      <button class="tiny" onclick="removeRoute(${r.id})">\u00d7</button>
-    </div>
-  `).join('');
-}
-
-function updateJR() {
-  const passPrice = parseInt(document.getElementById('passType').value);
-  state.jrPass.type = passPrice;
-  const routeTotal = state.jrPass.routes.reduce((sum, r) => sum + r.cost, 0);
-  const diff = routeTotal - passPrice;
-  const verdict = document.getElementById('jrVerdict');
-
-  if (state.jrPass.routes.length === 0) {
-    verdict.className = 'verdict';
-    verdict.innerHTML = `
-      <div class="verdict-label">Verdict</div>
-      <div class="verdict-headline">Add routes above to see if the pass <em>is worth it.</em></div>`;
-    return;
-  }
-
-  if (diff > 0) {
-    verdict.className = 'verdict worth-it';
-    verdict.innerHTML = `
-      <div class="verdict-label">Verdict</div>
-      <div class="verdict-headline">The pass <em>pays off.</em></div>
-      <div class="verdict-detail">Your routes would cost <strong>\u00a5${routeTotal.toLocaleString()}</strong> \u00e0 la carte. The \u00a5${passPrice.toLocaleString()} pass saves you <strong>\u00a5${diff.toLocaleString()}</strong> (~$${Math.round(diff/150)}).</div>`;
-  } else {
-    verdict.className = 'verdict not-worth';
-    verdict.innerHTML = `
-      <div class="verdict-label">Verdict</div>
-      <div class="verdict-headline">Skip the pass \u2014 <em>buy tickets individually.</em></div>
-      <div class="verdict-detail">Your routes total <strong>\u00a5${routeTotal.toLocaleString()}</strong>. The \u00a5${passPrice.toLocaleString()} pass would cost <strong>\u00a5${Math.abs(diff).toLocaleString()}</strong> more. Consider a regional pass if you're staying in one area.</div>`;
-  }
 }
 
 /* =========================================
@@ -1964,20 +2067,25 @@ function hydrate() {
   document.getElementById('travelerName').value = state.travelerName || '';
   document.getElementById('tripLength').value = state.tripLength || 14;
   document.getElementById('tripDates').value = state.tripDates || '';
-  document.getElementById('passType').value = state.jrPass.type || 50000;
-
   document.querySelectorAll('.budget-input').forEach(inp => {
     inp.value = state.budget[inp.dataset.key] || 0;
   });
+
+  const hn = document.getElementById('hotelName');
+  if (hn) {
+    hn.value = state.hotel.name || '';
+    document.getElementById('hotelCheckIn').value = state.hotel.checkIn || '';
+    document.getElementById('hotelNights').value = state.hotel.nights || '';
+    document.getElementById('hotelPrice').value = state.hotel.price || '';
+    document.getElementById('hotelNotes').value = state.hotel.notes || '';
+  }
 
   document.querySelectorAll('.season-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.season === state.packing.season);
   });
 
   renderCities();
-  renderRoutes();
   renderPacking();
-  updateJR();
   updateAll();
 }
 
