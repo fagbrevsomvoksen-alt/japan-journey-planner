@@ -914,51 +914,37 @@
     line-height: 1.55;
   }
 
-  /* ======= QUOTE ======= */
-  .quote {
-    font-style: italic;
-    font-size: 20px;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    padding: 24px 0;
-    max-width: 580px;
-    border-left: 3px solid var(--border-strong);
-    padding-left: 20px;
-    margin: 24px 0;
-  }
-
-  .quote::before { content: '\201C'; color: var(--accent); }
-  .quote::after  { content: '\201D'; color: var(--accent); }
-  .quote-attr { font-size: 12px; color: var(--muted); font-style: normal; margin-top: 8px; display: block; }
+  
 
 
   /* ======= HOW MUCH ======= */
-  .hm-top { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-  @media (max-width: 600px) { .hm-top { grid-template-columns: 1fr; } }
-  .hm-rate-box { background: var(--ink); color: #fff; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .hm-rate-label { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 4px; }
-  .hm-rate-value { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-  .hm-rate-sub { font-size: 12px; color: var(--muted-light); margin-top: 4px; }
-  .hm-rate-refresh { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); padding: 7px 12px; font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.15s; }
-  .hm-rate-refresh:hover { border-color: rgba(255,255,255,0.7); color: #fff; }
-  .hm-converter { background: var(--surface); border: 1px solid var(--border); padding: 20px 24px; }
-  .hm-converter-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: end; margin-top: 12px; }
-  .hm-arrow { font-size: 18px; color: var(--muted-light); padding-bottom: 10px; text-align: center; }
-  .hm-result { font-size: 22px; font-weight: 600; color: var(--accent); padding: 10px 12px; border: 1px solid var(--border); background: var(--bg); letter-spacing: -0.01em; min-height: 44px; display: flex; align-items: center; }
+  .hm-wrap { max-width: 560px; }
+  .hm-currency-row { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 28px; border: 1px solid var(--border); border-top: none; background: var(--bg); margin-bottom: 10px; }
+  .hm-cur-btn { background: transparent; border: 1px solid var(--border-strong); padding: 7px 14px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.15s; }
+  .hm-cur-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .hm-cur-btn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .hm-converter-box { background: var(--surface); border: 1px solid var(--border); padding: 28px; margin-bottom: 0; }
+  .hm-box-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .hm-box-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+  .hm-fields { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: end; }
+  .hm-field label { display: block; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+  .hm-field input { width: 100%; background: var(--bg); border: 1px solid var(--border-strong); padding: 11px 14px; font-size: 17px; font-family: inherit; color: var(--ink); }
+  .hm-field input:focus { outline: none; border-color: var(--ink); }
+  .hm-sep { text-align: center; color: var(--muted-light); font-size: 16px; padding-bottom: 12px; }
+  .hm-output { width: 100%; background: var(--bg); border: 1px solid var(--border); padding: 11px 14px; font-size: 17px; font-weight: 600; color: var(--accent); min-height: 46px; display: flex; align-items: center; }
+  .hm-rate-line { font-size: 12px; color: var(--muted); margin-top: 10px; margin-bottom: 28px; }
+  .hm-rate-line span { color: var(--ink-soft); font-weight: 500; }
   .hm-table { width: 100%; border-collapse: collapse; }
-  .hm-table thead th { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 8px 12px; border-bottom: 1.5px solid var(--border); text-align: left; }
+  .hm-table thead th { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 8px 0; border-bottom: 1.5px solid var(--border); text-align: left; }
   .hm-table thead th:last-child { text-align: right; }
   .hm-table tbody tr { border-bottom: 1px solid var(--border); }
   .hm-table tbody tr:last-child { border-bottom: none; }
-  .hm-table tbody tr:hover { background: var(--bg); }
-  .hm-table td { padding: 10px 12px; font-size: 14px; vertical-align: middle; }
-  .hm-table td:nth-child(2) { color: var(--muted); font-size: 13px; }
-  .hm-table td:last-child { text-align: right; font-weight: 600; color: var(--accent); font-size: 15px; }
-  .hm-cat-row td { background: var(--bg); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 6px 12px; }
-  .hm-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-  .hm-status { font-size: 12px; color: var(--muted); }
+  .hm-table td { padding: 10px 0; font-size: 14px; }
+  .hm-table td:nth-child(2) { color: var(--muted); font-size: 13px; text-align: right; padding-right: 16px; }
+  .hm-table td:last-child { text-align: right; font-weight: 600; color: var(--accent); }
+  .hm-cat-row td { padding: 14px 0 5px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
 
-  /* ======= FOOTER ======= */
+/* ======= FOOTER ======= */
   .footer {
     margin-top: 64px;
     padding-top: 24px;
@@ -1188,70 +1174,52 @@
     <div class="view-header">
       <div class="section-badge badge-it">03 &mdash; How much?</div>
       <h1 class="view-title">What does Japan <em>actually cost?</em></h1>
-      <p class="view-lede">Real prices in Japanese yen &mdash; converted to your currency with a live exchange rate. Tap Refresh to get the latest rate.</p>
+      <p class="view-lede">Real Japanese prices converted to your currency &mdash; live exchange rate.</p>
     </div>
 
-    <div class="hm-top">
-      <div class="hm-rate-box">
-        <div>
-          <div class="hm-rate-label">Live rate</div>
-          <div class="hm-rate-value" id="hmRateValue">&#8212;</div>
-          <div class="hm-rate-sub" id="hmRateSub">per 1,000 yen</div>
-        </div>
-        <button class="hm-rate-refresh" onclick="fetchRate()">&#8635; Refresh</button>
-      </div>
-
-      <div class="hm-converter">
-        <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;">Quick converter</div>
-        <div style="font-size:12px;color:var(--muted);">Type any yen amount below</div>
-        <div class="hm-converter-row">
-          <div>
+    <div class="hm-wrap">
+      <div class="hm-converter-box">
+        <div class="hm-box-title">Quick converter</div>
+        <div class="hm-box-sub">Type any yen amount below</div>
+        <div class="hm-fields">
+          <div class="hm-field">
             <label>Yen (&#165;)</label>
             <input type="number" id="hmYenInput" placeholder="e.g. 1000" oninput="convertYen()">
           </div>
-          <div class="hm-arrow">&#8594;</div>
-          <div>
-            <label id="hmResultLabel">Amount</label>
-            <div class="hm-result" id="hmResultValue">&#8212;</div>
+          <div class="hm-sep">&#8594;</div>
+          <div class="hm-field">
+            <label id="hmResultLabel">USD</label>
+            <div class="hm-output" id="hmResultValue">&#8212;</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="hm-controls">
-      <label style="display:inline;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink-soft);">Show prices in</label>
-      <select id="hmCurrency" onchange="fetchRate()" style="width:auto;">
-        <option value="USD">USD &mdash; US Dollar</option>
-        <option value="EUR">EUR &mdash; Euro</option>
-        <option value="GBP">GBP &mdash; British Pound</option>
-        <option value="NOK">NOK &mdash; Norwegian Krone</option>
-        <option value="SEK">SEK &mdash; Swedish Krona</option>
-        <option value="DKK">DKK &mdash; Danish Krone</option>
-        <option value="AUD">AUD &mdash; Australian Dollar</option>
-        <option value="CAD">CAD &mdash; Canadian Dollar</option>
-        <option value="CHF">CHF &mdash; Swiss Franc</option>
-        <option value="SGD">SGD &mdash; Singapore Dollar</option>
-      </select>
-      <span class="hm-status" id="hmStatus">Loading rates&hellip;</span>
-    </div>
+      <div class="hm-currency-row" id="hmCurrencyRow">
+        <button class="hm-cur-btn active" data-cur="USD">USD</button>
+        <button class="hm-cur-btn" data-cur="EUR">EUR</button>
+        <button class="hm-cur-btn" data-cur="GBP">GBP</button>
+        <button class="hm-cur-btn" data-cur="NOK">NOK</button>
+        <button class="hm-cur-btn" data-cur="SEK">SEK</button>
+        <button class="hm-cur-btn" data-cur="DKK">DKK</button>
+        <button class="hm-cur-btn" data-cur="AUD">AUD</button>
+        <button class="hm-cur-btn" data-cur="CAD">CAD</button>
+        <button class="hm-cur-btn" data-cur="CHF">CHF</button>
+      </div>
 
-    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="hm-rate-line" id="hmRateLine">Loading live rate&hellip; &nbsp;<a href="#" onclick="fetchRate();return false;" style="color:var(--accent);text-decoration:none;">Refresh</a></div>
+
       <table class="hm-table">
         <thead>
-          <tr>
-            <th>Item</th>
-            <th>Yen (&#165;)</th>
-            <th id="hmTableHeader">Amount</th>
-          </tr>
+          <tr><th>Item</th><th>&#165; Yen</th><th id="hmTableHeader">USD</th></tr>
         </thead>
         <tbody id="hmTableBody">
-          <tr><td colspan="3" style="padding:24px;text-align:center;color:var(--muted);">Loading&hellip;</td></tr>
+          <tr><td colspan="3" style="padding:20px 0;color:var(--muted);">Loading&hellip;</td></tr>
         </tbody>
       </table>
     </div>
-
-    <p style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.6;">Prices are typical mid-range estimates for 2025. Exchange rates from open.er-api.com, updated live when you click Refresh.</p>
   </section>
+
+
 
   <!-- JR PASS -->
   <section class="view" id="jrpass">
