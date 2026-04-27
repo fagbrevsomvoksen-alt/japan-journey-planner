@@ -255,7 +255,7 @@
     .metric-card:last-child { border-bottom: none; }
   }
   .metric-card::before { display: none; }
-  .mc-days::before, .mc-budget::before, .mc-cities::before, .mc-packed::before { display: none; }
+  .mc-days::before, .mc-budget::before, .mc-plans::before, .mc-packed::before { display: none; }
 
   .metric-label {
     font-size: 10px;
@@ -293,7 +293,7 @@
     border-radius: 0;
   }
   .mc-days .metric-bar-fill, .mc-budget .metric-bar-fill,
-  .mc-cities .metric-bar-fill, .mc-packed .metric-bar-fill { background: var(--lantern); }
+  .mc-plans .metric-bar-fill, .mc-packed .metric-bar-fill { background: var(--lantern); }
 
   /* ======= TILE GRID ======= */
   .tile-grid {
@@ -479,6 +479,49 @@
   button.tiny:hover { color: var(--ink); }
 
   /* ======= ITINERARY ======= */
+  .walk {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .walk-num {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 26px;
+    color: var(--lantern);
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .walk-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .walk-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+  }
+  .walk-time {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+  .walk-body p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin: 0;
+  }
+
   .city-list { display: flex; flex-direction: column; gap: 10px; }
 
   .city {
@@ -1082,11 +1125,11 @@
         <div class="metric-sub">on the road</div>
         <div class="metric-bar-track"><div class="metric-bar-fill" id="barDays" style="width:0%"></div></div>
       </div>
-      <div class="metric-card mc-cities">
-        <div class="metric-label">Cities</div>
-        <div class="metric-value" id="statCities">0</div>
-        <div class="metric-sub">on itinerary</div>
-        <div class="metric-bar-track"><div class="metric-bar-fill" id="barCities" style="width:0%"></div></div>
+      <div class="metric-card mc-plans">
+        <div class="metric-label">Plans</div>
+        <div class="metric-value" id="statPlans">0</div>
+        <div class="metric-sub">days you've sketched</div>
+        <div class="metric-bar-track"><div class="metric-bar-fill" id="barPlans" style="width:0%"></div></div>
       </div>
       <div class="metric-card mc-packed">
         <div class="metric-label">Packed</div>
@@ -1167,46 +1210,88 @@
   <section class="view" id="itinerary">
     <div class="view-header">
       <div class="section-badge badge-it">03 &mdash; Itinerary</div>
-      <h1 class="view-title">Where will you <em>actually</em> go?</h1>
-      <p class="view-lede">The rule of thumb: three nights minimum per city, or don't bother. Japan rewards slowness. One unhurried afternoon in a Kyoto backstreet is worth three rushed temple visits.</p>
+      <h1 class="view-title">Days, <em>not destinations.</em></h1>
+      <p class="view-lede">You sleep here, maybe two or three nights, and use it as a base. Below are five short wanderings &mdash; all close, all on foot, all doable in a morning or a quiet afternoon. Pick what fits the weather, and the kind of day you've had.</p>
     </div>
 
     <div class="moment">
       <figure class="moment-image">
-        <img src="images/moment-itinerary.jpg" alt="A slow moment on a Japan trip" loading="lazy">
+        <img src="images/moment-itinerary.jpg" alt="A slow walk in Minamisenju" loading="lazy">
         <figcaption>A backstreet, not on any list</figcaption>
       </figure>
       <div class="moment-text">
-        The best places on the trip will be ones you didn't plan. <em>Leave gaps.</em>
-        <small>Pick three cities you can't skip, then a fourth you've never heard someone rave about. That last one is often where the trip lives.</small>
+        The best places here are the ones you didn't plan. <em>Leave gaps.</em>
+        <small>None of these walks needs a ticket, a reservation, or a guide. Bring a 500-yen coin for a coffee and good shoes.</small>
+      </div>
+    </div>
+
+    <div class="walk">
+      <div class="walk-num">01</div>
+      <div class="walk-body">
+        <div class="walk-meta"><span class="walk-name">The neighborhood loop</span><span class="walk-time">&asymp; 30 min &middot; on foot</span></div>
+        <p>Out the west exit of Minamisenju Station. Drift south through Joyfull Minowa &mdash; the covered shopping street, half closed up by mid-afternoon, a barber and a rice cracker shop holding the line. Cut east to the Sumida bend where the cherry trees lean over the water. Loop back through the yokocho lane and you're at your room. The single walk to do first, before anything else.</p>
+      </div>
+    </div>
+
+    <div class="walk">
+      <div class="walk-num">02</div>
+      <div class="walk-body">
+        <div class="walk-meta"><span class="walk-name">Yoshiwara, then and now</span><span class="walk-time">&asymp; 1 hr &middot; read first</span></div>
+        <p>South past Minowabashi, into the streets of the old Yoshiwara &mdash; Edo's licensed pleasure quarter for 250 years. Today: soaplands and quiet residential blocks. But the layout survives &mdash; the moat-shaped boundary, the gate-stones at Mikaeri Yanagi (the "looking-back willow"), the small Yoshiwara Jinja shrine. Read the history first or it's just a strip of neon. Read it first and the whole walk lands different.</p>
+      </div>
+    </div>
+
+    <div class="walk">
+      <div class="walk-num">03</div>
+      <div class="walk-body">
+        <div class="walk-meta"><span class="walk-name">Sumida riverside to Asakusa</span><span class="walk-time">&asymp; 45 min &middot; flat</span></div>
+        <p>East out of the station, down to the river. Follow the Sumida south on the path &mdash; past the Imado Jinja cat shrine, past the Hashiba ferry crossing, past joggers and the occasional fisherman. Arrive at Sens&#333;-ji from the back, through Asakusa's quieter side. You'll skip the entire Nakamise crowd. The locals' way in.</p>
+      </div>
+    </div>
+
+    <div class="walk">
+      <div class="walk-num">04</div>
+      <div class="walk-body">
+        <div class="walk-meta"><span class="walk-name">Minowa &amp; the Toden Arakawa tram</span><span class="walk-time">walk + 30 min ride</span></div>
+        <p>Walk fifteen minutes to Minowabashi, the eastern terminus of the Toden Arakawa Line &mdash; Tokyo's last surviving streetcar. &yen;170 buys a ride past wooden houses, small temples, allotment gardens, all the way to Waseda. Step off anywhere. There's no wrong stop. Old Tokyo on rails.</p>
+      </div>
+    </div>
+
+    <div class="walk">
+      <div class="walk-num">05</div>
+      <div class="walk-body">
+        <div class="walk-meta"><span class="walk-name">Across the river to Kita-Senju</span><span class="walk-time">&asymp; 1 hr &middot; best at dusk</span></div>
+        <p>Over the Senju-Ohashi bridge, into a different shitamachi: bigger station, busier streets, more food stalls, more drinkers. The arcade between the station and the river is one of the best evening walks in north Tokyo. Eat standing up. Drink standing up. Walk back when the lanterns come on.</p>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">Add a city or region</div>
-      <div class="card-sub">Start with where you'll fly in. Tokyo (Narita or Haneda) and Osaka (Kansai) are the main entries.</div>
-      <div class="field-row cols-3">
+      <div class="card-title">Your day</div>
+      <div class="card-sub">Sketch a single day. Stops, in order, one per line. Saves to your browser as you type.</div>
+      <div class="field-row cols-2">
         <div>
-          <label>City / Region</label>
-          <input type="text" id="cityName" placeholder="e.g. Kyoto">
-        </div>
-        <div>
-          <label>Nights</label>
-          <input type="number" id="cityDays" value="3" min="1">
+          <label>Day label</label>
+          <input type="text" id="dayLabel" placeholder="e.g. Day 2 &mdash; Yoshiwara walk">
         </div>
         <div style="display: flex; align-items: flex-end;">
-          <button class="primary" onclick="addCity()" style="width: 100%;">Add to route</button>
+          <button class="primary" onclick="addDay()" style="width: 100%;">Save day</button>
         </div>
       </div>
       <div class="field-row">
         <div>
-          <label>Notes &mdash; neighborhoods, food spots, musts</label>
-          <textarea id="cityNotes" placeholder="e.g. Stay in Gion. Fushimi Inari at dawn. Nishiki Market for lunch. Skip the Golden Pavilion crowds."></textarea>
+          <label>Stops &mdash; one per line, in order</label>
+          <textarea id="dayStops" placeholder="Coffee at the Joyfull Minowa caf&eacute;&#10;Walk to Mikaeri Yanagi&#10;Yoshiwara Jinja&#10;Lunch &mdash; soba near the station"></textarea>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Notes</label>
+          <textarea id="dayNotes" placeholder="Weather plan, things to remember, the bento you packed."></textarea>
         </div>
       </div>
     </div>
 
-    <div id="cityList" class="city-list"></div>
+    <div id="dayList" class="city-list"></div>
   </section>
 
 
@@ -1338,93 +1423,200 @@
     <div class="view-header">
       <div class="section-badge">05 &mdash; Map</div>
       <h1 class="view-title">Around the <em>neighborhood.</em></h1>
-      <p class="view-lede">Not a real map — a sketch. The station, the river, the streets that matter. Minamisenju is small enough to walk in an afternoon.</p>
+      <p class="view-lede">Not a real map &mdash; a sketch. Ten spots that matter, three of them places to sleep. The station, the river, the streets that matter. Minamisenju is small enough to walk in an afternoon.</p>
     </div>
 
     <div class="card" style="padding: 14px;">
-      <svg viewBox="0 0 700 460" style="width: 100%; height: auto; display: block; background: var(--paper); border: 1px solid var(--ink);" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand-drawn schematic of Minamisenju showing the station, Sumida river, and key spots.">
-        <defs>
-          <pattern id="dashH" width="6" height="2" patternUnits="userSpaceOnUse">
-            <path d="M0 1 L6 1" stroke="#2B1E12" stroke-width="0.6"/>
-          </pattern>
-        </defs>
+      <svg viewBox="0 0 760 540" style="width: 100%; height: auto; display: block; background: var(--paper); border: 1px solid var(--ink);" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A simple sketch of Minamisenju with ten labelled spots.">
 
-        <!-- Sumida river: wavy band along the bottom -->
-        <path d="M 0 380 Q 80 372, 160 380 T 320 380 T 480 380 T 640 380 T 700 380 L 700 460 L 0 460 Z"
-              fill="url(#dashH)" stroke="#2B1E12" stroke-width="1.2"/>
-        <text x="500" y="430" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#2B1E12">Sumida river</text>
+        <!-- ============ STREETS (translucent lantern-pink bands) ============ -->
+        <rect x="356" y="0" width="42" height="540" fill="#B33A1F" opacity="0.16"/>
+        <rect x="0" y="246" width="760" height="42" fill="#B33A1F" opacity="0.16"/>
+        <rect x="156" y="0" width="22" height="540" fill="#B33A1F" opacity="0.12"/>
+        <rect x="560" y="0" width="22" height="540" fill="#B33A1F" opacity="0.12"/>
+        <rect x="0" y="396" width="760" height="22" fill="#B33A1F" opacity="0.12"/>
 
-        <!-- Streets: simple grid -->
-        <line x1="0"   y1="180" x2="700" y2="180" stroke="#2B1E12" stroke-width="1"/>
-        <line x1="0"   y1="280" x2="700" y2="280" stroke="#2B1E12" stroke-width="1"/>
-        <line x1="180" y1="20"  x2="180" y2="380" stroke="#2B1E12" stroke-width="1"/>
-        <line x1="380" y1="20"  x2="380" y2="380" stroke="#2B1E12" stroke-width="1"/>
-        <line x1="540" y1="20"  x2="540" y2="380" stroke="#2B1E12" stroke-width="1"/>
+        <!-- ============ JOBAN / HIBIYA LINE (dashed) ============ -->
+        <line x1="0" y1="100" x2="760" y2="100" stroke="#2B1E12" stroke-width="2" stroke-dasharray="14 6"/>
+        <text x="22" y="92" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="2.5" fill="#2B1E12">JOBAN / HIBIYA LINE</text>
+        <text x="745" y="92" text-anchor="end" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="2.5" fill="#2B1E12">&rarr; KITA-SENJU</text>
+        <text x="22" y="116" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="2.5" fill="#2B1E12">&larr; MINOWA</text>
 
-        <!-- Joban / Hibiya railway line -->
-        <line x1="0" y1="100" x2="700" y2="100" stroke="#2B1E12" stroke-width="1.6" stroke-dasharray="14 6"/>
-        <text x="14" y="92" font-family="Verdana, sans-serif" font-size="10" letter-spacing="2" fill="#2B1E12">JOBAN / HIBIYA LINE</text>
+        <!-- ============ SUMIDA RIVER (curve, bottom-right) ============ -->
+        <path d="M 460 540 Q 540 480 600 470 Q 680 460 760 430 L 760 540 Z" fill="#A6BAC2" opacity="0.55" stroke="#2B1E12" stroke-width="0.7"/>
+        <text x="690" y="516" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="13" fill="#2B1E12">Sumida river</text>
+        <text x="690" y="530" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">すみだがわ</text>
 
-        <!-- Station block -->
-        <rect x="285" y="80" width="100" height="42" fill="#EFE6D2" stroke="#2B1E12" stroke-width="1.4"/>
-        <text x="335" y="105" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#2B1E12">Minamisenju</text>
-        <text x="335" y="118" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" letter-spacing="1.5" fill="#2B1E12">STATION</text>
-
-        <!-- Pin: capsule hotel -->
-        <circle cx="120" cy="220" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
-        <text x="120" y="208" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">A</text>
-        <text x="50"  y="248" font-family="Georgia, serif" font-size="13" fill="#2B1E12">capsule row</text>
-
-        <!-- Pin: yokocho / small bars -->
-        <circle cx="240" cy="240" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
-        <text x="240" y="228" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">B</text>
-        <text x="200" y="268" font-family="Georgia, serif" font-size="13" fill="#2B1E12">yokocho lane</text>
-
-        <!-- Pin: Joyfull Minowa shopping street -->
-        <circle cx="450" cy="220" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
-        <text x="450" y="208" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">C</text>
-        <text x="400" y="248" font-family="Georgia, serif" font-size="13" fill="#2B1E12">Joyfull Minowa</text>
-
-        <!-- Pin: cherry trees -->
-        <circle cx="600" cy="335" r="7" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
-        <text x="600" y="323" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#2B1E12">D</text>
-        <text x="540" y="362" font-family="Georgia, serif" font-size="13" fill="#2B1E12">cherry trees</text>
-
-        <!-- Pin: Asakusa direction -->
-        <text x="660" y="158" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="12" fill="#B33A1F">→ Asakusa</text>
-
-        <!-- Compass -->
-        <g transform="translate(40,40)">
-          <circle cx="0" cy="0" r="22" fill="none" stroke="#2B1E12" stroke-width="1"/>
+        <!-- ============ COMPASS ============ -->
+        <g transform="translate(50, 50)">
+          <circle cx="0" cy="0" r="22" fill="#EFE6D2" stroke="#2B1E12" stroke-width="1"/>
           <line x1="0" y1="-22" x2="0" y2="22" stroke="#2B1E12" stroke-width="1"/>
           <line x1="-22" y1="0" x2="22" y2="0" stroke="#2B1E12" stroke-width="0.6"/>
-          <text x="0" y="-26" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" fill="#B33A1F">N</text>
+          <text x="0" y="-27" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" fill="#B33A1F">N</text>
         </g>
 
-        <!-- Title hand-written -->
-        <text x="350" y="34" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="16" fill="#2B1E12">a sketch of the neighborhood</text>
+        <!-- ============ TITLE ============ -->
+        <text x="380" y="38" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="15" fill="#2B1E12">a sketch of the neighborhood</text>
+
+        <!-- ============ DIRECTION LABELS AT EDGES ============ -->
+        <text x="745" y="206" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="13" fill="#B33A1F">&rarr; Asakusa</text>
+        <text x="22" y="510" font-family="Georgia, serif" font-style="italic" font-size="13" fill="#B33A1F">&larr; Yoshiwara</text>
+
+        <!-- ============ STATION ============ -->
+        <line x1="370" y1="100" x2="370" y2="138" stroke="#2B1E12" stroke-width="0.8"/>
+        <rect x="290" y="138" width="160" height="58" fill="#EFE6D2" stroke="#2B1E12" stroke-width="1.6"/>
+        <text x="370" y="158" text-anchor="middle" font-family="Verdana, sans-serif" font-size="11" font-weight="bold" letter-spacing="2.5" fill="#2B1E12">MINAMISENJU</text>
+        <text x="370" y="173" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" letter-spacing="2.5" fill="#2B1E12">STATION</text>
+        <text x="370" y="189" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="11" fill="#2B1E12">みなみせんじゅえき</text>
+
+        <!-- Exit markers connected to station -->
+        <line x1="320" y1="196" x2="320" y2="218" stroke="#2B1E12" stroke-width="0.8"/>
+        <rect x="296" y="218" width="48" height="20" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="320" y="232" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" letter-spacing="1.5" fill="#EFE6D2">EXIT 1</text>
+        <line x1="370" y1="196" x2="370" y2="218" stroke="#2B1E12" stroke-width="0.8"/>
+        <rect x="346" y="218" width="48" height="20" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="370" y="232" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" letter-spacing="1.5" fill="#EFE6D2">EXIT 2</text>
+        <line x1="420" y1="196" x2="420" y2="218" stroke="#2B1E12" stroke-width="0.8"/>
+        <rect x="396" y="218" width="48" height="20" fill="#B33A1F" stroke="#2B1E12" stroke-width="1"/>
+        <text x="420" y="232" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" font-weight="bold" letter-spacing="1.5" fill="#EFE6D2">EXIT 3</text>
+
+        <!-- ============ POINTS ============ -->
+
+        <!-- 02 Toden Arakawa tram (top-left, between compass and JR) -->
+        <g class="map-pin" data-id="toden">
+          <circle cx="155" cy="60" r="7" fill="#2B1E12"/>
+          <text x="172" y="56" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">TODEN ARAKAWA TRAM</text>
+          <text x="172" y="70" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">とでん あらかわせん</text>
+        </g>
+
+        <!-- 03 Hotel: Capsule (square H, west of station) -->
+        <g class="map-pin map-pin-hotel" data-id="hotel-capsule">
+          <text x="100" y="290" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">CAPSULE HOTEL</text>
+          <text x="100" y="304" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">カプセルホテル</text>
+          <rect x="92" y="312" width="16" height="16" fill="#2B1E12"/>
+          <text x="100" y="324" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" fill="#EFE6D2">H</text>
+        </g>
+
+        <!-- 04 Hotel: Budget business (south of station) -->
+        <g class="map-pin map-pin-hotel" data-id="hotel-business">
+          <text x="262" y="320" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">BUDGET BUSINESS</text>
+          <text x="262" y="334" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">ビジネスホテル</text>
+          <rect x="254" y="342" width="16" height="16" fill="#2B1E12"/>
+          <text x="262" y="354" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" fill="#EFE6D2">H</text>
+        </g>
+
+        <!-- 05 Hotel: Backpacker hostel (east, near river) -->
+        <g class="map-pin map-pin-hotel" data-id="hotel-backpacker">
+          <text x="660" y="290" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">BACKPACKER HOSTEL</text>
+          <text x="660" y="304" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">ゲストハウス</text>
+          <rect x="652" y="312" width="16" height="16" fill="#2B1E12"/>
+          <text x="660" y="324" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" fill="#EFE6D2">H</text>
+        </g>
+
+        <!-- 06 Yokocho lane (east of station, on main horizontal street) -->
+        <g class="map-pin" data-id="yokocho">
+          <text x="488" y="320" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">YOKOCHO LANE</text>
+          <text x="488" y="334" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">よこちょう</text>
+          <circle cx="488" cy="350" r="7" fill="#2B1E12"/>
+        </g>
+
+        <!-- 07 Joyfull Minowa shopping street (lower-left) -->
+        <g class="map-pin" data-id="joyfull">
+          <text x="220" y="442" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">JOYFULL MINOWA</text>
+          <text x="220" y="456" text-anchor="middle" font-family="Verdana, sans-serif" font-size="9" letter-spacing="1.2" fill="#2B1E12">SHOPPING STREET</text>
+          <text x="220" y="470" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">しょうてんがい</text>
+          <circle cx="220" cy="484" r="7" fill="#2B1E12"/>
+        </g>
+
+        <!-- 08 Mikaeri Yanagi (south, on the secondary horizontal) -->
+        <g class="map-pin" data-id="mikaeri">
+          <text x="450" y="442" text-anchor="middle" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">MIKAERI YANAGI</text>
+          <text x="450" y="456" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">みかえりやなぎ</text>
+          <circle cx="450" cy="472" r="7" fill="#2B1E12"/>
+        </g>
+
+        <!-- 09 Yoshiwara Jinja (bottom-left, below Joyfull) -->
+        <g class="map-pin" data-id="yoshiwara-jinja">
+          <circle cx="68" cy="442" r="7" fill="#2B1E12"/>
+          <text x="84" y="438" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">YOSHIWARA JINJA</text>
+          <text x="84" y="452" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">よしわら じんじゃ</text>
+        </g>
+
+        <!-- 10 Cherry trees on Sumida bend (right, on the river) -->
+        <g class="map-pin" data-id="cherry">
+          <text x="640" y="438" text-anchor="end" font-family="Verdana, sans-serif" font-size="10" font-weight="bold" letter-spacing="1.4" fill="#2B1E12">CHERRY TREES</text>
+          <text x="640" y="452" text-anchor="end" font-family="Verdana, sans-serif" font-size="9" letter-spacing="1.2" fill="#2B1E12">ON THE SUMIDA BEND</text>
+          <text x="640" y="466" text-anchor="end" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#2B1E12">さくら</text>
+          <circle cx="660" cy="462" r="7" fill="#2B1E12"/>
+        </g>
+
       </svg>
 
-      <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px;">
+      <table class="map-legend" style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px;">
+        <thead>
+          <tr style="background: var(--ink); color: var(--paper);">
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal; width: 32px;">&nbsp;</th>
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal;">Spot</th>
+            <th style="padding: 8px 10px; text-align: right; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal; white-space: nowrap;">From station</th>
+          </tr>
+        </thead>
         <tbody>
           <tr style="border-bottom: 1px dashed var(--ink);">
-            <td style="padding: 8px 10px; vertical-align: top; width: 32px; color: var(--lantern); font-weight: bold;">A</td>
-            <td style="padding: 8px 10px;"><strong>Capsule row.</strong> The cluster of capsule hotels and budget rooms, two minutes' walk west of the station.</td>
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">01</td>
+            <td style="padding: 8px 10px;"><strong>Minamisenju Station.</strong> Joban &amp; Hibiya lines. Three exits. The whole map fans out from here.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">&mdash;</td>
           </tr>
           <tr style="border-bottom: 1px dashed var(--ink);">
-            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">B</td>
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">02</td>
+            <td style="padding: 8px 10px;"><strong>Toden Arakawa tram.</strong> Tokyo's last surviving streetcar. Catch it at Minowabashi for a ¥170 ride to Waseda.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">15 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--lantern);">H</td>
+            <td style="padding: 8px 10px;"><strong>Capsule hotel.</strong> The cluster of pod hotels two minutes' walk west of the station. ¥2,800–4,500 per night.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">2 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--lantern);">H</td>
+            <td style="padding: 8px 10px;"><strong>Budget business hotel.</strong> Small private rooms, tiny bathroom, always clean. ¥4,500–7,500 per night.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">3 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--lantern);">H</td>
+            <td style="padding: 8px 10px;"><strong>Backpacker hostel.</strong> Mixed-language crowd, common kitchen, sometimes a small bar downstairs. ¥2,500–6,000.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">6 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">06</td>
             <td style="padding: 8px 10px;"><strong>Yokocho lane.</strong> A short alley of red-lantern bars and shōchū joints. Cheap dinners, locals, a few too many beers.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">3 min</td>
           </tr>
           <tr style="border-bottom: 1px dashed var(--ink);">
-            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">C</td>
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">07</td>
             <td style="padding: 8px 10px;"><strong>Joyfull Minowa.</strong> The covered shopping street. Cheap noodles, household goods, an old camera shop, a still-running barber.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">10 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">08</td>
+            <td style="padding: 8px 10px;"><strong>Mikaeri Yanagi.</strong> The "looking-back willow" — the gate-stone marking the entrance to old Yoshiwara. 250 years of history under one tree.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">12 min</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">09</td>
+            <td style="padding: 8px 10px;"><strong>Yoshiwara Jinja.</strong> A small surviving shrine inside the old pleasure quarter. Quiet, easy to miss, worth the detour.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">15 min</td>
           </tr>
           <tr>
-            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold;">D</td>
-            <td style="padding: 8px 10px;"><strong>Cherry trees on the river.</strong> The bend in the Sumida where the trees lean over the water. Late March, early April. Bring a camera.</td>
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 10px; font-weight: bold; color: var(--paper); background: var(--ink);">10</td>
+            <td style="padding: 8px 10px;"><strong>Cherry trees on the Sumida bend.</strong> Where the trees lean over the water. Late March, early April. Bring a camera.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">8 min</td>
           </tr>
         </tbody>
       </table>
+
+      <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7; line-height: 1.6;">
+        <strong style="color: var(--lantern); opacity: 1;">A note:</strong> Distances are walking time from Minamisenju Station. The map is rough &mdash; relative positions, not true scale. Use Google Maps when it actually matters.
+      </p>
     </div>
   </section>
 
@@ -1432,83 +1624,93 @@
   <section class="view" id="phrases">
     <div class="view-header">
       <div class="section-badge badge-ph">06 &mdash; Phrases</div>
-      <h1 class="view-title">Forty phrases that <em>carry you through.</em></h1>
-      <p class="view-lede">English gets you surprisingly far in Tokyo and Kyoto. Everywhere else, these phrases are the difference between a good day and a frustrating one. Don't worry about pronunciation perfection &mdash; effort alone wins enormous goodwill.</p>
+      <h1 class="view-title">Words for the <em>shopkeeper.</em></h1>
+      <p class="view-lede">In the bigger neighborhoods, English gets you most of the way. Around here, it doesn't. These are the phrases for the rice-cracker shop, the small izakaya, the sento attendant, the old woman behind the counter at the soba place. Effort alone earns more goodwill than perfect pronunciation ever will.</p>
     </div>
 
     <div class="phrase-cat">
       <div class="phrase-cat-head">
-        <span class="phrase-cat-label">Greetings</span>
-        <span class="phrase-cat-title">Greetings &amp; Politeness</span>
+        <span class="phrase-cat-label">Small shop</span>
+        <span class="phrase-cat-title">At the small shop or kombini</span>
       </div>
       <div class="phrase-list">
-        <div class="phrase"><div class="phrase-jp">おはようございます</div><div class="phrase-romaji">Ohay&#333; gozaimasu</div><div class="phrase-en">Good morning (before 10am)</div></div>
-        <div class="phrase"><div class="phrase-jp">こんにちは</div><div class="phrase-romaji">Konnichiwa</div><div class="phrase-en">Hello / good afternoon</div></div>
-        <div class="phrase"><div class="phrase-jp">こんばんは</div><div class="phrase-romaji">Konbanwa</div><div class="phrase-en">Good evening</div></div>
-        <div class="phrase"><div class="phrase-jp">ありがとうございます</div><div class="phrase-romaji">Arigatō gozaimasu</div><div class="phrase-en">Thank you (formal &mdash; use this one)</div></div>
-        <div class="phrase"><div class="phrase-jp">すみません</div><div class="phrase-romaji">Sumimasen</div><div class="phrase-en">Excuse me / sorry / thank you (all-purpose)</div><div class="phrase-note">The most useful word in Japanese. Learn this one first.</div></div>
-        <div class="phrase"><div class="phrase-jp">おねがいします</div><div class="phrase-romaji">Onegai shimasu</div><div class="phrase-en">Please / I'd like to ask a favor</div></div>
-      </div>
-    </div>
-
-    <div class="phrase-cat">
-      <div class="phrase-cat-head">
-        <span class="phrase-cat-label">Essentials</span>
-        <span class="phrase-cat-title">Essentials &amp; Responses</span>
-      </div>
-      <div class="phrase-list">
-        <div class="phrase"><div class="phrase-jp">はい</div><div class="phrase-romaji">Hai</div><div class="phrase-en">Yes</div></div>
-        <div class="phrase"><div class="phrase-jp">いいえ</div><div class="phrase-romaji">Iie</div><div class="phrase-en">No (but often softened &mdash; prefer "chotto...")</div></div>
-        <div class="phrase"><div class="phrase-jp">だいじょうぶです</div><div class="phrase-romaji">Daij&#333;bu desu</div><div class="phrase-en">It's okay / I'm fine / no problem</div></div>
-        <div class="phrase"><div class="phrase-jp">わかりません</div><div class="phrase-romaji">Wakarimasen</div><div class="phrase-en">I don't understand</div></div>
-        <div class="phrase"><div class="phrase-jp">えいごをはなせますか</div><div class="phrase-romaji">Eigo o hanasemasu ka?</div><div class="phrase-en">Do you speak English?</div></div>
-        <div class="phrase"><div class="phrase-jp">ゆっくりおねがいします</div><div class="phrase-romaji">Yukkuri onegai shimasu</div><div class="phrase-en">Slowly, please</div></div>
-      </div>
-    </div>
-
-    <div class="phrase-cat">
-      <div class="phrase-cat-head">
-        <span class="phrase-cat-label">Food</span>
-        <span class="phrase-cat-title">Food &amp; Shopping</span>
-      </div>
-      <div class="phrase-list">
-        <div class="phrase"><div class="phrase-jp">いただきます</div><div class="phrase-romaji">Itadakimasu</div><div class="phrase-en">Said before eating &mdash; "I humbly receive"</div></div>
-        <div class="phrase"><div class="phrase-jp">ごちそうさまでした</div><div class="phrase-romaji">Gochis&#333;sama deshita</div><div class="phrase-en">Said after eating &mdash; "thank you for the meal"</div></div>
-        <div class="phrase"><div class="phrase-jp">おいしい</div><div class="phrase-romaji">Oishii</div><div class="phrase-en">Delicious</div></div>
-        <div class="phrase"><div class="phrase-jp">いくらですか</div><div class="phrase-romaji">Ikura desu ka?</div><div class="phrase-en">How much is it?</div></div>
+        <div class="phrase"><div class="phrase-jp">いらっしゃいませ</div><div class="phrase-romaji">Irasshaimase</div><div class="phrase-en">"Welcome" &mdash; what they say to you</div><div class="phrase-note">You don't reply to this. A small nod is enough. The whole shop will say it.</div></div>
         <div class="phrase"><div class="phrase-jp">これください</div><div class="phrase-romaji">Kore kudasai</div><div class="phrase-en">This one, please (while pointing)</div></div>
-        <div class="phrase"><div class="phrase-jp">おみずください</div><div class="phrase-romaji">O-mizu kudasai</div><div class="phrase-en">Water, please</div></div>
-        <div class="phrase"><div class="phrase-jp">おかいけいおねがいします</div><div class="phrase-romaji">O-kaikei onegai shimasu</div><div class="phrase-en">The bill, please</div></div>
-        <div class="phrase"><div class="phrase-jp">アレルギーがあります</div><div class="phrase-romaji">Arerugī ga arimasu</div><div class="phrase-en">I have an allergy (add the allergen)</div></div>
+        <div class="phrase"><div class="phrase-jp">いくらですか</div><div class="phrase-romaji">Ikura desu ka?</div><div class="phrase-en">How much is it?</div></div>
+        <div class="phrase"><div class="phrase-jp">ふくろはいりません</div><div class="phrase-romaji">Fukuro wa irimasen</div><div class="phrase-en">I don't need a bag</div></div>
+        <div class="phrase"><div class="phrase-jp">カードでおねがいします</div><div class="phrase-romaji">Kādo de onegai shimasu</div><div class="phrase-en">By card, please</div></div>
+        <div class="phrase"><div class="phrase-jp">げんきんでだいじょうぶです</div><div class="phrase-romaji">Genkin de daij&#333;bu desu</div><div class="phrase-en">Cash is fine</div><div class="phrase-note">Many old shops here only take cash. Don't expect cards at the rice-cracker place.</div></div>
+        <div class="phrase"><div class="phrase-jp">レシートおねがいします</div><div class="phrase-romaji">Reshīto onegai shimasu</div><div class="phrase-en">Receipt, please</div></div>
+        <div class="phrase"><div class="phrase-jp">ありがとうございます</div><div class="phrase-romaji">Arigat&#333; gozaimasu</div><div class="phrase-en">Thank you (formal &mdash; use this one)</div></div>
       </div>
     </div>
 
     <div class="phrase-cat">
       <div class="phrase-cat-head">
-        <span class="phrase-cat-label">Getting around</span>
-        <span class="phrase-cat-title">Getting Around</span>
+        <span class="phrase-cat-label">Izakaya</span>
+        <span class="phrase-cat-title">At the izakaya counter</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">すみません、ひとりです</div><div class="phrase-romaji">Sumimasen, hitori desu</div><div class="phrase-en">Excuse me &mdash; one person</div><div class="phrase-note">Hold up one finger. Counter seats are usually fine for solo diners; they may even prefer it.</div></div>
+        <div class="phrase"><div class="phrase-jp">カウンターでだいじょうぶです</div><div class="phrase-romaji">Kaunt&#257; de daij&#333;bu desu</div><div class="phrase-en">The counter is fine</div></div>
+        <div class="phrase"><div class="phrase-jp">メニューおねがいします</div><div class="phrase-romaji">Meny&#363; onegai shimasu</div><div class="phrase-en">Menu, please</div></div>
+        <div class="phrase"><div class="phrase-jp">おすすめはなんですか</div><div class="phrase-romaji">Osusume wa nan desu ka?</div><div class="phrase-en">What do you recommend?</div><div class="phrase-note">Best phrase here. The chef will pick something they're proud of.</div></div>
+        <div class="phrase"><div class="phrase-jp">ビールください</div><div class="phrase-romaji">Bīru kudasai</div><div class="phrase-en">A beer, please</div></div>
+        <div class="phrase"><div class="phrase-jp">あつかんおねがいします</div><div class="phrase-romaji">Atsukan onegai shimasu</div><div class="phrase-en">Hot sake, please</div></div>
+        <div class="phrase"><div class="phrase-jp">おいしい</div><div class="phrase-romaji">Oishii</div><div class="phrase-en">Delicious</div><div class="phrase-note">Worth saying out loud. The cook will hear, and you'll see it land.</div></div>
+        <div class="phrase"><div class="phrase-jp">もういっぱいおねがいします</div><div class="phrase-romaji">M&#333; ippai onegai shimasu</div><div class="phrase-en">Another one, please</div></div>
+        <div class="phrase"><div class="phrase-jp">おかいけいおねがいします</div><div class="phrase-romaji">O-kaikei onegai shimasu</div><div class="phrase-en">The bill, please</div></div>
+        <div class="phrase"><div class="phrase-jp">ごちそうさまでした</div><div class="phrase-romaji">Gochis&#333;sama deshita</div><div class="phrase-en">Said as you leave &mdash; "thank you for the meal"</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-label">Sento</span>
+        <span class="phrase-cat-title">At the sento (public bath)</span>
+      </div>
+      <div class="phrase-list">
+        <div class="phrase"><div class="phrase-jp">はじめてです</div><div class="phrase-romaji">Hajimete desu</div><div class="phrase-en">It's my first time</div><div class="phrase-note">Say this at the front desk. Most attendants will gladly walk you through the steps.</div></div>
+        <div class="phrase"><div class="phrase-jp">いっかいぶんおねがいします</div><div class="phrase-romaji">Ikkaibun onegai shimasu</div><div class="phrase-en">One entry, please</div></div>
+        <div class="phrase"><div class="phrase-jp">タオルかしてもらえますか</div><div class="phrase-romaji">Taoru kashite moraemasu ka?</div><div class="phrase-en">Can I borrow a towel?</div></div>
+        <div class="phrase"><div class="phrase-jp">せっけんはどこですか</div><div class="phrase-romaji">Sekken wa doko desu ka?</div><div class="phrase-en">Where is the soap?</div></div>
+        <div class="phrase"><div class="phrase-jp">いれずみがあります</div><div class="phrase-romaji">Irezumi ga arimasu</div><div class="phrase-en">I have a tattoo</div><div class="phrase-note">Honest declaration. Some sento accept tattoos, some don't. Better to ask first than be turned away mid-undress.</div></div>
+        <div class="phrase"><div class="phrase-jp">ロッカーがあきません</div><div class="phrase-romaji">Rokk&#257; ga akimasen</div><div class="phrase-en">The locker won't open</div></div>
+        <div class="phrase"><div class="phrase-jp">あつい / ぬるい</div><div class="phrase-romaji">Atsui / Nurui</div><div class="phrase-en">Hot / Lukewarm</div><div class="phrase-note">There's usually a choice of bath. The "atsui" one is hotter than you think.</div></div>
+      </div>
+    </div>
+
+    <div class="phrase-cat">
+      <div class="phrase-cat-head">
+        <span class="phrase-cat-label">Directions</span>
+        <span class="phrase-cat-title">Asking directions in the neighborhood</span>
       </div>
       <div class="phrase-list">
         <div class="phrase"><div class="phrase-jp">えきはどこですか</div><div class="phrase-romaji">Eki wa doko desu ka?</div><div class="phrase-en">Where is the station?</div></div>
         <div class="phrase"><div class="phrase-jp">トイレはどこですか</div><div class="phrase-romaji">Toire wa doko desu ka?</div><div class="phrase-en">Where is the toilet?</div></div>
-        <div class="phrase"><div class="phrase-jp">きっぷ</div><div class="phrase-romaji">Kippu</div><div class="phrase-en">Ticket</div></div>
-        <div class="phrase"><div class="phrase-jp">みぎ / ひだり / まっすぐ</div><div class="phrase-romaji">Migi / Hidari / Massugu</div><div class="phrase-en">Right / Left / Straight ahead</div></div>
-        <div class="phrase"><div class="phrase-jp">ここでおります</div><div class="phrase-romaji">Koko de orimasu</div><div class="phrase-en">I'll get off here (in a taxi or bus)</div></div>
+        <div class="phrase"><div class="phrase-jp">ちかくにありますか</div><div class="phrase-romaji">Chikaku ni arimasu ka?</div><div class="phrase-en">Is it nearby?</div></div>
+        <div class="phrase"><div class="phrase-jp">あるいてどのくらいですか</div><div class="phrase-romaji">Aruite dono kurai desu ka?</div><div class="phrase-en">How long is it on foot?</div></div>
+        <div class="phrase"><div class="phrase-jp">まっすぐ / みぎ / ひだり</div><div class="phrase-romaji">Massugu / Migi / Hidari</div><div class="phrase-en">Straight ahead / Right / Left</div></div>
+        <div class="phrase"><div class="phrase-jp">いまあいていますか</div><div class="phrase-romaji">Ima aite imasu ka?</div><div class="phrase-en">Is it open right now?</div></div>
+        <div class="phrase"><div class="phrase-jp">なんじまでですか</div><div class="phrase-romaji">Nan-ji made desu ka?</div><div class="phrase-en">Until what time?</div></div>
+        <div class="phrase"><div class="phrase-jp">ちずをみせてもらえますか</div><div class="phrase-romaji">Chizu o misete moraemasu ka?</div><div class="phrase-en">Could you show me on a map?</div><div class="phrase-note">Open Google Maps on your phone first, then ask. Easier than receiving a verbal explanation in Japanese.</div></div>
       </div>
     </div>
 
     <div class="phrase-cat">
       <div class="phrase-cat-head">
-        <span class="phrase-cat-label">Emergency</span>
-        <span class="phrase-cat-title">Emergency</span>
+        <span class="phrase-cat-label">Small talk</span>
+        <span class="phrase-cat-title">Small talk for a small place</span>
       </div>
       <div class="phrase-list">
-        <div class="phrase"><div class="phrase-jp">たすけて</div><div class="phrase-romaji">Tasukete!</div><div class="phrase-en">Help!</div></div>
-        <div class="phrase"><div class="phrase-jp">びょういん</div><div class="phrase-romaji">By&#333;in</div><div class="phrase-en">Hospital</div></div>
-        <div class="phrase"><div class="phrase-jp">けいさつ</div><div class="phrase-romaji">Keisatsu</div><div class="phrase-en">Police (dial 110)</div></div>
-        <div class="phrase"><div class="phrase-jp">きゅうきゅうしゃ</div><div class="phrase-romaji">Ky&#363;ky&#363;sha</div><div class="phrase-en">Ambulance (dial 119)</div></div>
-        <div class="phrase"><div class="phrase-jp">たいしかん</div><div class="phrase-romaji">Taishikan</div><div class="phrase-en">Embassy</div></div>
-        <div class="phrase"><div class="phrase-jp">みちにまいました</div><div class="phrase-romaji">Michi ni mayoimashita</div><div class="phrase-en">I'm lost</div></div>
+        <div class="phrase"><div class="phrase-jp">すみません</div><div class="phrase-romaji">Sumimasen</div><div class="phrase-en">Excuse me / sorry / thank you (all-purpose)</div><div class="phrase-note">The single most useful word in Japanese. Learn this one first.</div></div>
+        <div class="phrase"><div class="phrase-jp">どうも</div><div class="phrase-romaji">D&#333;mo</div><div class="phrase-en">Thanks / hello (casual)</div><div class="phrase-note">A short word that does a lot of work between regulars and shopkeepers.</div></div>
+        <div class="phrase"><div class="phrase-jp">いいてんきですね</div><div class="phrase-romaji">Ii tenki desu ne</div><div class="phrase-en">Nice weather, isn't it?</div><div class="phrase-note">Universal opener. The "ne" at the end invites them to agree.</div></div>
+        <div class="phrase"><div class="phrase-jp">おつかれさまです</div><div class="phrase-romaji">Otsukare-sama desu</div><div class="phrase-en">"Thanks for your work" &mdash; said to people working</div></div>
+        <div class="phrase"><div class="phrase-jp">またきます</div><div class="phrase-romaji">Mata kimasu</div><div class="phrase-en">I'll come again</div><div class="phrase-note">If you mean it. Means a lot in a small shop.</div></div>
+        <div class="phrase"><div class="phrase-jp">ゆっくりおねがいします</div><div class="phrase-romaji">Yukkuri onegai shimasu</div><div class="phrase-en">Slowly, please</div></div>
+        <div class="phrase"><div class="phrase-jp">わかりません</div><div class="phrase-romaji">Wakarimasen</div><div class="phrase-en">I don't understand</div></div>
+        <div class="phrase"><div class="phrase-jp">えいごをはなせますか</div><div class="phrase-romaji">Eigo o hanasemasu ka?</div><div class="phrase-en">Do you speak English?</div><div class="phrase-note">Often the answer is "a little" &mdash; said apologetically. Smile and try anyway.</div></div>
       </div>
     </div>
   </section>
@@ -1517,77 +1719,80 @@
   <section class="view" id="culture">
     <div class="view-header">
       <div class="section-badge badge-cu">07 &mdash; Culture</div>
-      <h1 class="view-title">Small things, <em>huge difference.</em></h1>
-      <p class="view-lede">Japanese hospitality is extraordinary &mdash; and mostly one-directional. No one will correct you. They'll smile, accommodate, and quietly note the breach. Get these right and you'll be treated like someone who cared enough to try.</p>
+      <h1 class="view-title">Shitamachi <em>etiquette.</em></h1>
+      <p class="view-lede">Minamisenju isn't a tourist neighborhood &mdash; it's people's homes, their workdays, their commute. The rules below are the ones that matter for moving through a place that mostly hasn't been built for you. Get them right and you blend in. Get them wrong and you'll feel it: nothing said, just a small distance opening up.</p>
     </div>
 
     <div class="moment reverse">
       <figure class="moment-image">
-        <img src="images/moment-culture.jpg" alt="A shrine or temple moment" loading="lazy">
-        <figcaption>Torii &mdash; the gate</figcaption>
+        <img src="images/moment-culture.jpg" alt="A counter and conveyor belt" loading="lazy">
+        <figcaption>The counter is where the neighborhood eats</figcaption>
       </figure>
       <div class="moment-text">
         You won't get it all right. <em>That's fine.</em>
-        <small>Effort alone earns enormous goodwill. What follows are the dozen rules worth knowing &mdash; the rest you'll pick up as you go.</small>
+        <small>Effort alone earns enormous goodwill. What follows are the rules worth knowing for <em>this</em> kind of place &mdash; the rest you'll pick up by the second day.</small>
       </div>
     </div>
 
     <div class="culture-grid">
       <div class="culture-cat">
-        <h3>General conduct</h3>
-        <p class="sub">The baseline expectations, everywhere.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Bow slightly</strong> instead of handshaking. Depth and duration convey respect &mdash; a small head nod is fine for casual situations.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Carry your trash</strong>. Public bins are rare. Pack a small bag for wrappers and coffee cups until you find one (often at konbini or stations).</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Cash still rules outside cities.</strong> Many temples, small shops, ryokan, and taxis refuse cards. ATMs at 7-Eleven accept foreign cards.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't tip.</strong> It's not just unnecessary &mdash; it can be confusing or even insulting. Exceptional service is considered standard.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't eat while walking.</strong> Street food stalls are an exception &mdash; eat near them, then walk on.</div></div>
+        <h3>The neighborhood</h3>
+        <p class="sub">Walking through where people actually live.</p>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Walk quietly through residential streets.</strong> Especially after dark. Voices carry between wooden houses; the street is also someone's bedroom wall.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Carry your trash.</strong> Public bins are rare. Pack a small bag for konbini wrappers and coffee cups until you find a station bin or your hotel.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Smoke only in marked zones.</strong> Most of Tokyo bans street smoking. Look for the painted yellow squares near stations or the small glass smoking booths.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't eat while walking.</strong> Even an ice cream draws looks. Sit on a bench, or eat outside the shop you bought it from, then walk on.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't photograph private homes or residents</strong> without asking. Shop fronts and street scenes are fine. Faces and front doors aren't.</div></div>
       </div>
 
       <div class="culture-cat">
-        <h3>Dining</h3>
+        <h3>The small shop</h3>
+        <p class="sub">Where the relationship is older than you are.</p>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Greet the shopkeeper.</strong> A small <em>sumimasen</em> or <em>kon&#39;nichiwa</em> as you enter. They'll remember you came in correctly even if you don't buy.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Carry cash.</strong> Many shops here are cash-only. The rice-cracker shop, the tofu maker, the old camera place &mdash; ATMs at 7-Eleven take foreign cards.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Place money in the tray</strong> on the counter, not directly into the shopkeeper's hand. Same when receiving change.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't pick up and inspect</strong> packaged goods unless you're buying. In small shops, especially traditional ones, items on display are pristine for a reason.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't tip.</strong> It's not just unnecessary &mdash; it confuses. Exceptional service is considered the baseline.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3>The izakaya counter</h3>
         <p class="sub">The meal has its own choreography.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Say itadakimasu before eating</strong>, gochisōsama after. Even solo, it's done.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Slurping noodles is expected</strong> &mdash; it cools them and signals enjoyment. Quietly eating ramen reads as odd.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Wait to be seated.</strong> Even in casual places. A host will gesture where to go.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Wait to be seated</strong> &mdash; even in places that look casual. Hold up a finger for one, two for two. The host will point.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Pour for others, not yourself</strong> if you're with someone. They pour back. It's a quiet rhythm of attention; refusing it reads as cold.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Slurping noodles is expected</strong> &mdash; signals enjoyment, also cools the broth. Eating ramen quietly reads as odd.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Pay at the door</strong> on your way out, with the slip the staff slid onto the counter when you sat down. The bill rarely comes to your seat.</div></div>
         <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Never stick chopsticks upright in rice</strong>, or pass food chopstick-to-chopstick. Both mirror funeral rituals.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't pour your own drink</strong> in a group. Pour for others; they'll pour for you. It's a gentle rhythm of attention.</div></div>
       </div>
 
       <div class="culture-cat">
-        <h3>Onsen &amp; bathing</h3>
+        <h3>The sento</h3>
         <p class="sub">Public bathing is sacred and strict.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Wash thoroughly first</strong> &mdash; sitting at the shower stalls, soap and rinse completely, then enter the bath.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Small towel stays out of the water.</strong> Fold it on your head, or place it on the ledge.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Tie up long hair</strong> so it doesn't touch the water.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Tattoos are often banned.</strong> Many onsen still refuse entry. Tattoo-friendly onsen exist and are easy to Google ahead of time.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>No swimsuits</strong> in traditional onsen. Full nudity is the norm. Private-bath ryokan rooms are an alternative if uncomfortable.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Wash completely first.</strong> Sit at a shower stall, soap and rinse from head to foot, then enter the bath. The water is for soaking, not for cleaning.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Small towel stays out of the water.</strong> Fold it on your head, or place it on the ledge while you soak.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Tie up long hair.</strong> It can't touch the water.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Be quiet.</strong> The sento is closer to a library than a swimming pool. Conversations stay low. Children get a single warning, then a louder one.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Tattoos are often a problem.</strong> Many sento still refuse entry. Ask first; some accept small tattoos with a cover patch.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>No swimsuits.</strong> Full nudity is the norm. If that's a barrier, look for a private-bath sento or a ryokan room with its own.</div></div>
       </div>
 
       <div class="culture-cat">
-        <h3>Trains &amp; public spaces</h3>
-        <p class="sub">Silence is the default.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Set phones to silent</strong> &mdash; "manner mode." No calls on trains. Texting is fine.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Queue precisely</strong> at the marked spots on the platform. Let passengers exit first.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Priority seats exist for a reason.</strong> Give them up for elderly, pregnant, injured &mdash; or don't sit there.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't eat on local trains</strong> (Shinkansen is the exception &mdash; onboard bent&#333; are a ritual).</div></div>
-      </div>
-
-      <div class="culture-cat">
-        <h3>Accommodation</h3>
-        <p class="sub">Especially in ryokan, small things matter.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Remove shoes at the entrance.</strong> If you see a step-up (genkan), shoes off. Slippers provided.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Separate toilet slippers</strong> exist in many accommodations. Swap into them in the bathroom, back out after.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Ryokan curfews are real.</strong> Many lock doors around 10&ndash;11pm. Check in advance if you're a night owl.</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't walk on tatami with slippers.</strong> Socks or barefoot only.</div></div>
-      </div>
-
-      <div class="culture-cat">
-        <h3>Shrines &amp; temples</h3>
+        <h3>Local shrines &amp; temples</h3>
         <p class="sub">Active places of worship, not museums.</p>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>At a shrine:</strong> bow once at the torii, purify hands and mouth at the ch&#333;zuya, then at the offering box: bow twice, clap twice, pray, bow once more.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>At a temple</strong>: hands together, silent. No clapping.</div></div>
-        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>A small coin offering</strong> is traditional &mdash; &#165;5 (go-en) is considered lucky, as the word also means "connection."</div></div>
-        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>No flash photography inside</strong>, and often no photos at all in main halls. Watch for signs.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>At a shrine</strong> &mdash; like Yoshiwara Jinja or Imado Jinja: bow once at the torii, purify hands and mouth at the ch&#333;zuya, then at the offering box: bow twice, clap twice, pray, bow once more.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>At a temple</strong>: hands together, silent. No clapping. Same coin offering, same small bow.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>A &yen;5 coin (go-en)</strong> is the lucky offering &mdash; the word also means "connection."</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>No flash photography inside</strong>, and often no photos at all in main halls. Watch for signs &mdash; sometimes only printed on a small wooden plaque.</div></div>
+      </div>
+
+      <div class="culture-cat">
+        <h3>The Joban / Hibiya line</h3>
+        <p class="sub">Silence is the default.</p>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Phones on silent</strong> &mdash; "manner mode." No calls on the train. Texting is fine.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Queue precisely</strong> at the marked spots on the platform. Two lines, leaving a path in the middle for passengers exiting.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Priority seats exist for a reason.</strong> Give them up for elderly, pregnant, injured &mdash; or don't sit there at all if you're young and well.</div></div>
+        <div class="rule"><span class="rule-mark do">&#10003;</span><div class="rule-text"><strong>Backpacks off, on the floor</strong> or held in front. Crowded morning trains demand it.</div></div>
+        <div class="rule"><span class="rule-mark dont">&#10005;</span><div class="rule-text"><strong>Don't eat on the local trains.</strong> Shinkansen is the exception &mdash; onboard bent&#333; are a ritual. The Joban line isn't a Shinkansen.</div></div>
       </div>
     </div>
   </section>
@@ -1763,7 +1968,7 @@ const DEFAULT_STATE = {
   travelerName: '',
   tripLength: 14,
   tripDates: '',
-  cities: [],
+  dayPlans: [],
   budget: {
     accommodation: 10000,
     food: 5000,
@@ -1819,6 +2024,9 @@ function load() {
     state.budget = { ...DEFAULT_STATE.budget, ...(parsed.budget || {}) };
     state.hotel = { ...DEFAULT_STATE.hotel, ...(parsed.hotel || {}) };
     state.packing = { ...DEFAULT_STATE.packing, ...(parsed.packing || {}) };
+    // migration: old `cities` key from earlier versions is dropped
+    if (!Array.isArray(state.dayPlans)) state.dayPlans = [];
+    if ('cities' in state) delete state.cities;
   } catch (e) {}
 }
 
@@ -1861,52 +2069,53 @@ document.getElementById('nav').addEventListener('click', e => {
 });
 
 /* =========================================
-   ITINERARY
+   ITINERARY  (your day plans)
    ========================================= */
-function addCity() {
-  const name = document.getElementById('cityName').value.trim();
-  const days = parseInt(document.getElementById('cityDays').value) || 1;
-  const notes = document.getElementById('cityNotes').value.trim();
-  if (!name) { toast('Add a city name first'); return; }
+function addDay() {
+  const label = document.getElementById('dayLabel').value.trim();
+  const stops = document.getElementById('dayStops').value.trim();
+  const notes = document.getElementById('dayNotes').value.trim();
+  if (!label && !stops) { toast('Add a label or some stops first'); return; }
 
-  state.cities.push({ id: Date.now(), name, days, notes });
-  document.getElementById('cityName').value = '';
-  document.getElementById('cityDays').value = '3';
-  document.getElementById('cityNotes').value = '';
-  renderCities();
+  state.dayPlans.push({ id: Date.now(), label: label || 'Untitled day', stops, notes });
+  document.getElementById('dayLabel').value = '';
+  document.getElementById('dayStops').value = '';
+  document.getElementById('dayNotes').value = '';
+  renderDays();
   save();
   updateAll();
 }
 
-function removeCity(id) {
-  state.cities = state.cities.filter(c => c.id !== id);
-  renderCities();
+function removeDay(id) {
+  state.dayPlans = state.dayPlans.filter(d => d.id !== id);
+  renderDays();
   save();
   updateAll();
 }
 
-function renderCities() {
-  const container = document.getElementById('cityList');
-  if (state.cities.length === 0) {
+function renderDays() {
+  const container = document.getElementById('dayList');
+  if (!container) return;
+  if (state.dayPlans.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
         <span class="empty-icon">&#9678;</span>
-        <p>No cities yet. Start with your entry point &mdash; usually Tokyo or Osaka.</p>
+        <p>No days saved yet. Sketch one above &mdash; a label, a few stops, you're done.</p>
       </div>`;
     return;
   }
 
-  container.innerHTML = state.cities.map((c, i) => `
+  container.innerHTML = state.dayPlans.map((d, i) => `
     <article class="city">
       <div class="city-head">
         <div class="city-name-row">
           <span style="font-size:13px;color:var(--muted);font-weight:500;">0${i + 1}</span>
-          <span class="city-name">${escapeHtml(c.name)}</span>
-          <span class="city-days">${c.days} night${c.days !== 1 ? 's' : ''}</span>
+          <span class="city-name">${escapeHtml(d.label)}</span>
         </div>
-        <button class="tiny" onclick="removeCity(${c.id})">Remove</button>
+        <button class="tiny" onclick="removeDay(${d.id})">Remove</button>
       </div>
-      ${c.notes ? `<div class="city-notes">${escapeHtml(c.notes)}</div>` : ''}
+      ${d.stops ? `<div class="city-notes">${escapeHtml(d.stops)}</div>` : ''}
+      ${d.notes ? `<div class="city-notes" style="opacity:0.75;margin-top:6px;font-style:italic;">${escapeHtml(d.notes)}</div>` : ''}
     </article>
   `).join('');
 }
@@ -2044,8 +2253,8 @@ function updateStats() {
   const days = state.tripLength;
   document.getElementById('statDays').textContent = days;
 
-  const cities = state.cities.length;
-  document.getElementById('statCities').textContent = cities;
+  const plans = state.dayPlans.length;
+  document.getElementById('statPlans').textContent = plans;
 
   const { total } = calculateBudget();
   const budgetK = total >= 1000000 ? (total/10000).toFixed(0) + 'man' : '\u00a5' + (total/1000).toFixed(0) + 'k';
@@ -2057,8 +2266,8 @@ function updateStats() {
   document.getElementById('statPacked').textContent = checkedItems + ' / ' + totalItems;
 
   // Update bar fills
-  const cityBar = document.getElementById('barCities');
-  if (cityBar) cityBar.style.width = Math.min(cities / 8 * 100, 100) + '%';
+  const planBar = document.getElementById('barPlans');
+  if (planBar) planBar.style.width = Math.min(plans / 5 * 100, 100) + '%';
   const packedBar = document.getElementById('barPacked');
   if (packedBar) packedBar.style.width = totalItems > 0 ? Math.round(checkedItems / totalItems * 100) + '%' : '0%';
   const daysBar = document.getElementById('barDays');
@@ -2118,7 +2327,7 @@ function hydrate() {
     b.classList.toggle('active', b.dataset.season === state.packing.season);
   });
 
-  renderCities();
+  renderDays();
   renderPacking();
   updateAll();
 }
