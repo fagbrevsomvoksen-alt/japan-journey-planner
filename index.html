@@ -1897,8 +1897,6 @@ let hmRate = null;
 let hmCurrencyCode = 'USD';
 
 async function fetchRate() {
-  const sel = document.getElementById('hmCurrency');
-  hmCurrencyCode = sel ? sel.value : 'USD';
   const statusEl = document.getElementById('hmStatus');
   const rateEl   = document.getElementById('hmRateValue');
   if (statusEl) statusEl.textContent = 'Fetching live rate\u2026';
@@ -1955,6 +1953,26 @@ document.getElementById('nav').addEventListener('click', function(e) {
   var btn = e.target.closest('.nav-item');
   if (btn && btn.dataset.view === 'howmuch' && !hmRate) fetchRate();
 });
+
+// Currency button switcher (click on NOK / EUR / GBP / etc.)
+(function() {
+  var row = document.getElementById('hmCurrencyRow');
+  if (!row) return;
+  row.addEventListener('click', function(e) {
+    var btn = e.target.closest('.hm-cur-btn');
+    if (!btn) return;
+    var newCode = btn.dataset.cur;
+    if (!newCode || newCode === hmCurrencyCode) return;
+    hmCurrencyCode = newCode;
+    // Toggle active class on the clicked button
+    var all = row.querySelectorAll('.hm-cur-btn');
+    for (var i = 0; i < all.length; i++) {
+      all[i].classList.toggle('active', all[i] === btn);
+    }
+    // Re-fetch / recompute with the new currency
+    fetchRate();
+  });
+})();
 
 // Also fetch on tile click (goTo triggers nav active but not the event)
 var origGoTo = window.goTo;
