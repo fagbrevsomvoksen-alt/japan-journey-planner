@@ -4,7 +4,7 @@
    Google Fonts cached at runtime.
    ========================================= */
 
-const CACHE_VERSION = 'japan-journey-v14';
+const CACHE_VERSION = 'japan-journey-v16';
 const APP_SHELL = [
   './',
   './index.html',
@@ -20,6 +20,7 @@ const APP_SHELL = [
   './images/moment-culture.jpg',
   './images/moment-packing.jpg',
   './images/moment-hotel.jpg',
+  './video/minamisenju-walk.mp4',
 ];
 
 /* --- Install: pre-cache the app shell ------------------------------- */

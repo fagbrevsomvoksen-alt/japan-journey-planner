@@ -165,6 +165,29 @@
   section.view { display: none; padding: 26px; }
   section.view.active { display: block; }
 
+  /* ======= WALK FANE (09) — VIDEO PLAYER ======= */
+  .walk-player {
+    margin: 8px 0 18px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .walk-player video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+  .walk-caption {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.75;
+    margin: 6px 2px 0;
+    text-align: right;
+  }
+
   /* ======= SECTION BADGE ======= */
   .section-badge {
     display: inline-block;
@@ -1084,6 +1107,7 @@
     <button class="nav-item" data-view="phrases"><span class="nav-num">06</span>Phrases</button>
     <button class="nav-item" data-view="culture"><span class="nav-num">07</span>Culture</button>
     <button class="nav-item" data-view="packing"><span class="nav-num">08</span>Packing</button>
+    <button class="nav-item" data-view="walk"><span class="nav-num">09</span>Walk</button>
   </nav>
 
   <!-- DASHBOARD -->
@@ -1176,6 +1200,11 @@
         <span class="tile-name">Packing</span>
         <span class="tile-desc">Seasonal checklist</span>
       </button>
+      <button class="section-tile tile-wa" onclick="goTo('walk')">
+        <span class="tile-num">09</span>
+        <span class="tile-name">Walk</span>
+        <span class="tile-desc">A short film of the streets</span>
+      </button>
     </div>
 
     <div class="moment reverse">
@@ -1200,6 +1229,7 @@
         <li><strong>Phrases</strong> &mdash; A handful of phrases for shopkeepers, station staff, and the small bars on Joyfull Minowa.</li>
         <li><strong>Culture</strong> &mdash; Shitamachi etiquette. Small things that make a real difference around here.</li>
         <li><strong>Packing</strong> &mdash; Seasonal checklist. Tokyo-specific items most guides forget.</li>
+        <li><strong>Walk</strong> &mdash; A short, hand-held film. Five minutes through the back streets, just to give you the sound and pace of the place.</li>
       </ol>
       <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7;">Everything saves automatically in your browser. Use <strong>Export</strong> to download a copy.</p>
     </div>
@@ -1836,6 +1866,28 @@
     </div>
   </section>
 
+  <!-- WALK -->
+  <section class="view" id="walk">
+    <div class="view-header">
+      <div class="section-badge badge-wa">09 &mdash; Walk</div>
+      <h1 class="view-title">A short walk through <em>the back streets.</em></h1>
+      <p class="view-lede">Hand-held, a little shaky, no narration. Five minutes from somewhere near the station, past low houses and shopfronts, the kind of streets you'll actually walk on. Sound on if you can &mdash; the city is half traffic, half cicadas, half nothing at all.</p>
+    </div>
+
+    <div class="walk-player">
+      <video controls preload="metadata" playsinline poster="">
+        <source src="video/minamisenju-walk.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <p class="walk-caption">Minamisenju, somewhere off Joyfull Minowa &mdash; a Wednesday afternoon</p>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-title">What you're seeing</div>
+      <div class="card-sub">Just an ordinary afternoon. A few blocks of low houses, a bicycle, the occasional shopfront. Nothing dramatic. That is, in some sense, the whole point of the neighborhood.</div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="left">
@@ -2077,6 +2129,9 @@ function goTo(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === view));
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (view === 'howmuch' && !hmRate) fetchRate();
+  // Pause Walk video when leaving its tab
+  var walkVid = document.querySelector('#walk video');
+  if (walkVid && view !== 'walk' && !walkVid.paused) walkVid.pause();
 }
 
 
