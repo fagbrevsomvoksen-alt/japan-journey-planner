@@ -4,7 +4,7 @@
    Google Fonts cached at runtime.
    ========================================= */
 
-const CACHE_VERSION = 'japan-journey-v16';
+const CACHE_VERSION = 'japan-journey-v17';
 const APP_SHELL = [
   './',
   './index.html',
