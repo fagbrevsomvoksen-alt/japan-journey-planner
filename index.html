@@ -54,6 +54,8 @@
     background: var(--paper);
     border: 1px solid var(--ink);
     padding: 0;
+    /* Reserve room at the bottom for the fixed nav-bar (and iOS home-indicator inset) */
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
     box-shadow: 4px 4px 0 var(--ink);
   }
 
@@ -121,35 +123,54 @@
   .util-btn:hover { background: var(--ink); color: var(--paper); }
   .util-btn.danger:hover { background: var(--lantern); border-color: var(--lantern); color: var(--paper); }
 
-  /* ======= NAV ======= */
+  /* ======= NAV — fixed bottom bar, mobile-app style ======= */
   .nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 760px;
+    z-index: 100;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0;
     padding: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     background: var(--ink);
-    border: none;
+    border-top: 2px solid var(--lantern);
     margin: 0;
-    overflow-x: visible;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* hide scrollbar visually, keep scrollable */
+    scrollbar-width: none;
   }
+  .nav::-webkit-scrollbar { display: none; }
 
   .nav-item {
     background: transparent;
     border: none;
     border-right: 1px solid rgba(239,230,210,0.18);
-    padding: 9px 12px;
+    padding: 10px 8px 11px;
     font-family: inherit;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--paper);
     cursor: pointer;
     white-space: nowrap;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     border-radius: 0;
     text-transform: uppercase;
-    flex: 1 1 auto;
+    flex: 1 0 auto;
+    min-width: 70px;
     text-align: center;
     transition: background 0.1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
   }
+  .nav-item:last-child { border-right: 0; }
   .nav-item:hover { background: rgba(239,230,210,0.1); }
   .nav-item.active {
     background: var(--lantern);
@@ -159,11 +180,12 @@
 
   .nav-num {
     font-size: 9px;
-    margin-right: 4px;
+    margin: 0;
     opacity: 0.65;
     font-weight: normal;
+    letter-spacing: 0.08em;
   }
-  .nav-item.active .nav-num { opacity: 0.8; }
+  .nav-item.active .nav-num { opacity: 0.85; }
 
   /* ======= SECTIONS ======= */
   section.view { display: none; padding: 26px; }
@@ -176,6 +198,8 @@
     background: var(--ink);
     box-shadow: 4px 4px 0 var(--ink);
   }
+  /* When the video sits at the very top of the Walk view */
+  .walk-player.walk-player-top { margin-top: 0; }
   .walk-player video {
     display: block;
     width: 100%;
@@ -1894,19 +1918,19 @@
 
   <!-- WALK -->
   <section class="view" id="walk">
-    <div class="view-header">
-      <div class="section-badge badge-wa">09 &mdash; Walk</div>
-      <h1 class="view-title">A short walk through <em>the back streets.</em></h1>
-      <p class="view-lede">Hand-held, a little shaky, no narration. Five minutes from somewhere near the station, past low houses and shopfronts, the kind of streets you'll actually walk on. Sound on if you can &mdash; the city is half traffic, half cicadas, half nothing at all.</p>
-    </div>
-
-    <div class="walk-player">
+    <div class="walk-player walk-player-top">
       <video controls preload="metadata" playsinline>
         <source src="video/minamisenju-walk.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
     <p class="walk-caption">Minamisenju, somewhere off Joyfull Minowa &mdash; a Wednesday afternoon</p>
+
+    <div class="view-header" style="margin-top: 18px;">
+      <div class="section-badge badge-wa">09 &mdash; Walk</div>
+      <h1 class="view-title">A short walk through <em>the back streets.</em></h1>
+      <p class="view-lede">Hand-held, a little shaky, no narration. Five minutes from somewhere near the station, past low houses and shopfronts, the kind of streets you'll actually walk on. Sound on if you can &mdash; the city is half traffic, half cicadas, half nothing at all.</p>
+    </div>
 
     <div class="card" style="margin-top: 24px;">
       <div class="card-title">What you're seeing</div>
