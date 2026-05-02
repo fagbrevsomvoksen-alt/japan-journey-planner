@@ -642,13 +642,43 @@
   }
 
   /* ======= LEAFLET MAP — real map of Minamisenju (rotated 90° CW) ======= */
+  .map-section {
+    margin: 0 -26px 22px;
+  }
+  .map-section-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: var(--ink);
+    border-left: 4px solid var(--lantern);
+    padding: 2px 0 2px 12px;
+    margin: 0 26px 10px;
+    line-height: 1.2;
+  }
+  .map-section-caption {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink);
+    opacity: 0.7;
+    margin: 8px 26px 0;
+  }
   #osm-map-wrap {
     position: relative;
     width: 100%;
     height: 360px;
     overflow: hidden;
-    border: 1px solid var(--ink);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
     background: #E8E4D8; /* fallback while tiles load / when offline */
+  }
+  #osm-map-wide-wrap {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: #DDE8EB;
   }
   #osm-map {
     position: absolute;
@@ -658,6 +688,14 @@
     transform-origin: center center;
     /* North → right, South → left after rotation */
   }
+  #osm-map-wide {
+    position: absolute;
+    inset: 0;
+    cursor: default;
+  }
+  /* The info panel below the close map sits inside the section, with the
+     normal section padding restored, since it's not part of the full-bleed map. */
+  .map-section #map-info-panel { margin: 12px 26px 0; }
   /* Custom pins drawn as DOM elements via L.divIcon — counter-rotate so they stay upright */
   .map-marker-wrap { background: transparent; border: 0; }
   .map-marker {
@@ -701,6 +739,48 @@
     border-color: var(--paper);
     box-shadow: 0 0 0 1.5px var(--lantern), 0 2px 4px rgba(0, 0, 0, 0.25);
   }
+
+  /* District labels for the wide "Nearby Minamisenju" map — text only, not a circle */
+  .map-district-label {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 10px;
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    border: 1px solid var(--lantern);
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  /* The home district gets a lantern fill so the eye finds Minamisenju first */
+  .map-district-home {
+    background: var(--lantern);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Permanent station label — always visible, beside the station marker */
+  .leaflet-tooltip.station-label {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--lantern);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    white-space: nowrap;
+    /* Counter-rotate so the label reads horizontally despite the map rotation */
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+  .leaflet-tooltip.station-label::before { display: none; } /* hide arrow tip */
   .map-marker-pulse {
     animation: marker-pulse 0.85s ease-out 3;
   }
@@ -1754,18 +1834,34 @@
     <div class="view-header">
       <div class="section-badge">05 &mdash; Map</div>
       <h1 class="view-title">Where things <em>actually sit.</em></h1>
-      <p class="view-lede">A real map of the back streets around Minamisenju Station &mdash; just enough to get your bearings the moment you step off the train. Tap a pin for the address.</p>
+      <p class="view-lede">Two maps. Up top: where you sleep, the back streets around the station. Below: the wider neighborhood with Asakusa and Akihabara to the south.</p>
     </div>
 
-    <div class="card" style="padding: 14px;">
-      <div id="osm-map-wrap" role="img" aria-label="A rotated map of Minamisenju and Asakusa showing the station, hotels, and Asahi Beer Hall.">
+    <!-- MAIN MAP — close cluster (station + hotels + bike video). Rotated 90° CW. -->
+    <div class="map-section">
+      <h3 class="map-section-title">Where you sleep</h3>
+      <div id="osm-map-wrap" role="img" aria-label="A rotated map of the streets around Minamisenju Station with the hotels and the bike video pin.">
         <div id="osm-map"></div>
       </div>
       <div id="map-info-panel" class="map-info" aria-live="polite">
         <div class="map-info-empty">Tap a pin on the map to see its name and address.</div>
       </div>
+    </div>
 
-      <table class="map-legend" style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px;">
+    <!-- WIDE MAP — Minamisenju + Asakusa + Akihabara districts, north-up. -->
+    <div class="map-section">
+      <h3 class="map-section-title">Nearby Minamisenju</h3>
+      <div id="osm-map-wide-wrap" role="img" aria-label="A wider map showing Minamisenju, Asakusa and Akihabara districts with the Sumida river.">
+        <div id="osm-map-wide"></div>
+      </div>
+      <p class="map-section-caption">Three districts, ten minutes apart by train. The Sumida river runs through, north to south.</p>
+    </div>
+
+    <!-- LEGEND — only for the close map's pins. -->
+    <div class="card" style="padding: 14px;">
+      <div class="card-title" style="margin-bottom: 8px;">The pins, up close</div>
+
+      <table class="map-legend" style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead>
           <tr style="background: var(--ink); color: var(--paper);">
             <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal; width: 32px;">&nbsp;</th>
@@ -1786,13 +1882,8 @@
           </tr>
           <tr style="border-bottom: 1px dashed var(--ink);">
             <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 12px; font-weight: bold; color: var(--paper); background: var(--lantern);">&#9733;</td>
-            <td style="padding: 8px 10px;"><strong style="color: var(--lantern);">Hoteiya.</strong> Your home base. 1&minus;23&minus;9 Nihonzutsumi, Taito-ku &mdash; just south of the Joban line, a short walk from the station.</td>
+            <td style="padding: 8px 10px;"><strong style="color: var(--lantern);">Hoteiya.</strong> Your home base. 1&minus;23&minus;9 Nihonzutsumi, Taito-ku &mdash; same back-street block as Juyoh.</td>
             <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">8 min</td>
-          </tr>
-          <tr style="border-bottom: 1px dashed var(--ink);">
-            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 14px; font-weight: bold; color: var(--paper); background: var(--ink);">&deg;</td>
-            <td style="padding: 8px 10px;"><strong>Asahi Beer Hall.</strong> The golden flame in Asakusa &mdash; Super Dry Hall, designed by Philippe Starck in 1989. The orienting landmark when you walk south to the river.</td>
-            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">~30 min</td>
           </tr>
           <tr>
             <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: var(--paper); background: var(--ink); padding-left: 10px;">&#9654;</td>
@@ -1803,7 +1894,7 @@
       </table>
 
       <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7; line-height: 1.6;">
-        <strong style="color: var(--lantern); opacity: 1;">A note:</strong> Map data &copy; OpenStreetMap. The map is fixed &mdash; tap a pin to read the address. More spots will land here as the trip takes shape.
+        <strong style="color: var(--lantern); opacity: 1;">A note:</strong> Map data &copy; OpenStreetMap &middot; CARTO. Tap any pin in the close map to read about it. The wider map is just for orientation.
       </p>
     </div>
   </section>
@@ -2296,13 +2387,22 @@ function goTo(view) {
   if (view === 'howmuch' && !hmRate) fetchRate();
   if (view === 'map') {
     initLeafletMap();
-    // The Map view was hidden when the map was created — recompute size and rotation
-    // now that the wrapper has real dimensions.
+    initWideMap();
+    // The Map view was hidden when both maps were created — recompute size and rotation
+    // now that the wrappers have real dimensions.
     setTimeout(function () {
-      if (!leafletMap) return;
-      applyMapRotation();
-      leafletMap.invalidateSize();
-      fitMapToAllPins();
+      if (leafletMap) {
+        applyMapRotation();
+        leafletMap.invalidateSize();
+        fitMapToAllPins();
+      }
+      if (wideMap) {
+        wideMap.invalidateSize();
+        var coords = Object.keys(WIDE_MAP_SPOTS).map(function (k) { return WIDE_MAP_SPOTS[k].coords; });
+        if (coords.length > 1) {
+          wideMap.fitBounds(L.latLngBounds(coords), { padding: [40, 40], maxZoom: 14 });
+        }
+      }
     }, 80);
   }
   // Pause Walk video when leaving its tab
@@ -2324,7 +2424,8 @@ var MAP_SPOTS = {
     coords: [35.7317427, 139.7984332],
     iconClass: 'map-marker-station',
     iconHtml: '',
-    popup: '<strong>Minamisenju Station</strong><br><small>Joban &amp; Hibiya lines &middot; みなみせんじゅえき</small>'
+    label: 'Minamisenju Station',
+    popup: '<strong>Minamisenju Station</strong><br><small>Joban &amp; Hibiya lines &middot; three exits &middot; everything fans out from here</small>'
   },
   'pin-hotel-juyoh': {
     coords: [35.7266972, 139.8007795],
@@ -2338,18 +2439,39 @@ var MAP_SPOTS = {
     iconHtml: 'H',
     popup: '<strong>Hoteiya &#9733;</strong><br><small>1&minus;23&minus;9 Nihonzutsumi, Taito-ku<br>Your home base &middot; about 8 min on foot</small>'
   },
-  'pin-asahi': {
-    coords: [35.7099095, 139.8002747],
-    iconClass: 'map-marker-landmark',
-    iconHtml: '',
-    popup: '<strong>Asahi Beer Hall</strong><br><small>Super Dry Hall &middot; Azumabashi, Sumida-ku<br>The golden flame &middot; Asakusa landmark</small>'
-  },
   'pin-bike-video': {
     coords: [35.725079, 139.798733],
     iconClass: 'map-marker-video',
     iconHtml: '&#9654;',
     videoSrc: 'video/minami-sykkel.mp4',
     popup: '<strong>A short cycle</strong><br><small>Hand-held loop through the back streets &middot; 2 min<br><em>Tap the video to expand</em></small>'
+  }
+};
+
+/* Wide-area context map — Minamisenju, Asakusa, Akihabara districts.
+   These are display-only labels for orientation. Asahi Beer Hall is the
+   one specific landmark dot, since it's the icon of Asakusa. */
+var WIDE_MAP_SPOTS = {
+  minamisenju: {
+    coords: [35.7317427, 139.7984332],
+    iconClass: 'map-district-label map-district-home',
+    label: 'Minamisenju'
+  },
+  asakusa: {
+    coords: [35.7117, 139.7967],
+    iconClass: 'map-district-label',
+    label: 'Asakusa'
+  },
+  akihabara: {
+    coords: [35.6987, 139.7730],
+    iconClass: 'map-district-label',
+    label: 'Akihabara'
+  },
+  'asahi-landmark': {
+    coords: [35.7099095, 139.8002747],
+    iconClass: 'map-marker map-marker-landmark',
+    label: 'Asahi Beer Hall',
+    iconHtml: ''
   }
 };
 
@@ -2376,7 +2498,7 @@ function initLeafletMap() {
   // Fallback view in case fitBounds runs before tiles load
   leafletMap.setView([35.7300, 139.7980], 14);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &middot; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19
@@ -2399,6 +2521,15 @@ function initLeafletMap() {
       iconAnchor: [size[0] / 2, size[1] / 2]
     });
     var marker = L.marker(spot.coords, { icon: icon }).addTo(leafletMap);
+    // Always-visible label for the station — the only place where users need a name on the close map
+    if (id === 'station' && spot.label) {
+      marker.bindTooltip(spot.label.toUpperCase(), {
+        permanent: true,
+        direction: 'right',
+        offset: [10, 0],
+        className: 'station-label'
+      });
+    }
     marker.on('click', function () {
       handlePinTap(id);
       showPinInfo(id);
@@ -2408,6 +2539,67 @@ function initLeafletMap() {
   });
 
   fitMapToAllPins();
+}
+
+/* Wide context map — Minamisenju + Asakusa + Akihabara (north-up).
+   Uses the same tile provider but at lower zoom so the river and districts
+   are visible together. Pins are display-only labels. */
+var wideMap = null;
+
+function initWideMap() {
+  if (wideMap || !window.L) return;
+  var container = document.getElementById('osm-map-wide');
+  if (!container) return;
+
+  wideMap = L.map('osm-map-wide', {
+    zoomControl: false,
+    dragging: false,
+    doubleClickZoom: false,
+    scrollWheelZoom: false,
+    touchZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    zoomSnap: 0.25,
+    attributionControl: false  // attribution lives on the close map already
+  });
+
+  // Fallback view in case fitBounds runs before tiles load
+  wideMap.setView([35.715, 139.79], 13);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(wideMap);
+
+  var coords = [];
+  Object.keys(WIDE_MAP_SPOTS).forEach(function (id) {
+    var spot = WIDE_MAP_SPOTS[id];
+    var icon;
+    if (spot.iconClass.indexOf('map-district-label') !== -1) {
+      icon = L.divIcon({
+        html: '<div class="' + spot.iconClass + '">' + spot.label + '</div>',
+        className: 'map-marker-wrap',
+        iconSize: null,
+        iconAnchor: [50, 14]
+      });
+    } else {
+      // landmark dot
+      icon = L.divIcon({
+        html: '<div class="' + spot.iconClass + '">' + (spot.iconHtml || '') + '</div>',
+        className: 'map-marker-wrap',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      });
+    }
+    L.marker(spot.coords, { icon: icon, interactive: false }).addTo(wideMap);
+    coords.push(spot.coords);
+  });
+
+  if (coords.length > 1) {
+    var bounds = L.latLngBounds(coords);
+    wideMap.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+  }
 }
 
 /* Render the clicked pin's info into the panel below the map.
@@ -2491,12 +2683,13 @@ function highlightPin(pinId) {
   setTimeout(function () { inner.classList.remove('map-marker-pulse'); }, 2700);
 }
 
-/* The "neighborhood cluster" — station + the two hotels.
-   Tapping any of these zooms the map in to just these three.
-   Tapping Asahi resets to the wide view that includes everything. */
-var CLUSTER_IDS = ['station', 'pin-hotel-juyoh', 'pin-hotel-hoteiya'];
+/* The default close-map view — station + the two hotels + the bike video pin.
+   Since they're all in the same neighborhood, fitBounds zooms tight enough
+   that the popup info gets room to breathe when a pin is tapped. */
+var CLUSTER_IDS = ['station', 'pin-hotel-juyoh', 'pin-hotel-hoteiya', 'pin-bike-video'];
 
 function handlePinTap(pinId) {
+  // All current pins are in the cluster; future non-cluster pins fit-all.
   if (CLUSTER_IDS.indexOf(pinId) !== -1) {
     zoomMapTo(CLUSTER_IDS);
   } else {
