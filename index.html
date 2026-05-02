@@ -691,6 +691,16 @@
     border-color: var(--paper);
     box-shadow: 0 0 0 1.5px var(--ink), 0 2px 4px rgba(0, 0, 0, 0.25);
   }
+  .map-marker-video {
+    width: 24px;
+    height: 24px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 10px;
+    padding-left: 2px; /* visually centre the play triangle */
+    border-color: var(--paper);
+    box-shadow: 0 0 0 1.5px var(--lantern), 0 2px 4px rgba(0, 0, 0, 0.25);
+  }
   .map-marker-pulse {
     animation: marker-pulse 0.85s ease-out 3;
   }
@@ -730,6 +740,87 @@
     color: var(--ink);
     opacity: 0.85;
   }
+  .map-info-text { display: block; }
+
+  /* Inline video player inside the map-info panel — for video pins.
+     Auto-plays muted. Tap anywhere on it to open the fullscreen modal. */
+  .map-info-video {
+    position: relative;
+    width: 100%;
+    margin: 0 0 10px;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .map-info-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none; /* clicks go to the wrapper, not the video element */
+  }
+  .map-info-video-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(43, 30, 18, 0.78);
+    color: var(--paper);
+    padding: 4px 10px;
+    font-family: Verdana, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .map-info-video:hover { box-shadow: 6px 6px 0 var(--ink); }
+
+  /* Fullscreen video modal */
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 16px 32px;
+    animation: video-modal-in 0.18s ease-out;
+  }
+  .video-modal[hidden] { display: none; }
+  .video-modal video {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    background: #000;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  }
+  .video-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid var(--paper);
+    font-family: Georgia, serif;
+    font-size: 20px;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video-modal-close:hover { background: var(--paper); color: var(--ink); }
+  body.video-modal-open { overflow: hidden; }
+  @keyframes video-modal-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
   /* CARTO attribution stays bottom-right, but we counter-rotate so the text reads horizontally */
   .leaflet-control-attribution {
     background: rgba(239, 230, 210, 0.8) !important;
@@ -1698,10 +1789,15 @@
             <td style="padding: 8px 10px;"><strong style="color: var(--lantern);">Hoteiya.</strong> Your home base. 1&minus;23&minus;9 Nihonzutsumi, Taito-ku &mdash; just south of the Joban line, a short walk from the station.</td>
             <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">8 min</td>
           </tr>
-          <tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
             <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 14px; font-weight: bold; color: var(--paper); background: var(--ink);">&deg;</td>
             <td style="padding: 8px 10px;"><strong>Asahi Beer Hall.</strong> The golden flame in Asakusa &mdash; Super Dry Hall, designed by Philippe Starck in 1989. The orienting landmark when you walk south to the river.</td>
             <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">~30 min</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; vertical-align: top; text-align: center; font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: var(--paper); background: var(--ink); padding-left: 10px;">&#9654;</td>
+            <td style="padding: 8px 10px;"><strong>A short cycle.</strong> A 2-minute hand-held bike loop through the back streets &mdash; tap the pin to play.</td>
+            <td style="padding: 8px 10px; text-align: right; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">video</td>
           </tr>
         </tbody>
       </table>
@@ -1968,6 +2064,12 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Fullscreen video modal (opens when a video pin's inline player is tapped) -->
+<div id="video-modal" class="video-modal" hidden onclick="closeVideoModal(event)" role="dialog" aria-modal="true" aria-label="Video">
+  <button type="button" class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video">&times;</button>
+  <video id="video-modal-player" controls playsinline preload="metadata"></video>
+</div>
 
 <script>
 /* =========================================
@@ -2241,6 +2343,13 @@ var MAP_SPOTS = {
     iconClass: 'map-marker-landmark',
     iconHtml: '',
     popup: '<strong>Asahi Beer Hall</strong><br><small>Super Dry Hall &middot; Azumabashi, Sumida-ku<br>The golden flame &middot; Asakusa landmark</small>'
+  },
+  'pin-bike-video': {
+    coords: [35.725079, 139.798733],
+    iconClass: 'map-marker-video',
+    iconHtml: '&#9654;',
+    videoSrc: 'video/minami-sykkel.mp4',
+    popup: '<strong>A short cycle</strong><br><small>Hand-held loop through the back streets &middot; 2 min<br><em>Tap the video to expand</em></small>'
   }
 };
 
@@ -2276,7 +2385,8 @@ function initLeafletMap() {
   var MARKER_SIZES = {
     'map-marker-station':  [18, 18],
     'map-marker-hotel':    [32, 32],
-    'map-marker-landmark': [22, 22]
+    'map-marker-landmark': [22, 22],
+    'map-marker-video':    [28, 28]
   };
 
   Object.keys(MAP_SPOTS).forEach(function (id) {
@@ -2300,17 +2410,72 @@ function initLeafletMap() {
   fitMapToAllPins();
 }
 
-/* Render the clicked pin's info into the panel below the map */
+/* Render the clicked pin's info into the panel below the map.
+   For pins with a videoSrc, render a small autoplaying video that opens
+   a fullscreen modal when tapped. */
 function showPinInfo(pinId) {
   var spot = MAP_SPOTS[pinId];
   var panel = document.getElementById('map-info-panel');
   if (!panel) return;
-  if (!spot || !spot.popup) {
+  if (!spot) {
     panel.innerHTML = '<div class="map-info-empty">Tap a pin on the map to see its name and address.</div>';
     return;
   }
-  panel.innerHTML = spot.popup;
+  var html = '';
+  if (spot.videoSrc) {
+    var src = spot.videoSrc.replace(/'/g, "&#39;");
+    html += '<div class="map-info-video" role="button" tabindex="0" aria-label="Expand video"' +
+            ' onclick="openVideoModal(\'' + src + '\')"' +
+            ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openVideoModal(\'' + src + '\');}">' +
+            '<video muted autoplay loop playsinline preload="metadata">' +
+              '<source src="' + spot.videoSrc + '" type="video/mp4">' +
+            '</video>' +
+            '<div class="map-info-video-hint"><span>&#9654;&nbsp; Tap to expand</span></div>' +
+            '</div>';
+  }
+  if (spot.popup) {
+    html += '<div class="map-info-text">' + spot.popup + '</div>';
+  } else if (!spot.videoSrc) {
+    html = '<div class="map-info-empty">Tap a pin on the map to see its name and address.</div>';
+  }
+  panel.innerHTML = html;
 }
+
+/* Open the fullscreen video modal with the given source */
+function openVideoModal(src) {
+  var modal = document.getElementById('video-modal');
+  var player = document.getElementById('video-modal-player');
+  if (!modal || !player) return;
+  player.src = src;
+  modal.removeAttribute('hidden');
+  document.body.classList.add('video-modal-open');
+  // Try to play (browsers may block until user interacts; controls are visible regardless)
+  var playPromise = player.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(function () { /* user can press play */ });
+  }
+}
+
+/* Close the modal — also called when user clicks the dark backdrop or presses Escape */
+function closeVideoModal(e) {
+  // If the click came from inside the video element itself, ignore (let user use controls)
+  if (e && e.target && e.target.tagName === 'VIDEO') return;
+  var modal = document.getElementById('video-modal');
+  var player = document.getElementById('video-modal-player');
+  if (!modal || !player) return;
+  player.pause();
+  player.removeAttribute('src');
+  player.load();
+  modal.setAttribute('hidden', '');
+  document.body.classList.remove('video-modal-open');
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    var modal = document.getElementById('video-modal');
+    if (modal && !modal.hasAttribute('hidden')) closeVideoModal();
+  }
+});
 
 /* Briefly pulse a pin so the eye finds it after navigating from Itinerary */
 function highlightPin(pinId) {
