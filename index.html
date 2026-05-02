@@ -123,6 +123,18 @@
   .util-btn:hover { background: var(--ink); color: var(--paper); }
   .util-btn.danger:hover { background: var(--lantern); border-color: var(--lantern); color: var(--paper); }
 
+  /* ======= SLIM MODE — applies on every tab except Dashboard ======= */
+  /* Hide the Export/Reset buttons when not on the Dashboard (slimmer masthead) */
+  body:not([data-view="dashboard"]) .masthead .utils { display: none; }
+  /* Trim the masthead vertically on non-Dashboard tabs */
+  body:not([data-view="dashboard"]) .masthead { padding: 14px 26px 12px; }
+  body:not([data-view="dashboard"]) .brand-name { font-size: 22px; }
+  body:not([data-view="dashboard"]) .masthead-kanji { top: 12px; font-size: 12px; }
+  /* Drop the per-section view-header (badge + title + lede) on non-Dashboard tabs */
+  body:not([data-view="dashboard"]) .view.active > .view-header { display: none; }
+  /* Tighter top padding on the view content too, so it sits closer to the masthead */
+  body:not([data-view="dashboard"]) .view.active { padding-top: 16px; }
+
   /* ======= NAV — fixed bottom bar, mobile-app style ======= */
   .nav {
     position: fixed;
@@ -1260,7 +1272,7 @@
 
 </style>
 </head>
-<body>
+<body data-view="dashboard">
 
 <div class="app">
 
@@ -2175,6 +2187,7 @@ function toast(msg) {
    ========================================= */
 
 function goTo(view) {
+  document.body.dataset.view = view;
   document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === view));
   document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === view));
   window.scrollTo({ top: 0, behavior: 'smooth' });
