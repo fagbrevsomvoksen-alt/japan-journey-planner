@@ -761,6 +761,45 @@
     color: var(--paper);
     border-color: var(--ink);
   }
+  /* District label that opens a video — gets a play hint and hover state */
+  .map-district-video {
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+  .map-district-video:hover,
+  .map-district-video:active {
+    background: var(--lantern);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Callout label — text + arrow pointing at a small dot. Used for the gangbru
+     marker and any future labelled annotations on the rotated close map. */
+  .map-callout-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--lantern);
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  .map-callout-text {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--lantern);
+    padding: 3px 8px;
+    font-family: Verdana, sans-serif;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1.2;
+    /* Counter-rotate so the text reads horizontally on the rotated map */
+    transform: rotate(-90deg);
+    transform-origin: center;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  }
 
   /* Permanent station label — always visible, beside the station marker */
   .leaflet-tooltip.station-label {
@@ -1469,10 +1508,11 @@
     <button class="nav-item" data-view="itinerary"><span class="nav-num">03</span>Itinerary</button>
     <button class="nav-item" data-view="hotel"><span class="nav-num">04</span>Hotel</button>
     <button class="nav-item" data-view="map"><span class="nav-num">05</span>Map</button>
-    <button class="nav-item" data-view="phrases"><span class="nav-num">06</span>Phrases</button>
-    <button class="nav-item" data-view="culture"><span class="nav-num">07</span>Culture</button>
-    <button class="nav-item" data-view="packing"><span class="nav-num">08</span>Packing</button>
-    <button class="nav-item" data-view="walk"><span class="nav-num">09</span>Walk</button>
+    <button class="nav-item" data-view="nearby"><span class="nav-num">06</span>Nearby</button>
+    <button class="nav-item" data-view="phrases"><span class="nav-num">07</span>Phrases</button>
+    <button class="nav-item" data-view="culture"><span class="nav-num">08</span>Culture</button>
+    <button class="nav-item" data-view="packing"><span class="nav-num">09</span>Packing</button>
+    <button class="nav-item" data-view="walk"><span class="nav-num">10</span>Walk</button>
   </nav>
 
   <!-- DASHBOARD -->
@@ -1834,27 +1874,18 @@
     <div class="view-header">
       <div class="section-badge">05 &mdash; Map</div>
       <h1 class="view-title">Where things <em>actually sit.</em></h1>
-      <p class="view-lede">Two maps. Up top: where you sleep, the back streets around the station. Below: the wider neighborhood with Asakusa and Akihabara to the south.</p>
+      <p class="view-lede">The back streets around Minamisenju Station &mdash; just enough to get your bearings the moment you step off the train.</p>
     </div>
 
     <!-- MAIN MAP — close cluster (station + hotels + bike video). Rotated 90° CW. -->
     <div class="map-section">
-      <h3 class="map-section-title">Where you sleep</h3>
+      <h3 class="map-section-title">Minamisenju</h3>
       <div id="osm-map-wrap" role="img" aria-label="A rotated map of the streets around Minamisenju Station with the hotels and the bike video pin.">
         <div id="osm-map"></div>
       </div>
       <div id="map-info-panel" class="map-info" aria-live="polite">
         <div class="map-info-empty">Tap a pin on the map to see its name and address.</div>
       </div>
-    </div>
-
-    <!-- WIDE MAP — Minamisenju + Asakusa + Akihabara districts, north-up. -->
-    <div class="map-section">
-      <h3 class="map-section-title">Nearby Minamisenju</h3>
-      <div id="osm-map-wide-wrap" role="img" aria-label="A wider map showing Minamisenju, Asakusa and Akihabara districts with the Sumida river.">
-        <div id="osm-map-wide"></div>
-      </div>
-      <p class="map-section-caption">Three districts, ten minutes apart by train. The Sumida river runs through, north to south.</p>
     </div>
 
     <!-- LEGEND — only for the close map's pins. -->
@@ -1894,15 +1925,58 @@
       </table>
 
       <p style="margin-top: 14px; font-size: 12px; color: var(--ink); opacity: 0.7; line-height: 1.6;">
-        <strong style="color: var(--lantern); opacity: 1;">A note:</strong> Map data &copy; OpenStreetMap &middot; CARTO. Tap any pin in the close map to read about it. The wider map is just for orientation.
+        <strong style="color: var(--lantern); opacity: 1;">A note:</strong> Map data &copy; OpenStreetMap &middot; CARTO. Tap any pin to read about it.
       </p>
+    </div>
+  </section>
+
+  <!-- NEARBY -->
+  <section class="view" id="nearby">
+    <div class="view-header">
+      <div class="section-badge">06 &mdash; Nearby</div>
+      <h1 class="view-title">A wider <em>look around.</em></h1>
+      <p class="view-lede">Three districts within a short train ride: Minamisenju at the top, Asakusa in the middle, Akihabara to the south. The Sumida river runs through, north to south.</p>
+    </div>
+
+    <div class="map-section">
+      <h3 class="map-section-title">Nearby Minamisenju</h3>
+      <div id="osm-map-wide-wrap" role="img" aria-label="A wider map showing Minamisenju, Asakusa and Akihabara districts with the Sumida river.">
+        <div id="osm-map-wide"></div>
+      </div>
+      <p class="map-section-caption">Three districts, ten minutes apart by train. The river runs through.</p>
+    </div>
+
+    <div class="card" style="padding: 14px;">
+      <div class="card-title" style="margin-bottom: 8px;">The districts</div>
+      <table class="map-legend" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="background: var(--ink); color: var(--paper);">
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal;">Where</th>
+            <th style="padding: 8px 10px; text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: normal;">What it is</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">Minamisenju</td>
+            <td style="padding: 8px 10px;">Your home base. Quiet shitamachi neighborhood, cheap rooms, the back streets that gave this notebook its name.</td>
+          </tr>
+          <tr style="border-bottom: 1px dashed var(--ink);">
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">Asakusa</td>
+            <td style="padding: 8px 10px;">Sens&#333;-ji temple, the old entertainment quarter, the Sumida riverside path. The tourist center of old Tokyo &mdash; and home to the Asahi Beer Hall (the golden flame).</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 10px; vertical-align: top; color: var(--lantern); font-weight: bold; white-space: nowrap;">Akihabara &#9654;</td>
+            <td style="padding: 8px 10px;">Electric Town. Anime, manga, vintage games, retro electronics. Loud and bright. The opposite of Minamisenju in every way that counts. <em>Tap the Akihabara label on the map to see a 90-second ride through.</em></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- PHRASES -->
   <section class="view" id="phrases">
     <div class="view-header">
-      <div class="section-badge badge-ph">06 &mdash; Phrases</div>
+      <div class="section-badge badge-ph">07 &mdash; Phrases</div>
       <h1 class="view-title">Words for the <em>shopkeeper.</em></h1>
       <p class="view-lede">In the bigger neighborhoods, English gets you most of the way. Around here, it doesn't. These are the phrases for the rice-cracker shop, the small izakaya, the sento attendant, the old woman behind the counter at the soba place. Effort alone earns more goodwill than perfect pronunciation ever will.</p>
     </div>
@@ -1997,7 +2071,7 @@
   <!-- CULTURE -->
   <section class="view" id="culture">
     <div class="view-header">
-      <div class="section-badge badge-cu">07 &mdash; Culture</div>
+      <div class="section-badge badge-cu">08 &mdash; Culture</div>
       <h1 class="view-title">Shitamachi <em>etiquette.</em></h1>
       <p class="view-lede">Minamisenju isn't a tourist neighborhood &mdash; it's people's homes, their workdays, their commute. The rules below are the ones that matter for moving through a place that mostly hasn't been built for you. Get them right and you blend in. Get them wrong and you'll feel it: nothing said, just a small distance opening up.</p>
     </div>
@@ -2079,7 +2153,7 @@
   <!-- PACKING -->
   <section class="view" id="packing">
     <div class="view-header">
-      <div class="section-badge badge-pa">08 &mdash; Packing</div>
+      <div class="section-badge badge-pa">09 &mdash; Packing</div>
       <h1 class="view-title">Pack for the Japan <em>you'll actually meet.</em></h1>
       <p class="view-lede">Two truths: you'll walk more than you think (15&ndash;25km days are normal), and Japan has everything you forgot. Still, a few things are genuinely worth bringing from home.</p>
     </div>
@@ -2126,7 +2200,7 @@
     <p class="walk-caption">Minamisenju, somewhere off Joyfull Minowa &mdash; a Wednesday afternoon</p>
 
     <div class="view-header" style="margin-top: 18px;">
-      <div class="section-badge badge-wa">09 &mdash; Walk</div>
+      <div class="section-badge badge-wa">10 &mdash; Walk</div>
       <h1 class="view-title">A short walk through <em>the back streets.</em></h1>
       <p class="view-lede">Hand-held, a little shaky, no narration. Five minutes from somewhere near the station, past low houses and shopfronts, the kind of streets you'll actually walk on. Sound on if you can &mdash; the city is half traffic, half cicadas, half nothing at all.</p>
     </div>
@@ -2387,21 +2461,21 @@ function goTo(view) {
   if (view === 'howmuch' && !hmRate) fetchRate();
   if (view === 'map') {
     initLeafletMap();
-    initWideMap();
-    // The Map view was hidden when both maps were created — recompute size and rotation
-    // now that the wrappers have real dimensions.
     setTimeout(function () {
-      if (leafletMap) {
-        applyMapRotation();
-        leafletMap.invalidateSize();
-        fitMapToAllPins();
-      }
-      if (wideMap) {
-        wideMap.invalidateSize();
-        var coords = Object.keys(WIDE_MAP_SPOTS).map(function (k) { return WIDE_MAP_SPOTS[k].coords; });
-        if (coords.length > 1) {
-          wideMap.fitBounds(L.latLngBounds(coords), { padding: [40, 40], maxZoom: 14 });
-        }
+      if (!leafletMap) return;
+      applyMapRotation();
+      leafletMap.invalidateSize();
+      fitMapToAllPins();
+    }, 80);
+  }
+  if (view === 'nearby') {
+    initWideMap();
+    setTimeout(function () {
+      if (!wideMap) return;
+      wideMap.invalidateSize();
+      var coords = Object.keys(WIDE_MAP_SPOTS).map(function (k) { return WIDE_MAP_SPOTS[k].coords; });
+      if (coords.length > 1) {
+        wideMap.fitBounds(L.latLngBounds(coords), { padding: [40, 40], maxZoom: 14 });
       }
     }, 80);
   }
@@ -2464,8 +2538,9 @@ var WIDE_MAP_SPOTS = {
   },
   akihabara: {
     coords: [35.6987, 139.7730],
-    iconClass: 'map-district-label',
-    label: 'Akihabara'
+    iconClass: 'map-district-label map-district-video',
+    label: 'Akihabara &#9654;',
+    videoSrc: 'video/akihabara-sykkel.mp4'
   },
   'asahi-landmark': {
     coords: [35.7099095, 139.8002747],
@@ -2498,7 +2573,7 @@ function initLeafletMap() {
   // Fallback view in case fitBounds runs before tiles load
   leafletMap.setView([35.7300, 139.7980], 14);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &middot; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19
@@ -2539,6 +2614,48 @@ function initLeafletMap() {
   });
 
   fitMapToAllPins();
+  addMapCallouts();
+}
+
+/* Label-only annotations on the close map: small dot at the target location,
+   text label offset to the south (which appears LEFT after the 90° clockwise
+   rotation), and a short connecting line acting as the arrow. */
+var MAP_CALLOUTS = {
+  gangbru: {
+    targetCoords: [35.731476, 139.7983117],
+    textCoords:   [35.7313150, 139.7983117], // ~13m south, becomes "left" after rotation
+    label: 'gangbru'
+  }
+};
+
+function addMapCallouts() {
+  if (!leafletMap) return;
+  Object.keys(MAP_CALLOUTS).forEach(function (id) {
+    var c = MAP_CALLOUTS[id];
+    // Dot at the target
+    var dotIcon = L.divIcon({
+      html: '<div class="map-callout-dot"></div>',
+      className: 'map-marker-wrap',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6]
+    });
+    L.marker(c.targetCoords, { icon: dotIcon, interactive: false }).addTo(leafletMap);
+    // Text offset to the side
+    var textIcon = L.divIcon({
+      html: '<div class="map-callout-text">' + c.label + '</div>',
+      className: 'map-marker-wrap',
+      iconSize: [70, 16],
+      iconAnchor: [35, 8]
+    });
+    L.marker(c.textCoords, { icon: textIcon, interactive: false }).addTo(leafletMap);
+    // Connecting line (the arrow)
+    L.polyline([c.targetCoords, c.textCoords], {
+      color: '#2B1E12',
+      weight: 1.2,
+      opacity: 0.85,
+      interactive: false
+    }).addTo(leafletMap);
+  });
 }
 
 /* Wide context map — Minamisenju + Asakusa + Akihabara (north-up).
@@ -2566,7 +2683,7 @@ function initWideMap() {
   // Fallback view in case fitBounds runs before tiles load
   wideMap.setView([35.715, 139.79], 13);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '',
     subdomains: 'abcd',
     maxZoom: 19
@@ -2592,7 +2709,11 @@ function initWideMap() {
         iconAnchor: [11, 11]
       });
     }
-    L.marker(spot.coords, { icon: icon, interactive: false }).addTo(wideMap);
+    var clickable = !!spot.videoSrc;
+    var marker = L.marker(spot.coords, { icon: icon, interactive: clickable }).addTo(wideMap);
+    if (spot.videoSrc) {
+      marker.on('click', function () { openVideoModal(spot.videoSrc); });
+    }
     coords.push(spot.coords);
   });
 
